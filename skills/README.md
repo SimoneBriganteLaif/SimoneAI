@@ -8,30 +8,31 @@ Le skill sono istruzioni operative per Claude Code. Ogni skill è una **cartella
 
 ### Presales
 
-| Skill | Trigger | Output |
-|-------|---------|--------|
-| `presales/init-project/` | Inizio nuovo progetto | struttura KB + note Notion + repo clonata + CLAUDE.md repo |
-| `presales/estrazione-requisiti/` | Dopo un meeting cliente | `requisiti.md` |
-| `presales/genera-documenti/` | Quando requisiti.md è validato | `allegato-tecnico.md` + `requisiti-mockup.md` |
+| Skill | Stato | Trigger | Legge | Scrive |
+|-------|-------|---------|-------|--------|
+| `presales/init-project/` | beta | Inizio nuovo progetto | Notion, GitHub | projects/[nome]/, INDEX.md |
+| `presales/estrazione-requisiti/` | beta | Dopo un meeting cliente | Materiale grezzo | requisiti.md, note-meeting/ |
+| `presales/genera-allegato-tecnico/` | beta | Requisiti validati, serve contratto | requisiti.md | allegato-tecnico.md |
+| `presales/genera-mockup-brief/` | beta | Requisiti validati, servono mockup | requisiti.md | requisiti-mockup.md |
 
 ### Development
 
-| Skill | Trigger | Output |
-|-------|---------|--------|
-| `development/estrazione-decisioni/` | Dopo ogni decisione tecnica rilevante | aggiornamento `decisioni-tecniche.md` + `architettura.md` |
-| `development/aggiornamento-kb/` | Fine sprint o fine progetto | pattern in `patterns/`, aggiornamento `knowledge/` |
+| Skill | Stato | Trigger | Legge | Scrive |
+|-------|-------|---------|-------|--------|
+| `development/estrazione-decisioni/` | beta | Decisione tecnica non banale | decisioni-tecniche.md | decisioni-tecniche.md, architettura.md |
+| `development/estrazione-pattern/` | beta | Fine sprint o fine progetto | feature-log, decisioni-tecniche | patterns/, knowledge/ |
 
 ### Maintenance
 
-| Skill | Trigger | Output |
-|-------|---------|--------|
-| `maintenance/aggiornamento-periodico/` | Fine mese | report + aggiornamenti multipli KB |
+| Skill | Stato | Trigger | Legge | Scrive |
+|-------|-------|---------|-------|--------|
+| `maintenance/audit-periodico/` | beta | Fine mese | Tutta la KB | Report + aggiornamenti distribuiti |
 
 ### Meta
 
-| Skill | Trigger | Output |
-|-------|---------|--------|
-| `meta/gestione-kb/` | Dopo modifiche KB, nuove idee, o periodicamente | aggiornamento changelog, IDEAS.md, docs/ |
+| Skill | Stato | Trigger | Legge | Scrive |
+|-------|-------|---------|-------|--------|
+| `meta/gestione-kb/` | beta | Dopo modifiche KB, nuove idee, periodicamente | Meta-file | changelog, IDEAS.md, docs/ |
 
 ---
 
@@ -41,15 +42,19 @@ Le skill sono istruzioni operative per Claude Code. Ogni skill è una **cartella
 ---
 nome: "Nome della skill"
 descrizione: >
-  Descrizione breve usata per capire quando invocarla.
-fase: presales | development | maintenance
+  Descrizione con scope chiaro: cosa fa, cosa NON fa, rimandi ad altre skill.
+fase: presales | development | maintenance | meta
 versione: "1.0"
-output:
-  - path/al/file/prodotto.md
+stato: beta | stable
+legge:
+  - file/cartelle letti come input
+scrive:
+  - file/cartelle prodotti o aggiornati
 aggiornato: "YYYY-MM-DD"
 ---
 
 ## Obiettivo
+## Perimetro          ← cosa fa / cosa NON fa
 ## Quando usarla / Trigger
 ## Prerequisiti
 ## Loop conversazionale    ← domande prima di agire
@@ -66,3 +71,5 @@ aggiornato: "YYYY-MM-DD"
 
 Il loop conversazionale non è opzionale: è la parte più importante di ogni skill.
 Chiedi una cosa alla volta. Aspetta risposta. Poi agisci.
+
+**Skill in beta**: all'inizio avvisa l'utente che è in beta. Durante l'uso, ad ogni step chiede se il processo ha senso o se va modificato.

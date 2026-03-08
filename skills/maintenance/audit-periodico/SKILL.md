@@ -1,23 +1,41 @@
 ---
-nome: "Aggiornamento Periodico KB"
+nome: "Audit Periodico KB"
 descrizione: >
-  Sub-agente di manutenzione mensile. Analizza l'intera KB, identifica documenti obsoleti,
-  gap di documentazione e pattern non ancora estratti. Produce un report e applica gli
-  aggiornamenti confermati dall'utente.
+  Audit mensile dell'INTERA Knowledge Base. Analizza tutti i progetti, verifica pattern,
+  allinea tag, cerca domande aperte scadute, aggrega debito tecnico. Produce un report
+  e applica gli aggiornamenti confermati.
+  NON opera su un singolo progetto (per quello usa estrazione-pattern).
+  NON gestisce meta-file come changelog/idee (per quello usa gestione-kb).
 fase: maintenance
-versione: "1.1"
+versione: "1.2"
+stato: beta
 frequenza-suggerita: "fine mese o fine sprint"
-output:
+legge:
+  - projects/INDEX.md + tutti i projects/[nome]/
+  - patterns/ (tutti i pattern)
+  - .tags/index.md
+  - Tutti i requisiti.md (domande aperte)
+  - Tutti i architettura.md (debito tecnico)
+scrive:
   - knowledge/report-manutenzione-[YYYY-MM].md
-  - aggiornamenti distribuiti nella KB
+  - patterns/ (aggiornamenti)
+  - knowledge/ (aggiornamenti)
+  - .tags/index.md
+  - projects/INDEX.md
 aggiornato: "2026-03-08"
 ---
 
-# Skill: Aggiornamento Periodico KB
+# Skill: Audit Periodico KB
 
 ## Obiettivo
 
 Mantiene la KB accurata e utile nel tempo. Previene il degrado progressivo della documentazione.
+
+## Perimetro
+
+**Fa**: audit dell'intera KB — progetti, pattern, tag, domande aperte, debito tecnico.
+**Non fa**: non estrae pattern da un singolo progetto (per quello usa `estrazione-pattern`).
+**Non fa**: non gestisce changelog, idee o docs (per quello usa `gestione-kb`).
 
 ---
 

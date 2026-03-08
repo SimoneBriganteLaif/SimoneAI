@@ -37,10 +37,13 @@ Le skill sono in `skills/`. Ogni skill è una **cartella** con un `SKILL.md` den
 Per invocarla: leggi il `SKILL.md` e segui il processo conversazionale.
 
 Ogni skill ha:
-- **Frontmatter YAML**: metadati (nome, fase, output)
+- **Frontmatter YAML**: metadati (nome, fase, stato beta/stable, legge, scrive)
+- **Perimetro**: cosa fa, cosa NON fa, rimandi ad altre skill
 - **Loop conversazionale**: domande da fare prima di produrre output
 - **Processo di produzione**: passi da eseguire
 - **Output in chat**: riepilogo obbligatorio al termine
+
+**Skill in beta**: all'inizio avvisa che è in beta. Durante l'uso, ad ogni step chiede se il processo ha senso o se va modificato.
 
 ## Workflow per fase
 
@@ -49,18 +52,20 @@ Ogni skill ha:
    Chiede: nome progetto, URL GitHub, link Notion. Fa tutto in autonomia.
 2. **Struttura requisiti** → `skills/presales/estrazione-requisiti/`
    Input: note Notion già salvate. Output: `requisiti.md`
-3. **Documenti per cliente** → `skills/presales/genera-documenti/`
-   Input: `requisiti.md` validato. Output: allegato tecnico + brief Windsurf
+3. **Allegato contrattuale** → `skills/presales/genera-allegato-tecnico/`
+   Input: `requisiti.md` validato. Output: allegato tecnico (max 3 pagine)
+4. **Brief mockup** → `skills/presales/genera-mockup-brief/`
+   Input: `requisiti.md` validato. Output: brief per Windsurf
 
 ### Development
 1. Decisione tecnica → `skills/development/estrazione-decisioni/`
 2. Feature completata → aggiorna `projects/[nome]/development/feature-log.md` direttamente
-3. Fine sprint → `skills/development/aggiornamento-kb/`
+3. Fine sprint → `skills/development/estrazione-pattern/`
 
 ### Maintenance / Consulta
 1. Ricerca per tag → `.tags/index.md`
 2. Pattern riutilizzabili → `patterns/`
-3. Manutenzione mensile → `skills/maintenance/aggiornamento-periodico/`
+3. Audit mensile → `skills/maintenance/audit-periodico/`
 
 ### Meta / Gestione KB
 1. Registra modifica → `skills/meta/gestione-kb/` (modalità 1)

@@ -12,6 +12,9 @@ Raccolta strutturata di idee per evolvere il sistema. Le idee vengono valutate p
 | IDEA-002 | Definire skill operative per Windsurf (istruzioni per sviluppo codice) | skill | M | alta | proposta | 2026-03-08 | Complementare alle skill Claude Code — guida come Windsurf deve operare sui repo |
 | IDEA-003 | Guida setup ambiente: installazione, configurazione, primo utilizzo | processo | S | media | proposta | 2026-03-08 | Per uso personale ora, ma predisposta per condivisione futura |
 | IDEA-004 | Valutare estensione multi-utente del sistema | processo | L | bassa | proposta | 2026-03-08 | Per ora uso personale. Valutare permessi, conflitti, workflow collaborativo |
+| IDEA-005 | Sezione "Persone" per gestione team: one-to-one, obiettivi, crescita | struttura | M | bassa | proposta | 2026-03-08 | Tracciare esiti 1:1, obiettivi individuali, percorsi di crescita dei membri del team. Da valutare quando il sistema sarà più maturo |
+| IDEA-006 | Sezione personale: task, organizzazione vita, obiettivi personali | struttura | L | bassa | proposta | 2026-03-08 | Integrare sfera personale nel sistema. Probabile refactor necessario per separare lavoro/vita. Visione: un unico sistema per gestire tutto |
+| IDEA-007 | Migrazione knowledge su database (SQLite → eventuale web app) | integrazione | L | bassa | proposta | 2026-03-08 | File .md poco efficienti per ricerca e consumo token. SQLite locale come primo step, poi valutare web app. Obiettivo: accesso efficiente senza scansionare tutta la KB |
 
 ---
 

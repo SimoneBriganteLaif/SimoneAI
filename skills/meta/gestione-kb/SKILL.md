@@ -1,12 +1,21 @@
 ---
 nome: "Gestione Knowledge Base"
 descrizione: >
-  Gestisce i meta-file del sistema: changelog (framework e contenuti),
-  backlog idee, documentazione, e review periodica delle idee.
+  Gestisce i META-FILE del sistema: changelog (framework e contenuti),
+  backlog idee, documentazione navigabile, e review periodica delle idee.
   Opera in 4 modalità selezionabili.
+  NON audita i progetti o i pattern (per quello usa audit-periodico).
+  NON estrae pattern da progetti (per quello usa estrazione-pattern).
 fase: meta
 versione: "1.0"
-output:
+stato: beta
+legge:
+  - CHANGELOG-framework.md
+  - CHANGELOG-contenuti.md
+  - IDEAS.md
+  - docs/ (tutti i file)
+  - Struttura cartelle reale (per sync)
+scrive:
   - CHANGELOG-framework.md
   - CHANGELOG-contenuti.md
   - IDEAS.md

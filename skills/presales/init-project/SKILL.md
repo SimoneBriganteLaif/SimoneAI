@@ -1,19 +1,19 @@
 ---
 nome: "Init Project"
 descrizione: >
-  Inizializza un nuovo progetto nella knowledge base. Raccoglie le informazioni base
-  tramite domande, legge le pagine Notion indicate via MCP, clona la repository GitHub,
-  analizza README e struttura cartelle, popola tutti i file di partenza del progetto
-  e genera il CLAUDE.md nella repo clonata. Aggiorna il registro globale projects/INDEX.md.
+  Bootstrap completo di un nuovo progetto nella KB. Raccoglie info base,
+  legge Notion via MCP, clona repo GitHub, analizza stack, popola i file
+  di partenza e genera CLAUDE.md nella repo. Aggiorna projects/INDEX.md.
 fase: presales
 versione: "1.0"
-output:
-  - projects/[nome]/README.md
-  - projects/[nome]/presales/note-meeting/[data]-[titolo].md (per ogni pagina Notion)
-  - projects/[nome]/presales/requisiti.md (bozza iniziale se c'è materiale sufficiente)
-  - projects/[nome]/repo/ (repo clonata)
-  - projects/[nome]/repo/CLAUDE.md (generato)
-  - projects/INDEX.md (aggiornato)
+stato: beta
+legge:
+  - Pagine Notion (via MCP)
+  - Repository GitHub (clone + analisi)
+scrive:
+  - projects/[nome]/ (intera struttura da _template/)
+  - projects/[nome]/repo/CLAUDE.md
+  - projects/INDEX.md
 aggiornato: "2026-03-08"
 ---
 
@@ -213,7 +213,9 @@ Prossimi passi:
   1. → Esegui skills/presales/estrazione-requisiti/ per strutturare i requisiti
        [le note meeting sono già disponibili come input]
   2. → Completa la sezione "Convenzioni di codice" in projects/[nome]/repo/CLAUDE.md
-  3. → Quando i requisiti sono pronti, esegui skills/presales/genera-documenti/
+  3. → Quando i requisiti sono pronti, esegui:
+       skills/presales/genera-allegato-tecnico/
+       skills/presales/genera-mockup-brief/
 ```
 
 ---

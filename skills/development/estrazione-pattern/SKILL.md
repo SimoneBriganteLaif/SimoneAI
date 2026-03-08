@@ -1,22 +1,39 @@
 ---
-nome: "Aggiornamento Knowledge Base"
+nome: "Estrazione Pattern"
 descrizione: >
   A fine sprint o fine progetto, analizza feature-log.md e decisioni-tecniche.md
-  per estrarre pattern riutilizzabili e aggiornare la knowledge base cross-progetto.
+  di UN PROGETTO SPECIFICO per estrarre pattern riutilizzabili in patterns/ e
+  aggiornare la knowledge cross-progetto in knowledge/.
+  NON è un audit generale della KB (per quello usa audit-periodico).
 fase: development
-versione: "1.1"
-output:
+versione: "1.2"
+stato: beta
+legge:
+  - projects/[nome]/development/feature-log.md
+  - projects/[nome]/development/decisioni-tecniche.md
+  - patterns/ (per verificare duplicati)
+scrive:
   - patterns/[nuovo-pattern].md (nuovo o aggiornato)
-  - knowledge/industrie/[settore].md (aggiornamento opzionale)
-  - knowledge/problemi-tecnici/[problema].md (aggiornamento opzionale)
+  - patterns/README.md (indice)
+  - knowledge/industrie/[settore].md (opzionale)
+  - knowledge/problemi-tecnici/[problema].md (opzionale)
+  - .tags/index.md
 aggiornato: "2026-03-08"
 ---
 
-# Skill: Aggiornamento Knowledge Base
+# Skill: Estrazione Pattern
 
 ## Obiettivo
 
-Trasforma l'esperienza accumulata su un progetto in asset riutilizzabili per i progetti futuri.
+Trasforma l'esperienza accumulata su un progetto specifico in asset riutilizzabili per i progetti futuri.
+
+---
+
+## Perimetro
+
+**Fa**: analizza UN progetto specifico ed estrae pattern e knowledge riutilizzabili.
+**Non fa**: non audita l'intera KB (per quello usa `audit-periodico`).
+**Non fa**: non gestisce changelog, idee o docs (per quello usa `gestione-kb`).
 
 ---
 
@@ -69,6 +86,8 @@ KNOWLEDGE CROSS-PROGETTO:
 Procedo?
 ```
 
+Ad ogni step, se la skill è in stato **beta**, chiedi se il processo ha senso o se va modificato.
+
 ---
 
 ## Processo di produzione
@@ -86,7 +105,7 @@ Dopo ogni modifica:
 ## Output in chat (obbligatorio al termine)
 
 ```
-✓ COMPLETATO — Aggiornamento Knowledge Base
+✓ COMPLETATO — Estrazione Pattern
 
 Estratto da: projects/[nome]
 Periodo analizzato: [sprint/date]
@@ -101,7 +120,7 @@ Knowledge aggiornata:
   → [lista file]
 
 Prossimi passi:
-  → Esegui skills/maintenance/aggiornamento-periodico/ a fine mese per pulizia completa
+  → Esegui skills/maintenance/audit-periodico/ a fine mese per audit completo
 ```
 
 ---

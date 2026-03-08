@@ -1,14 +1,18 @@
 ---
 nome: "Estrazione Decisioni Tecniche"
 descrizione: >
-  Documenta una decisione tecnica rilevante nel formato ADR (Architecture Decision Record).
-  Aggiorna decisioni-tecniche.md e, se necessario, architettura.md. Valuta se la decisione
-  è un pattern riutilizzabile da estrarre in patterns/.
+  Cattura una decisione tecnica non banale in formato ADR (Architecture Decision Record).
+  Documenta contesto, alternative valutate, trade-off e impatto architetturale.
+  NON per decisioni ovvie — solo per scelte che qualcuno potrebbe mettere in discussione.
 fase: development
 versione: "1.1"
-output:
-  - projects/[nome]/development/decisioni-tecniche.md (aggiornamento)
-  - projects/[nome]/development/architettura.md (aggiornamento opzionale)
+stato: beta
+legge:
+  - projects/[nome]/development/decisioni-tecniche.md (per numero ADR)
+  - projects/[nome]/development/architettura.md (per valutare impatto)
+scrive:
+  - projects/[nome]/development/decisioni-tecniche.md (nuovo ADR)
+  - projects/[nome]/development/architettura.md (se impatto architetturale)
 aggiornato: "2026-03-08"
 ---
 
@@ -99,7 +103,7 @@ Pattern riutilizzabile rilevato: [sì/no]
 
 Prossimi passi:
   → Condividi l'ADR con il team se la decisione li impatta
-  [→ Esegui skills/development/aggiornamento-kb/ se vuoi estrarre il pattern ora]
+  [→ Esegui skills/development/estrazione-pattern/ se vuoi estrarre il pattern ora]
 ```
 
 ---

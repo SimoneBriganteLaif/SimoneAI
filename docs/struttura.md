@@ -6,98 +6,89 @@
 
 ## Albero delle cartelle
 
-```mermaid
-graph TD
-    ROOT["SimoneAI/"] --> CLAUDE["CLAUDE.md<br/><i>Istruzioni operative per Claude Code</i>"]
-    ROOT --> SYSTEM["System.md<br/><i>Panoramica del sistema</i>"]
-    ROOT --> CHANGELOG_F["CHANGELOG-framework.md<br/><i>Modifiche alla struttura</i>"]
-    ROOT --> CHANGELOG_C["CHANGELOG-contenuti.md<br/><i>Modifiche ai contenuti</i>"]
-    ROOT --> IDEAS["IDEAS.md<br/><i>Backlog idee e miglioramenti</i>"]
-    ROOT --> DOCS["docs/<br/><i>Documentazione navigabile</i>"]
-    ROOT --> PROJECTS["projects/<br/><i>Un progetto per cartella</i>"]
-    ROOT --> PATTERNS["patterns/<br/><i>Pattern tecnici riutilizzabili</i>"]
-    ROOT --> SKILLS["skills/<br/><i>Skill e sub-agenti</i>"]
-    ROOT --> KNOWLEDGE["knowledge/<br/><i>Conoscenza cross-progetto</i>"]
-    ROOT --> TAGS[".tags/<br/><i>Indice tag per ricerca rapida</i>"]
-
-    DOCS --> DOC_STRUTTURA["struttura.md<br/><i>Questa pagina</i>"]
-    DOCS --> DOC_SKILLS["skills.md<br/><i>Catalogo skill</i>"]
-    DOCS --> DOC_WORKFLOW["workflow.md<br/><i>Flussi di lavoro</i>"]
-
-    PROJECTS --> TEMPLATE["_template/<br/><i>Template base</i>"]
-    PROJECTS --> INDEX_P["INDEX.md<br/><i>Registro progetti</i>"]
-    TEMPLATE --> T_README["README.md"]
-    TEMPLATE --> T_PRESALES["presales/"]
-    TEMPLATE --> T_DEV["development/"]
-    TEMPLATE --> T_MAINT["maintenance/"]
-
-    SKILLS --> S_PRESALES["presales/"]
-    SKILLS --> S_DEV["development/"]
-    SKILLS --> S_MAINT["maintenance/"]
-    SKILLS --> S_META["meta/"]
-    S_PRESALES --> S_INIT["init-project/"]
-    S_PRESALES --> S_REQ["estrazione-requisiti/"]
-    S_PRESALES --> S_DOC["genera-documenti/"]
-    S_DEV --> S_DEC["estrazione-decisioni/"]
-    S_DEV --> S_UPD["aggiornamento-kb/"]
-    S_MAINT --> S_PER["aggiornamento-periodico/"]
-    S_META --> S_GEST["gestione-kb/"]
-
-    KNOWLEDGE --> K_IND["industrie/"]
-    KNOWLEDGE --> K_PROB["problemi-tecnici/"]
-
-    PATTERNS --> P_README["README.md"]
-    PATTERNS --> P_TEMPLATE["_template.md"]
 ```
-
----
-
-## Descrizione cartelle
-
-### `docs/`
-Documentazione del sistema stesso. Serve sia come riferimento per l'utente sia come contesto per gli agenti AI.
-
-| File | Contenuto |
-|------|-----------|
-| `struttura.md` | Mappa delle cartelle e convenzioni (questo file) |
-| `skills.md` | Catalogo completo delle skill con flussi |
-| `workflow.md` | Diagrammi dei flussi di lavoro per fase |
-
-### `projects/`
-Ogni progetto ha la sua cartella. La struttura interna è definita dal template `_template/`.
-
+SimoneAI/
+│
+├── CLAUDE.md                       ← Istruzioni operative per Claude Code.
+│                                     Letto automaticamente a ogni sessione.
+│                                     Definisce regole, workflow per fase, tag standard.
+│
+├── System.md                       ← Panoramica del sistema: cos'è, perché esiste,
+│                                     come funziona. Documento descrittivo per umani.
+│
+├── CHANGELOG-framework.md          ← Traccia modifiche alla STRUTTURA del sistema:
+│                                     cartelle, skill, template, processi, documentazione.
+│                                     Formato Keep a Changelog.
+│
+├── CHANGELOG-contenuti.md          ← Traccia modifiche ai CONTENUTI operativi:
+│                                     progetti, pattern, knowledge, decisioni tecniche.
+│
+├── IDEAS.md                        ← Backlog strutturato di idee e miglioramenti.
+│                                     Tabella con ID, categoria, effort, priorità, stato.
+│                                     Gestito dalla skill gestione-kb (modalità 2 e 4).
+│
+├── .gitignore                      ← Esclude memory/, .claude/, file di sistema.
+│
+├── docs/                           ← Documentazione navigabile del sistema stesso.
+│   │                                 Serve sia come riferimento per l'utente
+│   │                                 sia come contesto per gli agenti AI.
+│   ├── struttura.md                ← Questo file. Mappa delle cartelle e convenzioni.
+│   ├── skills.md                   ← Catalogo completo delle skill con flussi Mermaid.
+│   └── workflow.md                 ← Flussi di lavoro per fase + divisione Claude Code/Windsurf.
+│
+├── projects/                       ← Un progetto = una cartella.
+│   │                                 Ogni cartella segue il template _template/.
+│   ├── INDEX.md                    ← Registro di tutti i progetti: stato, stack, date.
+│   │                                 Aggiornato automaticamente da init-project.
+│   ├── _template/                  ← Template base — NON copiare manualmente,
+│   │   │                             usa la skill init-project.
+│   │   ├── README.md               ← Overview progetto: cliente, stack, link, timeline.
+│   │   ├── presales/
+│   │   │   ├── note-meeting/       ← Note grezze dai meeting (una per file, con data).
+│   │   │   ├── requisiti.md        ← Requisiti strutturati: RF, RNF, domande aperte.
+│   │   │   ├── requisiti-mockup.md ← Brief per Windsurf: schermate, flussi, brand.
+│   │   │   └── allegato-tecnico.md ← Allegato contrattuale: max 3 pagine, non tecnico.
+│   │   ├── development/
+│   │   │   ├── architettura.md     ← Stack, componenti, diagrammi, debito tecnico.
+│   │   │   ├── decisioni-tecniche.md ← Log ADR (Architecture Decision Record).
+│   │   │   └── feature-log.md     ← Feature completate: cosa, come, problemi, PR.
+│   │   └── maintenance/
+│   │       └── note.md             ← Note post go-live.
+│   └── [nome-progetto]/            ← Creato dalla skill init-project.
+│
+├── patterns/                       ← Pattern tecnici riutilizzabili estratti dai progetti.
+│   │                                 Ogni pattern documenta: problema, soluzione,
+│   │                                 trade-off, e in quali progetti è stato usato.
+│   ├── README.md                   ← Indice dei pattern esistenti.
+│   └── _template.md                ← Template per nuovi pattern.
+│
+├── skills/                         ← Istruzioni operative del sistema.
+│   │                                 Ogni skill = cartella con SKILL.md dentro.
+│   │                                 Organizzate per fase.
+│   ├── README.md                   ← Indice delle skill con trigger e output.
+│   ├── presales/                   ← Fase presales: dal primo contatto al contratto.
+│   │   ├── init-project/           ← Bootstrap completo progetto nella KB.
+│   │   ├── estrazione-requisiti/   ← Note meeting → requisiti strutturati.
+│   │   ├── genera-allegato-tecnico/ ← Requisiti → allegato contrattuale.
+│   │   └── genera-mockup-brief/    ← Requisiti → brief mockup per Windsurf.
+│   ├── development/                ← Fase sviluppo: durante lo sprint.
+│   │   ├── estrazione-decisioni/   ← Documenta decisioni tecniche in formato ADR.
+│   │   └── estrazione-pattern/     ← Fine sprint → estrae pattern riutilizzabili.
+│   ├── maintenance/                ← Manutenzione periodica.
+│   │   └── audit-periodico/        ← Audit mensile dell'intera KB.
+│   └── meta/                       ← Gestione del sistema stesso.
+│       └── gestione-kb/            ← Changelog, idee, sync docs, review idee.
+│
+├── knowledge/                      ← Conoscenza cross-progetto, non legata a un singolo progetto.
+│   ├── README.md                   ← Overview della knowledge disponibile.
+│   ├── industrie/                  ← Cosa sappiamo di settori specifici.
+│   │   └── _template.md            │  (retail, finance, healthcare, saas...)
+│   └── problemi-tecnici/           ← Soluzioni a problemi tecnici ricorrenti.
+│       └── _template.md
+│
+└── .tags/                          ← Sistema di tag per navigazione cross-progetto.
+    └── index.md                    ← Indice dei tag usati nella KB.
 ```
-projects/
-├── INDEX.md          ← registro di tutti i progetti (stato, stack, date)
-├── _template/        ← template base — NON copiare manualmente, usa init-project
-│   ├── README.md
-│   ├── presales/
-│   │   ├── note-meeting/
-│   │   ├── requisiti.md
-│   │   ├── requisiti-mockup.md
-│   │   └── allegato-tecnico.md
-│   ├── development/
-│   │   ├── architettura.md
-│   │   ├── decisioni-tecniche.md
-│   │   └── feature-log.md
-│   └── maintenance/
-│       └── note.md
-└── [nome-progetto]/  ← creato dalla skill init-project
-```
-
-### `patterns/`
-Pattern tecnici riutilizzabili estratti dai progetti completati. Ogni pattern documenta: problema, soluzione, trade-off, e in quali progetti LAIF è stato usato.
-
-### `skills/`
-Le "istruzioni operative" del sistema. Ogni skill è una cartella con un `SKILL.md` che definisce il processo conversazionale. Organizzate per fase: `presales/`, `development/`, `maintenance/`, `meta/`.
-
-### `knowledge/`
-Conoscenza cross-progetto non legata a un progetto specifico:
-- `industrie/` — cosa sappiamo di settori specifici (retail, finance, healthcare...)
-- `problemi-tecnici/` — soluzioni a problemi ricorrenti
-
-### `.tags/`
-Indice dei tag. Permette di navigare la KB tramite tag senza conoscere la struttura delle cartelle.
 
 ---
 

@@ -6,6 +6,38 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/).
 
 ---
 
+## [Non rilasciato]
+
+### Changed
+
+**Skill — Presales**
+- `genera-documenti/` splittata in due skill separate:
+  - `genera-allegato-tecnico/` — requisiti → allegato contrattuale (max 3 pagine)
+  - `genera-mockup-brief/` — requisiti → brief mockup per Windsurf
+
+**Skill — Development**
+- `aggiornamento-kb/` rinominata in `estrazione-pattern/` — nome più chiaro sullo scope
+
+**Skill — Maintenance**
+- `aggiornamento-periodico/` rinominata in `audit-periodico/` — evita confusione con estrazione-pattern
+
+**Tutte le skill**
+- Aggiunto sistema `stato: beta | stable` nel frontmatter
+- Aggiunto `legge:` e `scrive:` nel frontmatter per chiarire input/output
+- Aggiunta sezione **Perimetro** (cosa fa / cosa NON fa / rimandi ad altre skill)
+- Skill in beta: avviso all'inizio + review ad ogni step durante l'uso
+
+**Documentazione**
+- `docs/struttura.md` — albero cartelle riscritto come code block annotato (era Mermaid)
+- `docs/skills.md` — aggiornato con nomi, split, tabella confronto skill di manutenzione
+- `CLAUDE.md` — aggiornati riferimenti a nuovi nomi skill + sezione beta
+- `skills/README.md` — aggiornato con colonne Stato/Legge/Scrive
+
+### Removed
+- `skills/presales/genera-documenti/` — sostituita da genera-allegato-tecnico + genera-mockup-brief
+
+---
+
 ## [1.0.0] — 2026-03-08
 
 Prima release della Knowledge Base.

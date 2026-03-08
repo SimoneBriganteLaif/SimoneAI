@@ -4,17 +4,31 @@
 
 ---
 
+## Sistema di stato delle skill
+
+Ogni skill ha un campo `stato` nel frontmatter:
+
+| Stato | Significato | Comportamento |
+|-------|-------------|---------------|
+| `beta` | Skill in fase di rodaggio | All'inizio avvisa che è in beta. Durante l'uso, ad ogni step chiede se il processo ha senso o se va modificato. |
+| `stable` | Skill validata e collaudata | Esecuzione normale senza interruzioni extra. |
+
+Quando una skill beta viene usata abbastanza da risultare stabile, si aggiorna lo stato a `stable` e si registra nel changelog.
+
+---
+
 ## Riepilogo
 
-| Skill | Fase | Scopo | Input | Output |
-|-------|------|-------|-------|--------|
-| `init-project` | Presales | Bootstrap completo progetto | Nome, GitHub URL, Notion links | Struttura KB + CLAUDE.md repo |
-| `estrazione-requisiti` | Presales | Note grezze → requisiti strutturati | Trascrizioni meeting | `requisiti.md` |
-| `genera-documenti` | Presales | Requisiti → documenti cliente | `requisiti.md` validato | Allegato tecnico + brief mockup |
-| `estrazione-decisioni` | Development | Documenta scelte architetturali | Descrizione decisione | ADR in `decisioni-tecniche.md` |
-| `aggiornamento-kb` | Development | Estrai pattern a fine sprint | Feature log, codice | Pattern in `patterns/` |
-| `aggiornamento-periodico` | Maintenance | Audit mensile KB | Nessuno (autonoma) | Report manutenzione |
-| `gestione-kb` | Meta | Gestione changelog, idee, docs | Varia per modalità | Aggiornamento meta-file |
+| Skill | Fase | Stato | Scopo | Legge | Scrive |
+|-------|------|-------|-------|-------|--------|
+| `init-project` | Presales | beta | Bootstrap completo progetto | Notion, GitHub | projects/[nome]/, INDEX.md |
+| `estrazione-requisiti` | Presales | beta | Note → requisiti strutturati | Materiale grezzo | requisiti.md, note-meeting/ |
+| `genera-allegato-tecnico` | Presales | beta | Requisiti → allegato contrattuale | requisiti.md | allegato-tecnico.md |
+| `genera-mockup-brief` | Presales | beta | Requisiti → brief mockup per Windsurf | requisiti.md | requisiti-mockup.md |
+| `estrazione-decisioni` | Development | beta | Documenta decisioni tecniche (ADR) | decisioni-tecniche.md | decisioni-tecniche.md, architettura.md |
+| `estrazione-pattern` | Development | beta | Fine sprint → pattern riutilizzabili | feature-log, decisioni-tecniche | patterns/, knowledge/ |
+| `audit-periodico` | Maintenance | beta | Audit mensile intera KB | Tutta la KB | Report + aggiornamenti distribuiti |
+| `gestione-kb` | Meta | beta | Gestione meta-file del sistema | Meta-file, struttura cartelle | changelog, IDEAS.md, docs/ |
 
 ---
 
@@ -24,15 +38,15 @@
 
 **Path**: `skills/presales/init-project/SKILL.md`
 **Trigger**: Inizio di un nuovo progetto
-**Versione**: 1.0
+**Stato**: beta
 
-Crea l'intera struttura di un progetto in una sola operazione: legge le note da Notion, clona il repository, rileva lo stack tecnologico, e genera i file iniziali.
+Bootstrap completo: legge Notion, clona repo, rileva stack, popola struttura progetto, genera CLAUDE.md nel repo.
 
 ```mermaid
 flowchart TD
-    START([Invocazione]) --> Q1[Chiede nome progetto]
-    Q1 --> Q2[Chiede URL GitHub]
-    Q2 --> Q3[Chiede link Notion]
+    START([Invocazione]) --> Q1[Nome progetto?]
+    Q1 --> Q2[URL GitHub?]
+    Q2 --> Q3[Link Notion?]
     Q3 --> Q4{Info cliente\nsufficienti da Notion?}
     Q4 -->|No| Q5[Chiede info cliente]
     Q4 -->|Sì| EXEC
@@ -52,9 +66,9 @@ flowchart TD
 
 **Path**: `skills/presales/estrazione-requisiti/SKILL.md`
 **Trigger**: Dopo un meeting con il cliente
-**Versione**: 1.1
+**Stato**: beta
 
-Trasforma note grezze di meeting in requisiti strutturati con priorità, criteri di accettazione e domande aperte.
+Note grezze di meeting → requisiti strutturati (RF + RNF) con priorità, criteri di accettazione, domande aperte.
 
 ```mermaid
 flowchart TD
@@ -76,29 +90,47 @@ flowchart TD
 
 ---
 
-### genera-documenti
+### genera-allegato-tecnico
 
-**Path**: `skills/presales/genera-documenti/SKILL.md`
-**Trigger**: Quando `requisiti.md` è validato
-**Versione**: 1.1
+**Path**: `skills/presales/genera-allegato-tecnico/SKILL.md`
+**Trigger**: Quando `requisiti.md` è validato e serve il documento contrattuale
+**Stato**: beta
 
-Produce due documenti: l'allegato tecnico per il contratto (max 3 pagine, linguaggio non tecnico) e il brief per i mockup (schermate, flussi, brand).
+Produce l'allegato tecnico per il contratto: max 3 pagine, linguaggio non tecnico, comprensibile da un CEO.
 
 ```mermaid
 flowchart TD
     START([Invocazione]) --> CHECK{requisiti.md\ncompleto?}
     CHECK -->|No| STOP([Prerequisito mancante])
-    CHECK -->|Sì| AT[Allegato Tecnico]
-    AT --> QA1[Esclusioni abbastanza esplicite?]
-    QA1 --> QA2[Chi lo legge? Livello formalità]
-    QA2 --> PROP_AT[Propone struttura allegato]
-    PROP_AT --> WRITE_AT[Scrive allegato-tecnico.md]
-    WRITE_AT --> MB[Brief Mockup]
-    MB --> QB1[Top 3-5 schermate prioritarie?]
-    QB1 --> QB2[Brand guidelines?]
-    QB2 --> QB3[Dispositivi prioritari?]
-    QB3 --> WRITE_MB[Scrive requisiti-mockup.md]
-    WRITE_MB --> DONE([Output riepilogo])
+    CHECK -->|Sì| Q1[Esclusioni sufficientemente esplicite?]
+    Q1 --> Q2[Chi legge l'allegato? Livello formalità]
+    Q2 --> PROP[Propone struttura allegato]
+    PROP --> CONFIRM{Approvata?}
+    CONFIRM -->|No| PROP
+    CONFIRM -->|Sì| WRITE[Scrive allegato-tecnico.md]
+    WRITE --> DONE([Output riepilogo])
+```
+
+---
+
+### genera-mockup-brief
+
+**Path**: `skills/presales/genera-mockup-brief/SKILL.md`
+**Trigger**: Quando `requisiti.md` è validato e servono i mockup
+**Stato**: beta
+
+Produce il brief per i mockup destinato a Windsurf: schermate prioritarie, flussi, brand guidelines, vincoli UI.
+
+```mermaid
+flowchart TD
+    START([Invocazione]) --> CHECK{requisiti.md\ncompleto?}
+    CHECK -->|No| STOP([Prerequisito mancante])
+    CHECK -->|Sì| Q1[Top 3-5 schermate prioritarie?]
+    Q1 --> Q2[Brand guidelines?]
+    Q2 --> Q3[Dispositivi prioritari?]
+    Q3 --> Q4[Vincoli UI?]
+    Q4 --> WRITE[Scrive requisiti-mockup.md]
+    WRITE --> DONE([Output riepilogo])
 ```
 
 ---
@@ -109,9 +141,9 @@ flowchart TD
 
 **Path**: `skills/development/estrazione-decisioni/SKILL.md`
 **Trigger**: Dopo ogni decisione tecnica non banale
-**Versione**: 1.1
+**Stato**: beta
 
-Documenta decisioni architetturali in formato ADR (Architecture Decision Record). Non per decisioni ovvie, ma per scelte che qualcuno potrebbe mettere in discussione.
+Cattura decisioni architetturali in formato ADR. Solo per scelte che qualcuno potrebbe mettere in discussione.
 
 ```mermaid
 flowchart TD
@@ -121,8 +153,7 @@ flowchart TD
     Q3 --> Q4[Perché questa opzione?]
     Q4 --> Q5[Trade-off accettati?]
     Q5 --> Q6{Impatto su\narchitettura?}
-    Q6 -->|Sì| Q7[Reversibile?]
-    Q6 -->|No| Q7
+    Q6 --> Q7[Reversibile?]
     Q7 --> WRITE[Scrive ADR in decisioni-tecniche.md]
     Q6 -->|Sì| UPDATE[Aggiorna architettura.md]
     WRITE --> DONE([Output riepilogo])
@@ -131,19 +162,19 @@ flowchart TD
 
 ---
 
-### aggiornamento-kb
+### estrazione-pattern
 
-**Path**: `skills/development/aggiornamento-kb/SKILL.md`
+**Path**: `skills/development/estrazione-pattern/SKILL.md`
 **Trigger**: Fine sprint o fine progetto
-**Versione**: 1.1
+**Stato**: beta
 
-Estrae pattern riutilizzabili dall'esperienza del progetto e aggiorna la knowledge base cross-progetto.
+Analizza UN progetto specifico ed estrae pattern riutilizzabili in `patterns/` e knowledge in `knowledge/`. Non è un audit generale (per quello c'è `audit-periodico`).
 
 ```mermaid
 flowchart TD
     START([Invocazione]) --> P1[Fase 1: Raccolta]
     P1 --> Q1[Problemi risolti che ricorreranno?]
-    Q1 --> Q2[Pattern usati da altri progetti LAIF?]
+    Q1 --> Q2[Pattern usati da altri progetti?]
     Q2 --> P2[Fase 2: Valutazione candidati]
     P2 --> EVAL{Per ogni candidato}
     EVAL --> C1{Generico\ncross-progetto?}
@@ -164,13 +195,13 @@ flowchart TD
 
 ## Maintenance
 
-### aggiornamento-periodico
+### audit-periodico
 
-**Path**: `skills/maintenance/aggiornamento-periodico/SKILL.md`
+**Path**: `skills/maintenance/audit-periodico/SKILL.md`
 **Trigger**: Fine mese o fine sprint
-**Versione**: 1.1
+**Stato**: beta
 
-Sub-agente autonomo che audita l'intera KB: verifica progetti, pattern, tag, domande aperte scadute e debito tecnico.
+Audit autonomo dell'intera KB: verifica progetti, pattern, tag, domande aperte scadute, debito tecnico. Non opera su un singolo progetto (per quello c'è `estrazione-pattern`). Non gestisce meta-file (per quello c'è `gestione-kb`).
 
 ```mermaid
 flowchart TD
@@ -197,9 +228,9 @@ flowchart TD
 
 **Path**: `skills/meta/gestione-kb/SKILL.md`
 **Trigger**: Dopo modifiche alla KB, nuove idee, o periodicamente
-**Versione**: 1.0
+**Stato**: beta
 
-Skill di gestione dei meta-file del sistema (changelog, idee, documentazione). Opera in 4 modalità: registra modifica, aggiungi idea, sync docs, review idee.
+Gestisce i meta-file del sistema (changelog, idee, documentazione). Non audita progetti o pattern (per quello c'è `audit-periodico`). Opera in 4 modalità.
 
 ```mermaid
 flowchart TD
@@ -213,58 +244,72 @@ flowchart TD
     RQ1 --> RQ2{Framework\no contenuto?}
     RQ2 -->|Framework| CL_F[Aggiorna CHANGELOG-framework.md]
     RQ2 -->|Contenuto| CL_C[Aggiorna CHANGELOG-contenuti.md]
-    CL_F --> RQ3{Impatta\ndocs/?}
-    RQ3 -->|Sì| UPD_DOC[Aggiorna docs/ rilevanti]
+    CL_F --> RQ3{Impatta docs/?}
+    RQ3 -->|Sì| UPD_DOC[Aggiorna docs/]
     RQ3 -->|No| DONE_R([Fatto])
     UPD_DOC --> DONE_R
     CL_C --> DONE_R
 
     IDEA --> IQ1[Descrivi l'idea]
     IQ1 --> IQ2[Categoria? Effort?]
-    IQ2 --> ADD[Aggiunge riga a IDEAS.md]
+    IQ2 --> ADD[Aggiunge a IDEAS.md]
     ADD --> DONE_I([Fatto])
 
-    SYNC --> READ[Legge struttura attuale]
+    SYNC --> READ[Legge struttura reale]
     READ --> DIFF[Confronta con docs/]
     DIFF --> PROP{Differenze?}
-    PROP -->|Sì| SHOW[Mostra differenze]
-    SHOW --> FIX[Aggiorna docs/]
+    PROP -->|Sì| FIX[Aggiorna docs/]
     PROP -->|No| OK([Tutto allineato])
     FIX --> OK
 
     REV --> LIST[Mostra idee pendenti]
-    LIST --> EACH{Per ogni idea}
-    EACH --> DEC[Implementare / Rimandare / Scartare]
+    LIST --> DEC[Per ciascuna: implementare/rimandare/scartare]
     DEC --> UPD_ID[Aggiorna IDEAS.md]
     UPD_ID --> DONE_V([Fatto])
 ```
 
 ---
 
+## Differenze tra skill di manutenzione
+
+| | `estrazione-pattern` | `audit-periodico` | `gestione-kb` |
+|---|---|---|---|
+| **Scope** | Un singolo progetto | Intera KB | Meta-file del sistema |
+| **Quando** | Fine sprint/progetto | Fine mese | Dopo ogni modifica / periodicamente |
+| **Legge** | feature-log, decisioni-tecniche di un progetto | Tutti i progetti, pattern, tag | Changelog, IDEAS.md, docs/ |
+| **Scrive** | patterns/, knowledge/ | Report + aggiornamenti distribuiti | Changelog, IDEAS.md, docs/ |
+| **Focus** | Estrarre knowledge riutilizzabile | Trovare gap, obsolescenze, disallineamenti | Tenere traccia delle modifiche e idee |
+
+---
+
 ## Formato standard SKILL.md
 
-Ogni skill segue questo formato:
+Ogni skill segue questo formato nel frontmatter:
 
 ```yaml
 ---
 nome: "Nome della skill"
 descrizione: >
-  Descrizione breve usata per capire quando invocarla.
+  Descrizione con scope chiaro: cosa fa, cosa NON fa, e rimandi ad altre skill.
 fase: presales | development | maintenance | meta
 versione: "1.0"
-output:
-  - path/al/file/prodotto.md
+stato: beta | stable
+legge:
+  - file/cartelle che la skill legge come input
+scrive:
+  - file/cartelle che la skill produce o aggiorna
 aggiornato: "YYYY-MM-DD"
 ---
 ```
 
-Sezioni:
+Sezioni nel corpo:
 1. **Obiettivo** — cosa fa
-2. **Quando usarla / Trigger** — quando invocarla
-3. **Prerequisiti** — cosa serve prima
-4. **Loop conversazionale** — domande da fare (una alla volta)
-5. **Processo di produzione** — passi da eseguire
-6. **Output in chat** — riepilogo obbligatorio al termine
-7. **Checklist qualità** — verifiche finali
+2. **Perimetro** — cosa fa / cosa NON fa / rimandi ad altre skill
+3. **Quando usarla / Trigger** — quando invocarla
+4. **Prerequisiti** — cosa serve prima
+5. **Loop conversazionale** — domande da fare (una alla volta)
+6. **Processo di produzione** — passi da eseguire
+7. **Output in chat** — riepilogo obbligatorio al termine
+8. **Checklist qualità** — verifiche finali
 
 **Principio**: mai produrre output senza prima raccogliere le informazioni necessarie.

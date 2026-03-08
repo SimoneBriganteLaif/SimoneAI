@@ -1,13 +1,19 @@
 ---
 nome: "Estrazione Requisiti"
 descrizione: >
-  Estrae e struttura i requisiti funzionali e non funzionali a partire da note di
-  meeting, trascrizioni o documenti cliente. Produce requisiti.md nel formato LAIF.
+  Trasforma note grezze di meeting, trascrizioni o documenti cliente in
+  requisiti strutturati (RF + RNF) con priorità, criteri di accettazione
+  e domande aperte. Produce requisiti.md nel formato LAIF.
 fase: presales
 versione: "1.1"
-output:
+stato: beta
+legge:
+  - Materiale grezzo (testo incollato, file, pagine Notion)
+  - projects/[nome]/ (se esiste)
+scrive:
   - projects/[nome]/presales/requisiti.md
   - projects/[nome]/presales/note-meeting/[data]-[fonte].md
+  - projects/INDEX.md (se progetto nuovo)
 aggiornato: "2026-03-08"
 ---
 
@@ -102,7 +108,9 @@ Riepilogo:
 
 Prossimi passi:
   → Condividi le domande aperte con il cliente
-  → Quando requisiti validati, esegui: skills/presales/genera-documenti/
+  → Quando requisiti validati, esegui:
+     skills/presales/genera-allegato-tecnico/
+     skills/presales/genera-mockup-brief/
 ```
 
 ---
