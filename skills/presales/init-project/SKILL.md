@@ -1,0 +1,255 @@
+---
+nome: "Init Project"
+descrizione: >
+  Inizializza un nuovo progetto nella knowledge base. Raccoglie le informazioni base
+  tramite domande, legge le pagine Notion indicate via MCP, clona la repository GitHub,
+  analizza README e struttura cartelle, popola tutti i file di partenza del progetto
+  e genera il CLAUDE.md nella repo clonata. Aggiorna il registro globale projects/INDEX.md.
+fase: presales
+versione: "1.0"
+output:
+  - projects/[nome]/README.md
+  - projects/[nome]/presales/note-meeting/[data]-[titolo].md (per ogni pagina Notion)
+  - projects/[nome]/presales/requisiti.md (bozza iniziale se c'è materiale sufficiente)
+  - projects/[nome]/repo/ (repo clonata)
+  - projects/[nome]/repo/CLAUDE.md (generato)
+  - projects/INDEX.md (aggiornato)
+aggiornato: "2026-03-08"
+---
+
+# Skill: Init Project
+
+## Obiettivo
+
+Crea la struttura completa di un progetto nella KB in un'unica operazione:
+legge Notion, clona la repo, analizza il codice, popola i documenti di base.
+
+---
+
+## Loop conversazionale — Raccolta informazioni
+
+Fai queste domande **in ordine**, **una alla volta**. Aspetta risposta prima di passare alla successiva.
+
+### Domanda 1 — Nome progetto
+
+```
+Come si chiama questo progetto nella KB?
+(suggerimento: usa kebab-case, es. "acme-ecommerce" o "mario-srl-gestionale")
+
+Se esiste già una cartella con questo nome, aggiornerò solo i file mancanti.
+```
+
+### Domanda 2 — Repository GitHub
+
+```
+Qual è l'URL della repository GitHub principale?
+(es. https://github.com/laif-dev/nome-repo)
+
+Hai repository aggiuntive da collegare (es. infra, backend separato, mobile)?
+Se sì, elencale pure tutte.
+```
+
+### Domanda 3 — Pagine Notion
+
+```
+Incolla i link alle pagine Notion con le note di meeting per questo progetto.
+Puoi incollare più link, uno per riga.
+
+(Le pagine verranno lette via MCP e salvate come note-meeting nella KB)
+```
+
+### Domanda 4 — Info cliente (solo se non emergono da Notion)
+
+Se dopo aver letto Notion mancano queste informazioni, chiedile esplicitamente:
+```
+Alcune info necessarie per il README del progetto:
+- Nome del cliente / azienda
+- Settore / industria (es. retail, finance, saas, healthcare)
+- Referente principale lato cliente (nome + ruolo)
+```
+
+---
+
+## Processo di esecuzione
+
+### Step 1 — Verifica progetto esistente
+
+Controlla se `projects/[nome]/` esiste già:
+- **Non esiste** → crea la struttura copiando `projects/_template/` (tutti i file)
+- **Esiste già** → modalità merge: crea solo i file/cartelle mancanti, non toccare l'esistente
+
+### Step 2 — Leggi le pagine Notion via MCP
+
+Per ogni URL Notion fornito:
+1. Leggi il contenuto della pagina tramite MCP
+2. Estrai: titolo, data, partecipanti, contenuto completo
+3. Salva in `projects/[nome]/presales/note-meeting/[YYYY-MM-DD]-[titolo-slugificato].md`
+
+Formato nota meeting:
+```markdown
+---
+fonte: notion
+url: [url originale]
+data: YYYY-MM-DD
+partecipanti: [lista se disponibile]
+tipo: [kickoff | follow-up | review | commerciale]
+---
+
+# [Titolo pagina Notion]
+
+[Contenuto completo della pagina]
+```
+
+### Step 3 — Clona la repository
+
+```bash
+git clone [url-repo] projects/[nome]/repo/
+```
+
+Se ci sono repo aggiuntive:
+```bash
+git clone [url-repo-infra] projects/[nome]/repo-infra/
+# ecc.
+```
+
+### Step 4 — Analizza la repository
+
+Leggi e analizza:
+1. `projects/[nome]/repo/README.md` — overview del progetto
+2. `projects/[nome]/repo/package.json` (o Gemfile, pyproject.toml, go.mod, ecc.) — stack e dipendenze
+3. Struttura cartelle di primo e secondo livello (max 2 livelli di profondità)
+
+Da questa analisi estrai:
+- **Linguaggio/framework principale**
+- **Dipendenze chiave** (solo quelle rilevanti, non l'elenco completo)
+- **Struttura del progetto** (frontend, backend, shared, ecc.)
+- **Comandi principali** (npm run dev, npm test, npm run build, ecc.)
+
+### Step 5 — Popola README.md del progetto
+
+Compila `projects/[nome]/README.md` con:
+- Info cliente (da Notion o dalle risposte alle domande)
+- Stack rilevato dalla repo
+- Link alla repo e alle repo aggiuntive
+- Path locale della repo clonata
+
+### Step 6 — Genera bozza requisiti (condizionale)
+
+Se le pagine Notion contengono note di meeting con requisiti identificabili:
+- Crea una bozza di `projects/[nome]/presales/requisiti.md`
+- Segna ogni requisito come "Da validare" nel campo priorità
+- Aggiungi una nota in testa: "Bozza generata automaticamente da init-project. Validare con la skill estrazione-requisiti."
+
+Se il materiale Notion è troppo generico o insufficiente:
+- Non creare requisiti.md (meglio vuoto che sbagliato)
+- Segnalalo nell'output
+
+### Step 7 — Genera CLAUDE.md nella repo
+
+Crea `projects/[nome]/repo/CLAUDE.md` con questo contenuto:
+
+```markdown
+# [Nome Progetto] — CLAUDE.md
+
+## Contesto
+Questo progetto è documentato nella Knowledge Base LAIF:
+- README: ~/LAIF/Progetti/_AI/KnowledgeBase/projects/[nome]/README.md
+- Architettura: ~/LAIF/Progetti/_AI/KnowledgeBase/projects/[nome]/development/architettura.md
+- Decisioni tecniche: ~/LAIF/Progetti/_AI/KnowledgeBase/projects/[nome]/development/decisioni-tecniche.md
+
+## Stack
+[stack rilevato dallo Step 4]
+
+## Struttura del progetto
+[struttura cartelle rilevata dallo Step 4]
+
+## Comandi principali
+[comandi rilevati dallo Step 4]
+
+## Convenzioni di codice
+<!-- Da compilare con il team — esempi: -->
+- Lingua variabili/funzioni: [inglese/italiano]
+- Naming convention: [camelCase/snake_case/ecc.]
+- Struttura componenti: [da definire]
+
+## Note per Claude Code
+- La documentazione di progetto è in italiano
+- Per decisioni architetturali, aggiorna sempre decisioni-tecniche.md nella KB
+- Windsurf agisce solo su questa repo, Claude Code gestisce la KB
+```
+
+### Step 8 — Aggiorna projects/INDEX.md
+
+Aggiungi o aggiorna la riga del progetto in `projects/INDEX.md`.
+
+---
+
+## Output in chat (obbligatorio al termine)
+
+```
+✓ COMPLETATO — Init Project: [nome]
+
+Struttura creata:
+  projects/[nome]/                    [nuovo / aggiornato]
+  projects/[nome]/repo/               [clonata da github.com/...]
+  [projects/[nome]/repo-infra/]       [se presente]
+
+Notion elaborato:
+  [N] pagine lette
+  [N] note-meeting salvate:
+    → [YYYY-MM-DD]-[titolo].md
+    → ...
+
+Stack rilevato: [framework] + [db] + [hosting]
+
+File generati:
+  ✓ projects/[nome]/README.md
+  ✓ projects/[nome]/presales/note-meeting/...
+  [✓ projects/[nome]/presales/requisiti.md (bozza)]
+  ✓ projects/[nome]/repo/CLAUDE.md
+  ✓ projects/INDEX.md (aggiornato)
+
+Prossimi passi:
+  1. → Esegui skills/presales/estrazione-requisiti/ per strutturare i requisiti
+       [le note meeting sono già disponibili come input]
+  2. → Completa la sezione "Convenzioni di codice" in projects/[nome]/repo/CLAUDE.md
+  3. → Quando i requisiti sono pronti, esegui skills/presales/genera-documenti/
+```
+
+---
+
+## Checklist qualità
+
+- [ ] `projects/[nome]/README.md` ha cliente, industria, stack e link repo
+- [ ] Tutte le pagine Notion sono state salvate in `note-meeting/`
+- [ ] La repo è clonata e accessibile
+- [ ] `CLAUDE.md` nella repo è compilato con dati reali (non solo placeholder)
+- [ ] `projects/INDEX.md` aggiornato
+- [ ] Nessun file esistente è stato sovrascritto (modalità merge rispettata)
+
+---
+
+## Gestione errori
+
+**Repo non accessibile (permessi / URL errato)**:
+```
+Non riesco ad accedere a [url]. Possibili cause:
+- URL errato (controlla il link)
+- Repo privata senza autenticazione git configurata
+Vuoi fornire un URL alternativo o procedere senza clonare la repo?
+```
+
+**Pagina Notion non leggibile**:
+```
+Non riesco a leggere [url]. Verifica che:
+- Il link sia corretto e la pagina sia condivisa con l'integrazione Notion
+Vuoi incollare il contenuto manualmente?
+```
+
+**Progetto già esistente con conflitti**:
+```
+La cartella projects/[nome]/ esiste già con questi file:
+- [lista file esistenti]
+Creerò solo i file mancanti. I file esistenti non verranno toccati.
+Confermo?
+```

@@ -1,0 +1,14 @@
+# Claude Code memory (specifico per sessione/macchina)
+memory/
+
+# Claude Code internals
+.claude/
+
+# macOS
+.DS_Store
+._*
+
+# Editor
+*.swp
+*.swo
+*~
