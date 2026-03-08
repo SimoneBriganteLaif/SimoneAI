@@ -6,6 +6,24 @@
 
 ---
 
+## Navigazione documentazione
+
+| Documento | Contenuto |
+|-----------|-----------|
+| [CLAUDE.md](CLAUDE.md) | Istruzioni operative per Claude Code — regole, workflow per fase, agenti autonomi |
+| [docs/struttura.md](docs/struttura.md) | Albero cartelle, convenzioni naming, file nella root |
+| [docs/skills.md](docs/skills.md) | Catalogo skill: mappa globale, flowchart per skill, input/output |
+| [docs/workflow.md](docs/workflow.md) | Flussi per fase: quale skill usare quando, sequence diagrams |
+| [docs/setup.md](docs/setup.md) | Guida installazione: Claude Code, Windsurf, MCP, environment |
+| [knowledge/azienda/overview.md](knowledge/azienda/overview.md) | Chi è LAIF: team, clienti, modello di lavoro |
+| [knowledge/azienda/stack.md](knowledge/azienda/stack.md) | Stack tecnico, pattern architetturali, RouterBuilder |
+| [knowledge/azienda/infrastruttura.md](knowledge/azienda/infrastruttura.md) | AWS, ECS, TemplateStack, deploy pipeline |
+| [knowledge/azienda/processi.md](knowledge/azienda/processi.md) | Dev workflow, CI/CD, regole Windsurf, pain point upstream |
+| [IDEAS.md](IDEAS.md) | Backlog idee e miglioramenti futuri con stato |
+| [CHANGELOG-framework.md](CHANGELOG-framework.md) | Modifiche alla struttura del sistema |
+
+---
+
 ## Cos'è questo sistema
 
 Una knowledge base vivente per il team di LAIF. Non è una wiki statica: è un sistema che si aggiorna automaticamente durante il lavoro, cattura le decisioni mentre vengono prese, e rende riutilizzabile l'esperienza accumulata su ogni progetto.
@@ -67,6 +85,7 @@ I "programmi" del sistema. Ogni skill è un file markdown che Claude Code legge 
 
 ### `knowledge/`
 Conoscenza cross-progetto non legata a un singolo progetto. Include:
+- **azienda/**: contesto aziendale LAIF (team, stack, infrastruttura, processi)
 - **industrie/**: cosa sappiamo di retail, finance, healthcare, ecc.
 - **problemi-tecnici/**: soluzioni a problemi ricorrenti
 
@@ -83,8 +102,10 @@ Il sistema è progettato per migrare su Notion tramite MCP quando il team cresce
 
 ## Manutenzione del sistema stesso
 
-Il sub-agente in `skills/maintenance/aggiornamento-periodico.md` va eseguito periodicamente (suggerito: fine sprint o fine mese) per:
-- Identificare documenti obsoleti
-- Estrarre nuovi pattern dai progetti
-- Aggiornare l'indice dei tag
-- Segnalare gap nella documentazione
+| Quando | Skill | Cosa fa |
+|--------|-------|---------|
+| Ad ogni modifica + pre-commit | [verifica-pre-commit](skills/meta/verifica-pre-commit/SKILL.md) | 5 check automatici, blocca commit incoerenti |
+| Dopo ogni modifica al framework | [gestione-kb](skills/meta/gestione-kb/SKILL.md) mod. 1 | Aggiorna changelog + docs/ |
+| Fine sprint / fine mese | [audit-periodico](skills/maintenance/audit-periodico/SKILL.md) | Audit intera KB: obsolescenze, gap, tag |
+| Fine sprint / fine progetto | [estrazione-pattern](skills/development/estrazione-pattern/SKILL.md) | Estrae pattern riutilizzabili |
+| Periodicamente | [gestione-kb](skills/meta/gestione-kb/SKILL.md) mod. 4 | Review idee backlog |

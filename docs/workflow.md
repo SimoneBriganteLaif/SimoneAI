@@ -1,6 +1,50 @@
 # Flussi di Lavoro
 
+← [System.md](../System.md) · [skills.md](skills.md) · [struttura.md](struttura.md)
+
 **Ultimo aggiornamento**: 2026-03-08
+
+---
+
+## Indice
+
+- [Quale flusso usare?](#quale-flusso-usare)
+- [Ciclo di vita di un progetto](#ciclo-di-vita-di-un-progetto)
+- [Divisione strumenti: Claude Code vs Windsurf](#divisione-strumenti-claude-code-vs-windsurf)
+- [Flusso Presales](#flusso-presales)
+- [Flusso Development](#flusso-development)
+- [Flusso Maintenance](#flusso-maintenance)
+- [Flusso Meta / Gestione KB](#flusso-meta--gestione-kb)
+
+---
+
+## Quale flusso usare?
+
+```mermaid
+flowchart TD
+    Q([Cosa devo fare?]) --> A{Sono in fase...}
+
+    A -->|Presales| B{Fase specifica?}
+    A -->|Development| C{Cosa è successo?}
+    A -->|Manutenzione KB| D{Tipo operazione?}
+
+    B -->|Nuovo progetto| F1[init-project]
+    B -->|Strutturare requisiti| F2[estrazione-requisiti]
+    B -->|Generare contratto| F3[genera-allegato-tecnico]
+    B -->|Generare brief mockup| F4[genera-mockup-brief]
+
+    C -->|Decisione tecnica rilevante| F5[estrazione-decisioni]
+    C -->|Fine sprint| F6[estrazione-pattern]
+    C -->|Commit su KB| F7[verifica-pre-commit\nautonom a]
+
+    D -->|Audit KB completo| F8[audit-periodico]
+    D -->|Registro modifica struttura/contenuto| F9[gestione-kb\nmod. 1]
+    D -->|Nuova idea da registrare| F10[gestione-kb\nmod. 2]
+    D -->|Sync documentazione| F11[gestione-kb\nmod. 3]
+    D -->|Review idee backlog| F12[gestione-kb\nmod. 4]
+```
+
+> Per i dettagli di ogni skill (input, output, flowchart) → [docs/skills.md](skills.md)
 
 ---
 
@@ -10,19 +54,20 @@
 flowchart LR
     subgraph PRESALES["Presales"]
         P1[init-project] --> P2[estrazione-requisiti]
-        P2 --> P3[genera-documenti]
+        P2 --> P3[genera-allegato-tecnico]
+        P2 --> P4[genera-mockup-brief]
     end
 
     subgraph DEV["Development"]
         D1[Sviluppo su Windsurf]
         D2[estrazione-decisioni]
-        D3[aggiornamento-kb]
+        D3[estrazione-pattern]
         D1 -.->|decisione tecnica| D2
         D1 -.->|fine sprint| D3
     end
 
     subgraph MAINT["Maintenance"]
-        M1[aggiornamento-periodico]
+        M1[audit-periodico]
     end
 
     PRESALES -->|contratto firmato| DEV
@@ -108,12 +153,21 @@ sequenceDiagram
 
     Note over U,CC: Quando i requisiti sono validati
 
-    U->>CC: Genera documenti
-    CC->>CC: skill: genera-documenti
-    CC->>U: Domande su esclusioni, formalità, mockup
+    U->>CC: Genera allegato tecnico
+    CC->>CC: skill: genera-allegato-tecnico
+    CC->>U: Domande su esclusioni, formalità
     U->>CC: Risposte
-    CC->>CC: Scrive allegato-tecnico.md + requisiti-mockup.md
-    CC-->>U: Documenti pronti per il cliente
+    CC->>CC: Scrive allegato-tecnico.md
+    CC-->>U: Allegato tecnico pronto
+
+    Note over U,CC: Se servono mockup
+
+    U->>CC: Genera brief mockup
+    CC->>CC: skill: genera-mockup-brief
+    CC->>U: Domande su stile, flussi, brand
+    U->>CC: Risposte
+    CC->>CC: Scrive requisiti-mockup.md
+    CC-->>U: Brief mockup pronto per Windsurf
 ```
 
 ---
@@ -152,7 +206,7 @@ sequenceDiagram
     Note over U,CC: Fine sprint
 
     U->>CC: Aggiorna la KB
-    CC->>CC: skill: aggiornamento-kb
+    CC->>CC: skill: estrazione-pattern
     CC->>U: Pattern riutilizzabili emersi?
     U->>CC: Risposte
     CC->>CC: Estrae pattern → patterns/
@@ -170,7 +224,7 @@ sequenceDiagram
 
     Note over CC,KB: Fine mese / fine sprint
 
-    CC->>CC: skill: aggiornamento-periodico
+    CC->>CC: skill: audit-periodico
     CC->>KB: Legge tutti i progetti
     CC->>CC: Classifica: Aggiorna/Archivia/Recupera/OK
     CC->>KB: Verifica pattern

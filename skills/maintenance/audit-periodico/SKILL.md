@@ -150,3 +150,6 @@ Prossima manutenzione suggerita: [data]
 - [ ] `projects/INDEX.md` aggiornato
 - [ ] Report salvato in `knowledge/`
 - [ ] Nessun pattern con "Esempi reali: vuoto" su pattern con più di 3 mesi
+
+---
+← [Catalogo skill](../../../docs/skills.md) · [Workflow](../../../docs/workflow.md) · [System.md](../../../System.md)

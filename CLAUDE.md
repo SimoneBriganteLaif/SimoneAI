@@ -36,6 +36,41 @@ Per la documentazione completa della struttura vedi `docs/struttura.md`.
 4. **Aggiorna la KB dopo ogni decisione rilevante** (non a fine progetto).
 5. **Taglia il tag corretto** su ogni file che crei o aggiorni (vedi `.tags/index.md`).
 
+---
+
+## Agenti autonomi (comportamento obbligatorio)
+
+Claude Code deve invocare questi agenti **in autonomia, senza aspettare che l'utente li chieda**, nelle situazioni seguenti.
+
+### Regola 1 — Dopo qualsiasi modifica a file della KB
+
+Ogni volta che Claude Code modifica uno o più file in questa cartella:
+
+1. Lancia `skills/meta/verifica-pre-commit/` come sub-agent (autonomo, no input utente)
+2. Se il sub-agent restituisce **FAIL**: risolvi tutte le issue riportate in autonomia
+3. Riesegui la verifica finché non restituisce **PASS**
+
+### Regola 2 — Prima di ogni `git commit` (BLOCCANTE)
+
+Il commit **non può procedere** finché la verifica non passa:
+
+1. Esegui `skills/meta/verifica-pre-commit/` come sub-agent
+2. Se **FAIL**: risolvi tutto, poi riesegui
+3. Solo con **PASS**: procedi con il commit
+
+### Regola 3 — Quando percepisci drift documentazione
+
+Se durante il lavoro noti che la struttura reale non corrisponde a quella documentata (es. una cartella esiste ma non è in `docs/struttura.md`):
+
+1. Esegui `skills/meta/gestione-kb/` modalità 3 (sync) in autonomia
+2. Registra il sync nel changelog
+
+### Regola 4 — Commit con più di 3 file modificati
+
+Usa sub-agent paralleli: lancia agenti simultanei per i 5 check del `verifica-pre-commit` invece di eseguirli in sequenza.
+
+---
+
 ## Come usare le skill
 
 Le skill sono in `skills/`. Ogni skill è una **cartella** con un `SKILL.md` dentro.
@@ -101,6 +136,14 @@ Le repo core sono clonate in `core/` come riferimento — vedi `core/README.md`.
 
 Per lo stack tecnico dettagliato: `knowledge/azienda/stack.md`
 Per le convenzioni di sviluppo e regole Windsurf: `knowledge/azienda/processi.md`
+
+## Processo pre-commit
+
+La verifica pre-commit è **automatica** tramite la skill dedicata — vedi sezione "Agenti autonomi" sopra.
+
+Skill: `skills/meta/verifica-pre-commit/SKILL.md`
+
+La skill esegue 5 check in parallelo: coerenza referenze cross-file, changelog, IDEAS.md, tag frontmatter, struttura vs documentazione. Il commit è autorizzato solo quando tutti e 5 i check passano.
 
 ## Tag standard
 

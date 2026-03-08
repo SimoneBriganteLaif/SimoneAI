@@ -101,3 +101,6 @@ Prossimi passi:
 - [ ] Informazioni visive specificate (o indicato "nessuna preferenza")
 - [ ] Sezione "cosa NON mockuppare" presente
 - [ ] Header per Windsurf presente
+
+---
+← [Catalogo skill](../../../docs/skills.md) · [Workflow](../../../docs/workflow.md) · [System.md](../../../System.md)

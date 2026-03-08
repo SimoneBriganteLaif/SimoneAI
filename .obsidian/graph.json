@@ -1,0 +1,51 @@
+{
+  "collapse-filter": false,
+  "search": "-path:core -path:.claude -path:memory",
+  "showTags": false,
+  "showAttachments": false,
+  "hideUnresolved": false,
+  "showOrphans": true,
+  "collapse-color-groups": false,
+  "colorGroups": [
+    {
+      "query": "path:docs/ OR file:System OR file:CLAUDE OR file:IDEAS OR file:CHANGELOG",
+      "color": {
+        "a": 1,
+        "rgb": 16747520
+      }
+    },
+    {
+      "query": "path:skills/",
+      "color": {
+        "a": 1,
+        "rgb": 43588
+      }
+    },
+    {
+      "query": "path:knowledge/",
+      "color": {
+        "a": 1,
+        "rgb": 8930474
+      }
+    },
+    {
+      "query": "path:projects/",
+      "color": {
+        "a": 1,
+        "rgb": 8947848
+      }
+    }
+  ],
+  "collapse-display": true,
+  "showArrow": true,
+  "textFadeMultiplier": 0,
+  "nodeSizeMultiplier": 1.2,
+  "lineSizeMultiplier": 1,
+  "collapse-forces": true,
+  "centerStrength": 0.518713248970312,
+  "repelStrength": 10,
+  "linkStrength": 1,
+  "linkDistance": 180,
+  "scale": 1.459996591167814,
+  "close": true
+}

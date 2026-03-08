@@ -1,5 +1,7 @@
 # Stack Tecnologico LAIF
 
+← [System.md](../../System.md) · [overview.md](overview.md) · [infrastruttura.md](infrastruttura.md) · [processi.md](processi.md)
+
 #stack:nextjs #stack:fastapi #stack:postgresql #stack:aws
 
 ## Panoramica

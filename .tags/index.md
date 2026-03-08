@@ -1,6 +1,6 @@
 # Indice Tag
 
-Tutti i tag usati nella knowledge base. Aggiornato dalla skill `maintenance/aggiornamento-periodico.md`.
+Tutti i tag usati nella knowledge base. Aggiornato dalla skill `maintenance/audit-periodico/SKILL.md`.
 
 ---
 
@@ -30,6 +30,7 @@ Tutti i tag usati nella knowledge base. Aggiornato dalla skill `maintenance/aggi
 | `#industria:saas` | |
 | `#industria:marketplace` | |
 | `#industria:enterprise` | |
+| `#industria:software` | knowledge/azienda/ |
 | *(aggiungi nuove industrie qui)* | |
 
 ---
@@ -41,6 +42,7 @@ Tutti i tag usati nella knowledge base. Aggiornato dalla skill `maintenance/aggi
 | `#fase:presales` | Documenti di presales (requisiti, allegati, mockup) |
 | `#fase:dev` | Documenti di sviluppo (ADR, feature log, architettura) |
 | `#fase:manutenzione` | Note post go-live |
+| `#fase:contesto` | Conoscenza aziendale/contestuale (knowledge/azienda/) |
 
 ---
 
@@ -72,6 +74,8 @@ Tutti i tag usati nella knowledge base. Aggiornato dalla skill `maintenance/aggi
 | `#stack:supabase` | |
 | `#stack:vercel` | |
 | `#stack:aws` | |
+| `#stack:fastapi` | knowledge/azienda/stack.md |
+| `#stack:cdk` | knowledge/azienda/infrastruttura.md |
 | *(aggiungi nuovi stack qui)* | |
 
 ---

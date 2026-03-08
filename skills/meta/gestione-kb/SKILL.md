@@ -191,3 +191,6 @@ Nessuna domanda iniziale. Processo guidato per ogni idea pendente.
 - [ ] I link interni tra file sono validi
 - [ ] Le idee scartate hanno sempre un motivo documentato
 - [ ] Nessun duplicato tra idee attive e scartate
+
+---
+← [Catalogo skill](../../../docs/skills.md) · [Workflow](../../../docs/workflow.md) · [System.md](../../../System.md)

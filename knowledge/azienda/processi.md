@@ -1,5 +1,9 @@
 # Processi di Lavoro — LAIF
 
+← [System.md](../../System.md) · [overview.md](overview.md) · [stack.md](stack.md) · [infrastruttura.md](infrastruttura.md)
+
+#industria:software #fase:contesto
+
 ## Come nasce un progetto
 
 1. **Fork** da `laif-template` → nuovo repository

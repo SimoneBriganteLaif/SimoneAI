@@ -10,6 +10,38 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/).
 
 ### Added
 
+**Navigazione Obsidian**
+- `.obsidian/app.json` — configurato Obsidian: `userIgnoreFilters` per escludere `core/`, `.claude/`, `memory/` da explorer, ricerca e grafo
+- `.obsidian/graph.json` — grafo configurato con 4 color group (arancio: docs/hub, verde: skills/, viola: knowledge/, grigio: projects/), search filter `-path:core`, `showArrow: true`, `nodeSizeMultiplier: 1.2`
+
+**Link inter-file (connettività KB)**
+- Tutti i 9 SKILL.md — aggiunto footer di navigazione `← [Catalogo skill] · [Workflow] · [System.md]`
+- `knowledge/azienda/*.md` (4 file) — aggiunta breadcrumb cross-navigation tra i file della sezione
+
+**Tag system**
+- `.tags/index.md` — aggiunti: `#industria:software`, `#fase:contesto`, `#stack:fastapi`, `#stack:cdk`
+- `knowledge/azienda/processi.md` — aggiunti tag inline `#industria:software #fase:contesto` (allineato con overview.md)
+
+**Navigazione documentazione**
+- `System.md` — aggiunta sezione "Navigazione documentazione" (tabella con link a tutti i doc) e sezione "Manutenzione del sistema stesso" riorganizzata come tabella con link diretti alle skill
+- `docs/skills.md` — aggiunto nav breadcrumb (← System.md · workflow.md · struttura.md), TOC completo, mappa globale Mermaid di tutte le skill per fase con relazioni
+- `docs/workflow.md` — aggiunto nav breadcrumb, TOC completo, diagramma Mermaid "Quale flusso usare?" come quick reference ad albero decisionale
+- `docs/struttura.md` — aggiunto nav breadcrumb
+- `docs/setup.md` — aggiunto nav breadcrumb
+
+**Agenti autonomi**
+- `skills/meta/verifica-pre-commit/` v1.0 — skill autonoma pre-commit: 5 check in parallelo (referenze cross-file, changelog, IDEAS.md, tag, struttura vs docs), output PASS/FAIL, nessun loop conversazionale, progettata per girare come sub-agent
+- `CLAUDE.md` — aggiunta sezione "Agenti autonomi (comportamento obbligatorio)": 4 regole che specificano quando Claude Code deve invocare gli agenti senza essere chiesto (dopo ogni modifica, pre-commit bloccante, drift struttura, >3 file modificati)
+- `docs/skills.md` — aggiunta `verifica-pre-commit` in tabella riepilogo, sezione Meta con diagramma Mermaid, e colonna nella tabella comparativa skill di manutenzione
+- `docs/struttura.md` — aggiunto `verifica-pre-commit/` nella sezione skills/meta/
+
+**Processo pre-commit**
+- `CLAUDE.md` — aggiunta sezione "Processo pre-commit (OBBLIGATORIO)" con checklist coerenza (ora sostituita da riferimento alla skill autonoma)
+
+**Idee**
+- `IDEAS.md` — IDEA-010: definire processo branching/Git flow per il team
+- `IDEAS.md` — IDEA-011: gestire iniziative interne come progetti con tag #tipo:interno
+
 **Contesto aziendale**
 - `knowledge/azienda/` — nuova sezione con 4 file:
   - `overview.md` — chi è LAIF, team, modello di lavoro
@@ -24,7 +56,21 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/).
   - `core/laif-cdk/` — infrastruttura AWS (CDK, TemplateStack)
 - `core/README.md` — indice repo con link GitHub e descrizioni
 
+### Fixed
+
+**Coerenza documentazione** — 9 riferimenti a skill rinominate/rimosse corretti:
+- `docs/workflow.md` — aggiornati 6 riferimenti: genera-documenti → genera-allegato-tecnico + genera-mockup-brief, aggiornamento-kb → estrazione-pattern, aggiornamento-periodico → audit-periodico
+- `System.md` — corretto percorso skill maintenance + aggiunta knowledge/azienda/ nella struttura
+- `.tags/index.md` — corretto riferimento skill di manutenzione
+- `projects/_template/presales/allegato-tecnico.md` — corretto riferimento skill generazione
+- `skills/development/estrazione-decisioni/SKILL.md` — corretto riferimento inline a estrazione-pattern
+- `memory/MEMORY.md` — riscritto con struttura e nomi skill aggiornati
+- `docs/setup.md` — aggiornata sezione Windsurf (regole globali espanse, flusso KB documentato)
+
 ### Changed
+
+**Configurazione Windsurf**
+- `~/.codeium/windsurf/memories/global_rules.md` — espansa con regole KB: file da leggere, pattern LAIF, come segnalare modifiche
 
 **Skill — Presales**
 - `genera-documenti/` splittata in due skill separate:
@@ -49,7 +95,7 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/).
 - `CLAUDE.md` — aggiornati riferimenti a nuovi nomi skill + sezione beta + contesto aziendale + core/
 - `skills/README.md` — aggiornato con colonne Stato/Legge/Scrive
 - `knowledge/README.md` — aggiunta sezione Azienda con indice file
-- `.gitignore` — aggiunte esclusioni per repo core annidate (core/*/)
+- `.gitignore` — aggiunte esclusioni per le tre repo core: laif-template, ds, laif-cdk
 
 ### Removed
 - `skills/presales/genera-documenti/` — sostituita da genera-allegato-tecnico + genera-mockup-brief

@@ -255,3 +255,6 @@ La cartella projects/[nome]/ esiste già con questi file:
 Creerò solo i file mancanti. I file esistenti non verranno toccati.
 Confermo?
 ```
+
+---
+← [Catalogo skill](../../../docs/skills.md) · [Workflow](../../../docs/workflow.md) · [System.md](../../../System.md)

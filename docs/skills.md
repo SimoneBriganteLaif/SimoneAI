@@ -1,6 +1,66 @@
 # Catalogo Skill
 
+← [System.md](../System.md) · [workflow.md](workflow.md) · [struttura.md](struttura.md)
+
 **Ultimo aggiornamento**: 2026-03-08
+
+---
+
+## Indice
+
+- [Mappa globale skill](#mappa-globale-skill)
+- [Sistema di stato](#sistema-di-stato-delle-skill)
+- [Riepilogo](#riepilogo)
+- **Presales**: [init-project](#init-project) · [estrazione-requisiti](#estrazione-requisiti) · [genera-allegato-tecnico](#genera-allegato-tecnico) · [genera-mockup-brief](#genera-mockup-brief)
+- **Development**: [estrazione-decisioni](#estrazione-decisioni) · [estrazione-pattern](#estrazione-pattern)
+- **Maintenance**: [audit-periodico](#audit-periodico)
+- **Meta**: [gestione-kb](#gestione-kb) · [verifica-pre-commit](#verifica-pre-commit)
+- [Confronto skill manutenzione](#differenze-tra-skill-di-manutenzione)
+- [Formato SKILL.md](#formato-standard-skillmd)
+
+---
+
+## Mappa globale skill
+
+```mermaid
+flowchart LR
+    subgraph PRESALES["Presales"]
+        IP[init-project]
+        ER[estrazione-requisiti]
+        GAT[genera-allegato-tecnico]
+        GMB[genera-mockup-brief]
+        IP --> ER
+        ER --> GAT
+        ER --> GMB
+    end
+
+    subgraph DEV["Development"]
+        ED[estrazione-decisioni]
+        EP[estrazione-pattern]
+    end
+
+    subgraph MAINT["Maintenance"]
+        AP[audit-periodico]
+    end
+
+    subgraph META["Meta — autonome"]
+        GKB[gestione-kb]
+        VPC[verifica-pre-commit]
+    end
+
+    PRESALES -->|contratto firmato| DEV
+    DEV -->|go-live| MAINT
+    MAINT -.->|nuovo progetto simile| PRESALES
+
+    VPC -.->|verifica coerenza KB| PRESALES
+    VPC -.->|verifica coerenza KB| DEV
+    VPC -.->|verifica coerenza KB| MAINT
+    AP -.->|audita| PRESALES
+    AP -.->|audita| DEV
+    GKB -.->|gestisce meta-file| META
+```
+
+> Per i flussi temporali e le sequenze d'uso → [docs/workflow.md](workflow.md)
 
 ---
 
@@ -29,6 +89,7 @@ Quando una skill beta viene usata abbastanza da risultare stabile, si aggiorna l
 | `estrazione-pattern` | Development | beta | Fine sprint → pattern riutilizzabili | feature-log, decisioni-tecniche | patterns/, knowledge/ |
 | `audit-periodico` | Maintenance | beta | Audit mensile intera KB | Tutta la KB | Report + aggiornamenti distribuiti |
 | `gestione-kb` | Meta | beta | Gestione meta-file del sistema | Meta-file, struttura cartelle | changelog, IDEAS.md, docs/ |
+| `verifica-pre-commit` | Meta | beta | Verifica autonoma coerenza KB pre-commit (5 check paralleli) | Tutti i meta-file + struttura reale | nessuno (solo report) |
 
 ---
 
@@ -270,15 +331,43 @@ flowchart TD
 
 ---
 
+### verifica-pre-commit
+
+**Path**: `skills/meta/verifica-pre-commit/SKILL.md`
+**Trigger**: Automatico — dopo ogni modifica a file KB, prima di ogni `git commit`
+**Stato**: beta
+
+Skill autonoma (nessun loop conversazionale). Esegue 5 check in parallelo e restituisce PASS/FAIL con issue specifiche. Il commit è bloccato finché tutti i check non passano.
+
+```mermaid
+flowchart TD
+    START([Invocata come sub-agent]) --> INPUT[Riceve lista file modificati]
+    INPUT --> PAR{Check paralleli}
+
+    PAR --> C1[Check 1\nCoerenza referenze\ncross-file]
+    PAR --> C2[Check 2\nChangelog\naggiornato]
+    PAR --> C3[Check 3\nIDEAS.md\nstato]
+    PAR --> C4[Check 4\nTag\nfrontmatter]
+    PAR --> C5[Check 5\nStruttura\nvs docs]
+
+    C1 & C2 & C3 & C4 & C5 --> MERGE[Aggrega risultati]
+    MERGE --> RESULT{Tutti PASS?}
+    RESULT -->|Sì| PASS([PASS — commit autorizzato])
+    RESULT -->|No| FAIL([FAIL — lista issue al parent agent])
+```
+
+---
+
 ## Differenze tra skill di manutenzione
 
-| | `estrazione-pattern` | `audit-periodico` | `gestione-kb` |
-|---|---|---|---|
-| **Scope** | Un singolo progetto | Intera KB | Meta-file del sistema |
-| **Quando** | Fine sprint/progetto | Fine mese | Dopo ogni modifica / periodicamente |
-| **Legge** | feature-log, decisioni-tecniche di un progetto | Tutti i progetti, pattern, tag | Changelog, IDEAS.md, docs/ |
-| **Scrive** | patterns/, knowledge/ | Report + aggiornamenti distribuiti | Changelog, IDEAS.md, docs/ |
-| **Focus** | Estrarre knowledge riutilizzabile | Trovare gap, obsolescenze, disallineamenti | Tenere traccia delle modifiche e idee |
+| | `estrazione-pattern` | `audit-periodico` | `gestione-kb` | `verifica-pre-commit` |
+|---|---|---|---|---|
+| **Scope** | Un singolo progetto | Intera KB | Meta-file del sistema | Coerenza interna KB |
+| **Quando** | Fine sprint/progetto | Fine mese | Dopo ogni modifica / periodicamente | Automatico — ad ogni modifica e pre-commit |
+| **Legge** | feature-log, decisioni-tecniche di un progetto | Tutti i progetti, pattern, tag | Changelog, IDEAS.md, docs/ | Tutti i meta-file + struttura reale |
+| **Scrive** | patterns/, knowledge/ | Report + aggiornamenti distribuiti | Changelog, IDEAS.md, docs/ | Niente — solo report |
+| **Conversazione** | Sì | Sì (con conferma) | Sì (4 modalità) | No — autonoma |
+| **Focus** | Estrarre knowledge riutilizzabile | Trovare gap, obsolescenze, disallineamenti | Tenere traccia modifiche e idee | Bloccare commit inconsistenti |
 
 ---
 

@@ -1,12 +1,14 @@
 # LAIF — Overview Aziendale
 
+← [System.md](../../System.md) · [stack.md](stack.md) · [infrastruttura.md](infrastruttura.md) · [processi.md](processi.md)
+
 #industria:software #fase:contesto
 
 ## Chi è LAIF
 
 LAIF è un'azienda di sviluppo software con circa **20 sviluppatori** organizzati in **3 team**.
 
-Sviluppa **web application per PMI** — applicazioni ad uso interno con pochi utenti (non consumer-facing, non ad alto traffico).
+Sviluppa **web application prevalentemente per PMI**, con qualche cliente enterprise. Le applicazioni sono ad uso interno con pochi utenti (non consumer-facing, non ad alto traffico).
 
 ---
 

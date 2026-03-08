@@ -1,5 +1,7 @@
 # Guida Setup Ambiente
 
+← [System.md](../System.md) · [struttura.md](struttura.md) · [workflow.md](workflow.md)
+
 **Ultimo aggiornamento**: 2026-03-08
 
 Questa guida copre la configurazione completa dell'ambiente di lavoro: Knowledge Base, Claude Code, Windsurf, ambiente di sviluppo, e tool ausiliari.
@@ -165,12 +167,12 @@ Queste skill guidano Windsurf nella scrittura del codice seguendo i pattern LAIF
 
 File: `~/.codeium/windsurf/memories/global_rules.md`
 
-Contenuto attuale (minimo):
-```markdown
-- Rispondi sempre in italiano
-- Spiega sempre le tue azioni in modo chiaro e conciso
-- Chiedi ulteriori informazioni se il task non è chiaro
-```
+Contiene regole su:
+- Lingua e comunicazione (italiano)
+- Riferimenti alla KB LAIF: quali file leggere prima di sviluppare
+- Regole di sviluppo LAIF: DS obbligatorio, pattern backend/frontend, naming conventions
+- Come segnalare le modifiche: aggiornare CHANGELOG, feature spec, PROJECT_CONTEXT nel progetto
+- Cosa NON fare: non modificare direttamente la KB, non ignorare i pattern documentati
 
 ### MCP Server Windsurf
 
@@ -193,10 +195,11 @@ Guidano Windsurf su:
 - Convenzioni naming
 - Architettura soft onion
 
-### Regole globali per la KB (TODO)
+### Flusso KB con Windsurf
 
-Per far interagire Windsurf con la Knowledge Base servirebbero regole globali estese.
-Per ora l'interazione con la KB è gestita solo da Claude Code.
+Windsurf **legge** la KB per contesto (stack, pattern, processi) ma **non la modifica** direttamente.
+Dopo ogni sessione di sviluppo, Windsurf aggiorna i file del progetto (`CHANGELOG.md`, feature spec, `PROJECT_CONTEXT.md`).
+Claude Code sincronizza poi queste informazioni nella KB.
 
 Le regole globali da estendere andrebbero in `~/.codeium/windsurf/memories/global_rules.md`.
 

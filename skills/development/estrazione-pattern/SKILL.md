@@ -131,3 +131,6 @@ Prossimi passi:
 - [ ] Nessun dato sensibile del cliente nei pattern
 - [ ] `patterns/README.md` aggiornato
 - [ ] `.tags/index.md` aggiornato
+
+---
+← [Catalogo skill](../../../docs/skills.md) · [Workflow](../../../docs/workflow.md) · [System.md](../../../System.md)

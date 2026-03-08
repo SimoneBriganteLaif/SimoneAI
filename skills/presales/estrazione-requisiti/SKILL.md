@@ -130,3 +130,6 @@ Prossimi passi:
 - **Meeting in inglese**: scrivi i requisiti in italiano, conserva citazioni originali nelle note
 - **Documento già strutturato del cliente**: non copiarlo — estrai e ristruttura nel formato LAIF
 - **Requisiti contraddittori**: segnalali esplicitamente, non scegliere tu quale prevale
+
+---
+← [Catalogo skill](../../../docs/skills.md) · [Workflow](../../../docs/workflow.md) · [System.md](../../../System.md)

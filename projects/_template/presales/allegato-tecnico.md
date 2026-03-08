@@ -18,7 +18,7 @@ tags:
 
 > **Nota interna**: questo documento è destinato al cliente e ai suoi consulenti legali.
 > Linguaggio semplice, no acronimi tecnici, max 3 pagine stampate.
-> Prodotto dalla skill `skills/presales/genera-documenti.md`.
+> Prodotto dalla skill `skills/presales/genera-allegato-tecnico/SKILL.md`.
 
 ---
 

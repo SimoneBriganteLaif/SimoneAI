@@ -110,3 +110,6 @@ Prossimi passi:
 - [ ] Max 3 pagine (~1500 parole)
 - [ ] Le responsabilità del cliente sono chiare e numerabili
 - [ ] Autonomo: si capisce senza aver letto i requisiti
+
+---
+← [Catalogo skill](../../../docs/skills.md) · [Workflow](../../../docs/workflow.md) · [System.md](../../../System.md)

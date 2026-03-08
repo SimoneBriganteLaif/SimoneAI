@@ -1,5 +1,7 @@
 # Struttura della Knowledge Base
 
+← [System.md](../System.md) · [skills.md](skills.md) · [workflow.md](workflow.md)
+
 **Ultimo aggiornamento**: 2026-03-08
 
 ---
@@ -77,7 +79,8 @@ SimoneAI/
 │   ├── maintenance/                ← Manutenzione periodica.
 │   │   └── audit-periodico/        ← Audit mensile dell'intera KB.
 │   └── meta/                       ← Gestione del sistema stesso.
-│       └── gestione-kb/            ← Changelog, idee, sync docs, review idee.
+│       ├── gestione-kb/            ← Changelog, idee, sync docs, review idee.
+│       └── verifica-pre-commit/    ← Verifica autonoma coerenza pre-commit (5 check paralleli).
 │
 ├── knowledge/                      ← Conoscenza cross-progetto, non legata a un singolo progetto.
 │   ├── README.md                   ← Overview della knowledge disponibile.

@@ -99,7 +99,7 @@ Documenti aggiornati:
   [projects/[nome]/development/architettura.md  ← solo se impatta arch]
 
 Pattern riutilizzabile rilevato: [sì/no]
-  → [Se sì: considera di estrarlo in patterns/ con la skill aggiornamento-kb]
+  → [Se sì: considera di estrarlo in patterns/ con la skill estrazione-pattern]
 
 Prossimi passi:
   → Condividi l'ADR con il team se la decisione li impatta
@@ -115,3 +115,6 @@ Prossimi passi:
 - [ ] I trade-off sono onesti — nessuna decisione è perfetta
 - [ ] Le conseguenze per gli altri dev sono chiare
 - [ ] L'indice in fondo a `decisioni-tecniche.md` è aggiornato
+
+---
+← [Catalogo skill](../../../docs/skills.md) · [Workflow](../../../docs/workflow.md) · [System.md](../../../System.md)
