@@ -18,6 +18,11 @@ KnowledgeBase/
 ├── skills/                 ← skill e sub-agenti del sistema
 │   └── meta/               ← skill di gestione del sistema stesso
 ├── knowledge/              ← conoscenza cross-progetto (industrie, problemi ricorrenti)
+│   └── azienda/            ← contesto aziendale LAIF (stack, infra, processi)
+├── core/                   ← repo core LAIF clonate (contesto, non modificare)
+│   ├── laif-template/      ← base per tutti i progetti (fork)
+│   ├── ds/                 ← design system (@laif/ds)
+│   └── laif-cdk/           ← infrastruttura AWS (CDK)
 └── .tags/                  ← indice dei tag per ricerca rapida
 ```
 
@@ -88,6 +93,14 @@ Per i flussi di lavoro completi vedi `docs/workflow.md`.
 Leggi e segui: skills/presales/init-project/SKILL.md
 ```
 La skill gestisce creazione struttura, clonazione repo e lettura Notion in autonomia.
+
+## Contesto aziendale
+
+Il contesto su LAIF (stack, infrastruttura, processi) è in `knowledge/azienda/`.
+Le repo core sono clonate in `core/` come riferimento — vedi `core/README.md`.
+
+Per lo stack tecnico dettagliato: `knowledge/azienda/stack.md`
+Per le convenzioni di sviluppo e regole Windsurf: `knowledge/azienda/processi.md`
 
 ## Tag standard
 

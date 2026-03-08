@@ -4,6 +4,11 @@ memory/
 # Claude Code internals
 .claude/
 
+# Repository core clonate (sono repo Git annidate)
+core/laif-template/
+core/ds/
+core/laif-cdk/
+
 # macOS
 .DS_Store
 ._*

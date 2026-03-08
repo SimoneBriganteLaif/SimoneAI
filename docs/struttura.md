@@ -81,10 +81,23 @@ SimoneAI/
 │
 ├── knowledge/                      ← Conoscenza cross-progetto, non legata a un singolo progetto.
 │   ├── README.md                   ← Overview della knowledge disponibile.
+│   ├── azienda/                    ← Contesto aziendale LAIF.
+│   │   ├── overview.md             ← Chi è LAIF, team, modello di lavoro.
+│   │   ├── stack.md                ← Stack tecnico, pattern, convenzioni naming.
+│   │   ├── infrastruttura.md       ← Architettura AWS, TemplateStack, deploy.
+│   │   └── processi.md             ← Flussi di lavoro, CI/CD, regole Windsurf.
 │   ├── industrie/                  ← Cosa sappiamo di settori specifici.
 │   │   └── _template.md            │  (retail, finance, healthcare, saas...)
 │   └── problemi-tecnici/           ← Soluzioni a problemi tecnici ricorrenti.
 │       └── _template.md
+│
+├── core/                           ← Repository core LAIF clonate come riferimento.
+│   │                                 NON modificare direttamente.
+│   │                                 I riassunti sono in knowledge/azienda/.
+│   ├── README.md                   ← Indice repo con link GitHub e descrizioni.
+│   ├── laif-template/              ← Base per tutti i progetti (fork).
+│   ├── ds/                         ← Design System condiviso (@laif/ds).
+│   └── laif-cdk/                   ← Infrastruttura AWS via CDK.
 │
 └── .tags/                          ← Sistema di tag per navigazione cross-progetto.
     └── index.md                    ← Indice dei tag usati nella KB.

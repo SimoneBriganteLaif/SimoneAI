@@ -8,6 +8,22 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/).
 
 ## [Non rilasciato]
 
+### Added
+
+**Contesto aziendale**
+- `knowledge/azienda/` — nuova sezione con 4 file:
+  - `overview.md` — chi è LAIF, team, modello di lavoro
+  - `stack.md` — stack tecnico, pattern architetturali, convenzioni naming
+  - `infrastruttura.md` — architettura AWS, TemplateStack, configurazione, deploy
+  - `processi.md` — flussi di lavoro, CI/CD, regole Windsurf
+
+**Repository core**
+- `core/` — cartella con repo LAIF clonate come contesto di riferimento
+  - `core/laif-template/` — base per tutti i progetti
+  - `core/ds/` — design system (@laif/ds, 137+ componenti)
+  - `core/laif-cdk/` — infrastruttura AWS (CDK, TemplateStack)
+- `core/README.md` — indice repo con link GitHub e descrizioni
+
 ### Changed
 
 **Skill — Presales**
@@ -28,10 +44,12 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/).
 - Skill in beta: avviso all'inizio + review ad ogni step durante l'uso
 
 **Documentazione**
-- `docs/struttura.md` — albero cartelle riscritto come code block annotato (era Mermaid)
+- `docs/struttura.md` — albero cartelle riscritto come code block annotato (era Mermaid) + aggiunta core/ e knowledge/azienda/
 - `docs/skills.md` — aggiornato con nomi, split, tabella confronto skill di manutenzione
-- `CLAUDE.md` — aggiornati riferimenti a nuovi nomi skill + sezione beta
+- `CLAUDE.md` — aggiornati riferimenti a nuovi nomi skill + sezione beta + contesto aziendale + core/
 - `skills/README.md` — aggiornato con colonne Stato/Legge/Scrive
+- `knowledge/README.md` — aggiunta sezione Azienda con indice file
+- `.gitignore` — aggiunte esclusioni per repo core annidate (core/*/)
 
 ### Removed
 - `skills/presales/genera-documenti/` — sostituita da genera-allegato-tecnico + genera-mockup-brief
