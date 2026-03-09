@@ -17,7 +17,7 @@ scrive:
   - patterns/[nuovo].md (se individuato)
   - skills/[fase]/[nuova]/SKILL.md (se individuata)
   - IDEAS.md (nuove idee)
-  - CHANGELOG-contenuti.md
+  - CHANGELOG.md
 aggiornato: "2026-03-09"
 ---
 
@@ -114,7 +114,7 @@ Per ogni asset approvato:
 
 ### Step 5 — Aggiornamento KB
 
-1. Aggiorna `CHANGELOG-contenuti.md` con gli asset creati
+1. Aggiorna `CHANGELOG.md` (sezione ### Contenuti) con gli asset creati
 2. Aggiorna `.tags/index.md` se necessario
 3. Aggiorna `patterns/README.md` se nuovi pattern
 

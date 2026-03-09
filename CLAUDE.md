@@ -8,27 +8,21 @@ Questo file definisce come Claude Code interagisce con la knowledge base di LAIF
 KnowledgeBase/
 ├── CLAUDE.md               ← sei qui
 ├── System.md               ← panoramica del sistema
-├── CHANGELOG-framework.md  ← modifiche alla struttura del sistema
-├── CHANGELOG-contenuti.md  ← modifiche ai contenuti operativi
+├── CHANGELOG.md             ← tutte le modifiche (struttura + contenuti)
 ├── IDEAS.md                ← backlog idee e miglioramenti
 ├── docs/                   ← documentazione navigabile (struttura, skill, workflow)
 ├── projects/               ← un progetto per cartella
-│   └── _template/          ← template base per nuovi progetti
 ├── patterns/               ← pattern tecnici riutilizzabili cross-progetto
 ├── skills/                 ← skill e sub-agenti del sistema
-│   └── meta/               ← skill di gestione del sistema stesso
 ├── knowledge/              ← conoscenza cross-progetto (industrie, problemi ricorrenti)
-│   └── azienda/            ← contesto aziendale LAIF (stack, infra, processi)
 ├── core/                   ← repo core LAIF clonate (contesto, non modificare)
-│   ├── laif-template/      ← base per tutti i progetti (fork)
-│   ├── ds/                 ← design system (@laif/ds)
-│   └── laif-cdk/           ← infrastruttura AWS (CDK)
-├── .tags/                  ← indice dei tag per ricerca rapida
+├── .tags/                  ← indice tag per ricerca rapida
 └── .claude/
-    └── skills/             ← trigger layer skill native Claude Code
+    ├── skills/             ← trigger layer skill native Claude Code
+    └── hooks/              ← script automazione (tracking skill)
 ```
 
-Per la documentazione completa della struttura vedi `docs/struttura.md`.
+Per dettagli completi: `docs/struttura.md`. Per tag: `.tags/index.md`.
 
 ## Regole fondamentali
 
@@ -55,30 +49,29 @@ Il commit **non può procedere** finché la verifica non passa:
 
 ### Regola 2 — Quando percepisci drift documentazione
 
-Se durante il lavoro noti che la struttura reale non corrisponde a quella documentata (es. una cartella esiste ma non è in `docs/struttura.md`):
+Se durante il lavoro noti che la struttura reale non corrisponde a quella documentata:
 
 1. Esegui `skills/meta/gestione-kb/` modalità 3 (sync) in autonomia
 2. Registra il sync nel changelog
 
 ### Regola 3 — Gestione idee e proposte
 
-Quando durante la conversazione emergono idee o proposte di miglioramento al framework (dall'utente o da te):
+Quando emergono idee o proposte di miglioramento al framework:
 
 1. **Non svilupparle subito** (a meno che l'utente non lo chieda esplicitamente)
 2. Chiedi all'utente: *"Vuoi che lo implementi ora o lo segno in IDEAS.md?"*
-3. Se l'utente sceglie di segnarlo: registra in `IDEAS.md` via `skills/meta/gestione-kb/` modalità 2
-4. Se l'utente sceglie di farlo subito: procedi con l'implementazione
-
-Questa regola vale per qualsiasi proposta che richieda modifiche non banali al framework.
+3. Se segnare: registra in `IDEAS.md` via `skills/meta/gestione-kb/` modalità 2
+4. Se fare subito: procedi con l'implementazione
 
 ### Regola 4 — Operazioni su repository di progetto (BLOCCANTE)
 
 Quando operi su una repository di progetto (non sulla KB):
 
 1. **Consulta prima la KB**: leggi `projects/[nome]/` per contesto, decisioni, convenzioni
-2. **Usa SEMPRE `just`** per qualsiasi operazione (migrazioni, build, test, server). Mai comandi diretti (`alembic`, `npm`, `docker compose`, ecc.)
-3. **Non prendere iniziative su operazioni irreversibili** (migrazioni DB, eliminazione file, modifiche schema): chiedi prima schema, conferma, contesto
-4. **Se non conosci una convenzione** (es. quale schema DB usare), chiedi — non assumere
+2. **Consulta contesto rilevante**: esegui `python3 skills/meta/contesto-progetto/match.py [nome-progetto]` e leggi i file suggeriti (pattern, problemi tecnici, knowledge di settore)
+3. **Usa SEMPRE `just`** per qualsiasi operazione (migrazioni, build, test, server). Mai comandi diretti (`alembic`, `npm`, `docker compose`, ecc.)
+4. **Non prendere iniziative su operazioni irreversibili** (migrazioni DB, eliminazione file, modifiche schema): chiedi prima schema, conferma, contesto
+5. **Se non conosci una convenzione** (es. quale schema DB usare), chiedi — non assumere
 
 ### Regola 5 — Brainstorming post-sviluppo
 
@@ -87,8 +80,9 @@ Alla fine di ogni sessione di sviluppo significativa (non per fix banali o solo 
 1. Analizza il lavoro svolto nella sessione
 2. Proponi all'utente un brainstorming seguendo `skills/development/brainstorming-post-sviluppo/SKILL.md`
 3. Presenta le idee emerse (pattern, skill, workflow, miglioramenti)
-4. Se l'utente approva: sviluppa gli asset approvati e aggiorna la KB
-5. Se l'utente declina: registra le idee più rilevanti in `IDEAS.md`
+4. **Verifica problemi tecnici**: se hai incontrato problemi risolvibili, proponi di salvarli in `knowledge/problemi-tecnici/`
+5. Se l'utente approva: sviluppa gli asset approvati e aggiorna la KB
+6. Se l'utente declina: registra le idee più rilevanti in `IDEAS.md`
 
 **Non è bloccante**: se l'utente chiude la sessione senza brainstorming, non insistere.
 
@@ -99,69 +93,10 @@ Alla fine di ogni sessione di sviluppo significativa (non per fix banali o solo 
 Le skill sono in `skills/`. Ogni skill è una **cartella** con un `SKILL.md` dentro.
 Per invocarla: leggi il `SKILL.md` e segui il processo conversazionale.
 
-Ogni skill ha:
-- **Frontmatter YAML**: metadati (nome, fase, stato beta/stable, legge, scrive)
-- **Perimetro**: cosa fa, cosa NON fa, rimandi ad altre skill
-- **Loop conversazionale**: domande da fare prima di produrre output
-- **Processo di produzione**: passi da eseguire
-- **Output in chat**: riepilogo obbligatorio al termine
+Per il catalogo completo, i flussi Mermaid, il ciclo di vita e le dipendenze: vedi `docs/skills.md`.
+Per i workflow per fase (presales, development, maintenance, meta): vedi `docs/workflow.md`.
 
 **Skill in beta**: all'inizio avvisa che è in beta. Durante l'uso, ad ogni step chiede se il processo ha senso o se va modificato.
-
-## Sistema ibrido skill
-
-Le skill operano in due formati complementari:
-
-### Native skill (`.claude/skills/`)
-- Auto-scoperte da Claude Code, appaiono nell'UI
-- Invocabili via Skill tool
-- Contengono trigger condition e rimando alla KB
-- Tracciamento automatico
-
-### KB skill (`skills/`)
-- Documentazione completa con loop conversazionale
-- Metadata estesi (fase, versione, legge, scrive)
-- Fonte autorevole del processo
-
-Quando una native skill esiste, Claude la usa come entry point.
-Il processo dettagliato resta nel SKILL.md della KB.
-
-### Skill solo-KB (senza native)
-Skill complesse con orchestrazione multi-step o sub-skill che vengono invocate dal loro orchestratore:
-- `feature-plan`, `feature-develop`, `feature-test`, `feature-review` — invocate da `feature-workflow`
-- `verifica-pre-commit` — obbligatoria e automatica via Regola 1
-
-### Tracking uso
-- **Skill native**: tracciate automaticamente dal Skill tool
-- **Skill solo-KB**: scrivono una riga in `.tags/skill-usage.log` al completamento
-
-## Workflow per fase
-
-### Presales
-1. **Nuovo progetto** → `skills/presales/init-project/`
-   Chiede: nome progetto, URL GitHub, link Notion. Fa tutto in autonomia.
-2. **Struttura requisiti** → `skills/presales/estrazione-requisiti/`
-   Input: note Notion già salvate. Output: `requisiti.md`
-3. **Allegato contrattuale** → `skills/presales/genera-allegato-tecnico/`
-   Input: `requisiti.md` validato. Output: allegato tecnico (max 3 pagine)
-4. **Brief mockup** → `skills/presales/genera-mockup-brief/`
-   Input: `requisiti.md` validato. Output: brief per Windsurf
-
-### Development
-1. Decisione tecnica → `skills/development/estrazione-decisioni/`
-2. Feature completata → aggiorna `projects/[nome]/feature-log.md` direttamente
-3. Fine sprint → `skills/development/estrazione-pattern/`
-
-### Maintenance / Consulta
-1. Ricerca per tag → `.tags/index.md`
-2. Pattern riutilizzabili → `patterns/`
-3. Audit mensile → `skills/maintenance/audit-periodico/`
-
-### Meta / Gestione KB
-1. Registra modifica → `skills/meta/gestione-kb/` (modalità 1)
-2. Nuova idea → `skills/meta/gestione-kb/` (modalità 2)
-3. Sync documentazione → `skills/meta/gestione-kb/` (modalità 3)
-4. Review idee periodica → `skills/meta/gestione-kb/` (modalità 4)
 
 ## Divisione strumenti
 
@@ -169,7 +104,6 @@ Skill complesse con orchestrazione multi-step o sub-skill che vengono invocate d
 - **Windsurf**: scrittura codice, implementazione feature, debug, refactoring
 
 Claude Code opera con parsimonia (costi). Windsurf gestisce lo sviluppo intensivo.
-Per i flussi di lavoro completi vedi `docs/workflow.md`.
 
 ## Creare un nuovo progetto
 
@@ -177,33 +111,18 @@ Per i flussi di lavoro completi vedi `docs/workflow.md`.
 ```
 Leggi e segui: skills/presales/init-project/SKILL.md
 ```
-La skill gestisce creazione struttura, clonazione repo e lettura Notion in autonomia.
 
 ## Contesto aziendale
 
 Il contesto su LAIF (stack, infrastruttura, processi) è in `knowledge/azienda/`.
 Le repo core sono clonate in `core/` come riferimento — vedi `core/README.md`.
 
-Per lo stack tecnico dettagliato: `knowledge/azienda/stack.md`
-Per le convenzioni di sviluppo e regole Windsurf: `knowledge/azienda/processi.md`
-
 ## Processo pre-commit
 
-La verifica pre-commit è **ibrida**: 4 check automatizzati (script Python) + check semantici (eseguiti dal parent agent). Vedi sezione "Comportamenti autonomi" sopra.
+La verifica pre-commit è **ibrida**: 4 check automatizzati (script Python) + check semantici (eseguiti dal parent agent). Vedi Regola 1 sopra.
 
 ```bash
 python3 skills/meta/verifica-pre-commit/run_all.py
 ```
 
 Dettagli completi: `skills/meta/verifica-pre-commit/SKILL.md`
-
-## Tag standard
-
-| Tag | Quando usarlo |
-|-----|--------------|
-| `#progetto:[nome]` | Su tutti i file di un progetto |
-| `#industria:[settore]` | Settore del cliente (es. `#industria:retail`) |
-| `#pattern:[tipo]` | Pattern tecnico (es. `#pattern:autenticazione`) |
-| `#fase:[presales\|dev\|manutenzione]` | Fase del ciclo di vita |
-| `#problema:[tipo]` | Problema ricorrente (es. `#problema:performance`) |
-| `#stack:[tecnologia]` | Tecnologia usata (es. `#stack:nextjs`) |

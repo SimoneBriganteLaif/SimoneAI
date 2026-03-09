@@ -7,7 +7,8 @@ descrizione: >
   NON è un audit generale della KB (per quello usa audit-periodico).
 fase: development
 versione: "1.2"
-stato: beta
+stato: stable
+enables: [brainstorming-post-sviluppo]
 legge:
   - projects/[nome]/feature-log.md
   - projects/[nome]/decisioni.md

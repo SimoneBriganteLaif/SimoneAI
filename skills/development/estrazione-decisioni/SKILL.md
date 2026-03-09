@@ -6,7 +6,7 @@ descrizione: >
   NON per decisioni ovvie — solo per scelte che qualcuno potrebbe mettere in discussione.
 fase: development
 versione: "1.1"
-stato: beta
+stato: stable
 legge:
   - projects/[nome]/decisioni.md (per numero ADR)
   - projects/[nome]/architettura.md (per valutare impatto)

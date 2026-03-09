@@ -1,23 +1,21 @@
 ---
 nome: "Gestione Knowledge Base"
 descrizione: >
-  Gestisce i META-FILE del sistema: changelog (framework e contenuti),
+  Gestisce i META-FILE del sistema: changelog unificato,
   backlog idee, documentazione navigabile, e review periodica delle idee.
   Opera in 4 modalità selezionabili.
   NON audita i progetti o i pattern (per quello usa audit-periodico).
   NON estrae pattern da progetti (per quello usa estrazione-pattern).
 fase: meta
-versione: "1.0"
+versione: "1.1"
 stato: beta
 legge:
-  - CHANGELOG-framework.md
-  - CHANGELOG-contenuti.md
+  - CHANGELOG.md
   - IDEAS.md
   - docs/ (tutti i file)
   - Struttura cartelle reale (per sync)
 scrive:
-  - CHANGELOG-framework.md
-  - CHANGELOG-contenuti.md
+  - CHANGELOG.md
   - IDEAS.md
   - docs/struttura.md
   - docs/skills.md
@@ -68,7 +66,7 @@ Nessuno. Questa skill è sempre invocabile.
 
 ### Processo
 
-1. Apri il changelog corretto (`CHANGELOG-framework.md` o `CHANGELOG-contenuti.md`)
+1. Apri `CHANGELOG.md`
 2. Se non esiste una sezione `[Non rilasciato]`, creala in cima
 3. Aggiungi l'entry sotto la categoria corretta con la data
 4. Se la modifica è al framework e impatta `docs/`, aggiorna anche i file di documentazione:
@@ -137,7 +135,7 @@ Nessuna domanda iniziale. Processo autonomo con conferma prima di scrivere.
    - Diagrammi Mermaid non aggiornati
 4. **Mostra le differenze** all'utente prima di procedere
 5. **Aggiorna** i file di documentazione solo dopo conferma
-6. Se ci sono state modifiche, registrale nel `CHANGELOG-framework.md` (usa modalità 1 internamente)
+6. Se ci sono state modifiche, registrale nel `CHANGELOG.md` (usa modalità 1 internamente)
 
 ### Output in chat
 
@@ -168,7 +166,7 @@ Nessuna domanda iniziale. Processo guidato per ogni idea pendente.
    - **Rimandare** → resta `proposta`, aggiorna note se necessario
    - **Scartare** → sposta nella sezione "Idee scartate" con motivo
 4. **Aggiorna `IDEAS.md`** con le decisioni prese
-5. Se un'idea viene completata, registra in `CHANGELOG-framework.md` o `CHANGELOG-contenuti.md`
+5. Se un'idea viene completata, registra in `CHANGELOG.md` (sezione appropriata: ### Struttura o ### Contenuti)
 
 ### Output in chat
 

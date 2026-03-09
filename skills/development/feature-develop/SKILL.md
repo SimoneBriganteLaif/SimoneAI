@@ -78,7 +78,7 @@ Fai le domande in questo ordine, **una alla volta**:
    - File creati (lista con path)
    - File modificati (lista con path e descrizione modifica)
    - Scelte implementative non ovvie (decisioni prese durante lo sviluppo)
-7. **Tracking**: `echo "$(date +%Y-%m-%d\ %H:%M) | feature-develop | [progetto] | completata-cc" >> .tags/skill-usage.log`
+7. **Tracking**: `echo "$(date +%Y-%m-%d\ %H:%M) | feature-develop | [progetto] | completata-cc" >> .claude/skill-usage.log`
 
 ## Processo di produzione — Modalità Windsurf Brief
 
@@ -92,7 +92,7 @@ Fai le domande in questo ordine, **una alla volta**:
    - **File da creare/modificare**: lista completa con path
 3. Mostra il brief all'utente per passaggio manuale a Windsurf
 4. Aggiorna `.feature-state.md` sezione `## Sviluppo` con: "Brief Windsurf generato — in attesa di implementazione"
-5. **Tracking**: `echo "$(date +%Y-%m-%d\ %H:%M) | feature-develop | [progetto] | completata-ws" >> .tags/skill-usage.log`
+5. **Tracking**: `echo "$(date +%Y-%m-%d\ %H:%M) | feature-develop | [progetto] | completata-ws" >> .claude/skill-usage.log`
 
 ---
 

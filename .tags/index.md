@@ -27,12 +27,12 @@ Tutti i tag usati nella knowledge base. Aggiornato dalla skill `maintenance/audi
 |-----|-----------------|
 | `#industria:retail` | |
 | `#industria:finance` | |
-| `#industria:healthcare` | projects/lamonea/ |
+| `#industria:healthcare` | projects/lamonea/, knowledge/industrie/healthcare.md |
 | `#industria:saas` | |
 | `#industria:marketplace` | |
 | `#industria:enterprise` | |
 | `#industria:software` | knowledge/azienda/ |
-| `#industria:entertainment` | projects/jubatus/ |
+| `#industria:entertainment` | projects/jubatus/, knowledge/industrie/entertainment.md |
 | *(aggiungi nuove industrie qui)* | |
 
 ---
@@ -65,11 +65,12 @@ Tutti i tag usati nella knowledge base. Aggiornato dalla skill `maintenance/audi
 
 | Tag | File |
 |-----|------|
-| `#problema:serializzazione` | patterns/sqlalchemy-joinedload-unique.md |
+| `#problema:serializzazione` | patterns/sqlalchemy-joinedload-unique.md, knowledge/problemi-tecnici/query-n-plus-1.md |
 | `#problema:integrazione` | patterns/fullstack-dev-preview-loop.md |
-| `#problema:routing` | patterns/fastapi-route-order.md |
-| `#problema:performance` | patterns/list-detail-lazy-loading.md |
-| `#problema:xss` | patterns/html-sanitization-dompurify.md |
+| `#problema:routing` | patterns/fastapi-route-order.md, knowledge/problemi-tecnici/routing-conflitti-parametrici.md |
+| `#problema:performance` | patterns/list-detail-lazy-loading.md, knowledge/problemi-tecnici/query-n-plus-1.md |
+| `#problema:xss` | patterns/html-sanitization-dompurify.md, knowledge/problemi-tecnici/xss-contenuto-esterno.md |
+| `#problema:sicurezza` | knowledge/problemi-tecnici/xss-contenuto-esterno.md |
 
 ---
 
@@ -77,16 +78,16 @@ Tutti i tag usati nella knowledge base. Aggiornato dalla skill `maintenance/audi
 
 | Tag | File che lo usano |
 |-----|-----------------|
-| `#stack:nextjs` | patterns/fullstack-dev-preview-loop.md |
-| `#stack:react` | patterns/list-detail-lazy-loading.md, patterns/html-sanitization-dompurify.md |
+| `#stack:nextjs` | patterns/fullstack-dev-preview-loop.md, knowledge/problemi-tecnici/xss-contenuto-esterno.md |
+| `#stack:react` | patterns/list-detail-lazy-loading.md, patterns/html-sanitization-dompurify.md, knowledge/problemi-tecnici/xss-contenuto-esterno.md |
 | `#stack:nodejs` | |
 | `#stack:typescript` | |
 | `#stack:postgresql` | |
 | `#stack:supabase` | |
 | `#stack:vercel` | |
 | `#stack:aws` | skills/development/aws-diagnostics/ |
-| `#stack:fastapi` | knowledge/azienda/stack.md, patterns/fastapi-route-order.md, patterns/fullstack-dev-preview-loop.md, patterns/list-detail-lazy-loading.md |
-| `#stack:sqlalchemy` | patterns/sqlalchemy-joinedload-unique.md |
+| `#stack:fastapi` | knowledge/azienda/stack.md, patterns/fastapi-route-order.md, patterns/fullstack-dev-preview-loop.md, patterns/list-detail-lazy-loading.md, knowledge/problemi-tecnici/query-n-plus-1.md, knowledge/problemi-tecnici/routing-conflitti-parametrici.md |
+| `#stack:sqlalchemy` | patterns/sqlalchemy-joinedload-unique.md, knowledge/problemi-tecnici/query-n-plus-1.md |
 | `#stack:cdk` | knowledge/azienda/infrastruttura.md |
 | `#stack:ecs` | skills/development/aws-diagnostics/aws-ecs-diagnose/, skills/development/aws-diagnostics/aws-triage/ |
 | `#stack:rds` | skills/development/aws-diagnostics/aws-rds-diagnose/, skills/development/aws-diagnostics/aws-triage/ |

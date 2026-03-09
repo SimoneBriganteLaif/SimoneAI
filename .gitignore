@@ -1,9 +1,11 @@
 # Claude Code memory (specifico per sessione/macchina)
 memory/
 
-# Claude Code internals (escludi tutto tranne skills/)
+# Claude Code internals (escludi tutto tranne skills/, hooks/, settings)
 .claude/*
 !.claude/skills/
+!.claude/hooks/
+!.claude/settings.json
 
 # Repository core clonate (sono repo Git annidate)
 core/laif-template/

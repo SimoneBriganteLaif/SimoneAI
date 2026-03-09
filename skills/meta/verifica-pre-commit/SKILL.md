@@ -8,8 +8,7 @@ fase: meta
 versione: "3.0"
 stato: stable
 legge:
-  - CHANGELOG-framework.md
-  - CHANGELOG-contenuti.md
+  - CHANGELOG.md
   - IDEAS.md
   - docs/struttura.md
   - .tags/index.md
@@ -159,7 +158,7 @@ Dopo aver eseguito `run_all.py`, verifica:
 
 - **FAIL** → risolvi le issue autonomamente, riesegui, ripeti finché PASS
 - **PASS completo** (script + checklist semantica) → commit autorizzato
-- **Tracking**: `echo "$(date +%Y-%m-%d\ %H:%M) | verifica-pre-commit | [progetto] | [PASS/FAIL]" >> .tags/skill-usage.log`
+- **Tracking**: `echo "$(date +%Y-%m-%d\ %H:%M) | verifica-pre-commit | [progetto] | [PASS/FAIL]" >> .claude/skill-usage.log`
 
 ---
 ← [Catalogo skill](../../../docs/skills.md) · [Workflow](../../../docs/workflow.md) · [System.md](../../../System.md)

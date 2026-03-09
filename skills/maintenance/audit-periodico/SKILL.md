@@ -81,6 +81,25 @@ Cerca in tutti i `requisiti.md` domande aperte con scadenza superata:
 Leggi le sezioni "Debito tecnico noto" in tutti gli `architettura.md` attivi.
 Aggrega: cosa c'è, da quanto, impatto stimato.
 
+### Step 6 — Skill health report
+
+Analizza lo stato di salute delle skill:
+
+1. **Uso**: leggi `.claude/skill-usage.log` e conta invocazioni per skill
+2. **Skill inutilizzate**: skill con 0 invocazioni da più di 2 mesi → segnala
+3. **Candidate a promozione**: skill beta che soddisfano i criteri di graduazione (vedi `docs/skills.md` → "Ciclo di vita")
+4. **Skill con overlap**: verifica che la tabella "Quando NON usarmi" in `docs/skills.md` sia ancora attuale
+
+Report skill:
+```
+SKILL HEALTH:
+  Totale: [N] skill ([N] stable, [N] beta)
+  Invocazioni ultimo mese: [N]
+  Top 3 usate: [lista]
+  Inutilizzate: [lista]
+  Candidate promozione: [skill] — [motivazione]
+```
+
 ---
 
 ## Loop conversazionale (post-analisi)
@@ -132,6 +151,8 @@ Azioni eseguite:
   Pattern creati/aggiornati: [N]
   Knowledge aggiornata: [N file]
   Tag index allineato: sì/no
+  Skill promosse: [N]
+  Skill segnalate: [N]
 
 Rimasto aperto:
   [lista di cose non risolte e perché]

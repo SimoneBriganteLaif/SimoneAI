@@ -11,7 +11,7 @@ Le skill sono istruzioni operative per Claude Code. Ogni skill è una **cartella
 | Skill | Stato | Nativa | Trigger | Legge | Scrive |
 |-------|-------|--------|---------|-------|--------|
 | `presales/init-project/` | beta | si | Inizio nuovo progetto | Notion, GitHub | projects/[nome]/, INDEX.md |
-| `presales/estrazione-requisiti/` | beta | si | Dopo un meeting cliente | Materiale grezzo | requisiti.md, meeting/ |
+| `presales/estrazione-requisiti/` | stable | si | Dopo un meeting cliente | Materiale grezzo | requisiti.md, meeting/ |
 | `presales/genera-allegato-tecnico/` | beta | si | Requisiti validati, serve contratto | requisiti.md | allegato-tecnico.md |
 | `presales/genera-mockup-brief/` | beta | si | Requisiti validati, servono mockup | requisiti.md | mockup-brief.md |
 
@@ -24,8 +24,8 @@ Le skill sono istruzioni operative per Claude Code. Ogni skill è una **cartella
 | `development/feature-develop/` | beta | — | Piano approvato, da implementare | .feature-state.md (Piano), processi.md | Codebase, .feature-state.md (Sviluppo) |
 | `development/feature-test/` | beta | — | Sviluppo completato, da testare | .feature-state.md, requisiti.md, codebase | Nuovi test, .feature-state.md (Test) |
 | `development/feature-review/` | beta | — | Sviluppo completato, da revisionare | .feature-state.md, processi.md, patterns/ | .feature-state.md (Review) |
-| `development/estrazione-decisioni/` | beta | si | Decisione tecnica non banale | decisioni.md | decisioni.md, architettura.md |
-| `development/estrazione-pattern/` | beta | si | Fine sprint o fine progetto | feature-log, decisioni | patterns/, knowledge/ |
+| `development/estrazione-decisioni/` | stable | si | Decisione tecnica non banale | decisioni.md | decisioni.md, architettura.md |
+| `development/estrazione-pattern/` | stable | si | Fine sprint o fine progetto | feature-log, decisioni | patterns/, knowledge/ |
 | `development/setup-progetto-dev/` | beta | si | Inizio sessione dev | architettura.md, MEMORY.md, stack.md | nessuno (solo report) |
 | `development/brainstorming-post-sviluppo/` | beta | si | Fine sessione dev | Lavoro svolto nella sessione | patterns/, skills/, IDEAS.md |
 | `development/aws-diagnostics/aws-health-report/` | beta | si | Report HTML completo infrastruttura | aws-config.yaml | reports/aws-report-*.html |
@@ -46,6 +46,7 @@ Le skill sono istruzioni operative per Claude Code. Ogni skill è una **cartella
 | Skill | Stato | Nativa | Trigger | Legge | Scrive |
 |-------|-------|--------|---------|-------|--------|
 | `meta/gestione-kb/` | beta | si | Dopo modifiche KB, nuove idee, periodicamente | Meta-file | changelog, IDEAS.md, docs/ |
+| `meta/contesto-progetto/` | stable | — | Prima di lavorare su un progetto | README progetto, patterns/, knowledge/ | — (lista file rilevanti) |
 | `meta/verifica-pre-commit/` | stable | — | Prima di ogni commit | Tutti i file modificati | — (solo lettura) |
 
 ---

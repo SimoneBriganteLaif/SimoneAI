@@ -6,7 +6,9 @@ descrizione: >
   e domande aperte. Produce requisiti.md nel formato LAIF.
 fase: presales
 versione: "1.1"
-stato: beta
+stato: stable
+depends-on: [init-project]
+enables: [genera-allegato-tecnico, genera-mockup-brief]
 legge:
   - Materiale grezzo (testo incollato, file, pagine Notion)
   - projects/[nome]/ (se esiste)

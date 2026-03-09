@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Check 2: Changelog aggiornato.
-Verifica che le modifiche siano tracciate nel changelog corretto.
+Verifica che le modifiche siano tracciate nel changelog unificato (CHANGELOG.md).
 
 Usage: python3 check_changelog.py file1 [file2 ...]
 Exit: 0 = PASS, 1 = FAIL
@@ -14,14 +14,17 @@ from typing import Optional
 
 KB_ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
 
-# Pattern per file che richiedono changelog framework vs contenuti
-FRAMEWORK_PREFIXES = ("skills/", "docs/", "projects/_template/", ".tags/index.md")
+# Pattern per file che richiedono changelog struttura vs contenuti
+STRUTTURA_PREFIXES = ("skills/", "docs/", "projects/_template/", ".tags/index.md")
 CONTENUTI_PREFIXES = ("projects/", "patterns/", "knowledge/")
 CONTENUTI_EXCLUDE = ("projects/_template/", "projects/_archivio/", "projects/INDEX.md")
 
 
-def count_entries_in_non_rilasciato(filepath: str) -> int:
-    """Conta le entry (righe che iniziano con '- ') nella sezione [Non rilasciato]."""
+def count_entries_in_non_rilasciato(filepath: str, section_header: str = None) -> int:
+    """Conta le entry (righe che iniziano con '- ') nella sezione [Non rilasciato].
+
+    Se section_header è specificato (es. "### Struttura"), conta solo dentro quella sotto-sezione.
+    """
     if not os.path.isfile(filepath):
         return 0
 
@@ -34,20 +37,29 @@ def count_entries_in_non_rilasciato(filepath: str) -> int:
         return 0
 
     section = match.group(1)
+
+    if section_header:
+        # Trova la sotto-sezione specifica
+        pattern = re.escape(section_header) + r'\s*\n(.*?)(?=^### |\Z)'
+        sub_match = re.search(pattern, section, re.MULTILINE | re.DOTALL)
+        if not sub_match:
+            return 0
+        section = sub_match.group(1)
+
     return len(re.findall(r'^- ', section, re.MULTILINE))
 
 
 def classify_file(filepath: str) -> Optional[str]:
-    """Classifica un file come 'framework', 'contenuti', o None (meta/ignorabile)."""
+    """Classifica un file come 'struttura', 'contenuti', o None (meta/ignorabile)."""
     rel = filepath.removeprefix(KB_ROOT + "/").removeprefix("./")
 
     # Escludi file che non richiedono entry
     if rel.startswith(("CHANGELOG", "IDEAS.md", ".git")):
         return None
 
-    # Framework
-    if any(rel.startswith(p) for p in FRAMEWORK_PREFIXES):
-        return "framework"
+    # Struttura
+    if any(rel.startswith(p) for p in STRUTTURA_PREFIXES):
+        return "struttura"
 
     # Contenuti (escludi template e archivio)
     if any(rel.startswith(p) for p in CONTENUTI_PREFIXES):
@@ -62,29 +74,28 @@ def main():
         print("Usage: check_changelog.py file1 [file2 ...]")
         sys.exit(2)
 
-    fw_path = os.path.join(KB_ROOT, "CHANGELOG-framework.md")
-    ct_path = os.path.join(KB_ROOT, "CHANGELOG-contenuti.md")
+    changelog_path = os.path.join(KB_ROOT, "CHANGELOG.md")
 
-    fw_entries = count_entries_in_non_rilasciato(fw_path)
-    ct_entries = count_entries_in_non_rilasciato(ct_path)
+    struttura_entries = count_entries_in_non_rilasciato(changelog_path, "### Struttura")
+    contenuti_entries = count_entries_in_non_rilasciato(changelog_path, "### Contenuti")
 
-    has_framework = False
+    has_struttura = False
     has_contenuti = False
 
     for filepath in sys.argv[1:]:
         cat = classify_file(filepath)
-        if cat == "framework":
-            has_framework = True
+        if cat == "struttura":
+            has_struttura = True
         elif cat == "contenuti":
             has_contenuti = True
 
     issues = []
 
-    if has_framework and fw_entries == 0:
-        issues.append("Modifiche a framework ma CHANGELOG-framework.md [Non rilasciato] è vuoto")
+    if has_struttura and struttura_entries == 0:
+        issues.append("Modifiche a struttura ma CHANGELOG.md [Non rilasciato] → ### Struttura è vuoto")
 
-    if has_contenuti and ct_entries == 0:
-        issues.append("Modifiche a contenuti ma CHANGELOG-contenuti.md [Non rilasciato] è vuoto")
+    if has_contenuti and contenuti_entries == 0:
+        issues.append("Modifiche a contenuti ma CHANGELOG.md [Non rilasciato] → ### Contenuti è vuoto")
 
     if not issues:
         print("Check 2 — Changelog: ✓ PASS")

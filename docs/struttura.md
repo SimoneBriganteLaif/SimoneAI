@@ -18,12 +18,9 @@ SimoneAI/
 ├── System.md                       ← Panoramica del sistema: cos'è, perché esiste,
 │                                     come funziona. Documento descrittivo per umani.
 │
-├── CHANGELOG-framework.md          ← Traccia modifiche alla STRUTTURA del sistema:
-│                                     cartelle, skill, template, processi, documentazione.
-│                                     Formato Keep a Changelog.
-│
-├── CHANGELOG-contenuti.md          ← Traccia modifiche ai CONTENUTI operativi:
-│                                     progetti, pattern, knowledge, decisioni tecniche.
+├── CHANGELOG.md                    ← Tutte le modifiche al sistema: struttura
+│                                     (### Struttura) e contenuti (### Contenuti)
+│                                     per ogni versione. Formato Keep a Changelog.
 │
 ├── IDEAS.md                        ← Backlog strutturato di idee e miglioramenti.
 │                                     Tabella con ID, categoria, effort, priorità, stato.
@@ -103,6 +100,7 @@ SimoneAI/
 │   │   └── audit-periodico/        ← Audit mensile dell'intera KB.
 │   └── meta/                       ← Gestione del sistema stesso.
 │       ├── gestione-kb/            ← Changelog, idee, sync docs, review idee.
+│       ├── contesto-progetto/      ← Script match.py: trova contesto rilevante per progetto.
 │       └── verifica-pre-commit/    ← Verifica autonoma coerenza pre-commit (5 check paralleli).
 │
 ├── knowledge/                      ← Conoscenza cross-progetto, non legata a un singolo progetto.
@@ -113,9 +111,14 @@ SimoneAI/
 │   │   ├── infrastruttura.md       ← Architettura AWS, TemplateStack, deploy.
 │   │   └── processi.md             ← Flussi di lavoro, CI/CD, regole Windsurf.
 │   ├── industrie/                  ← Cosa sappiamo di settori specifici.
-│   │   └── _template.md            │  (retail, finance, healthcare, saas...)
+│   │   ├── _template.md            ← Template per nuove industrie.
+│   │   ├── entertainment.md        ← Entertainment/eventi (da Jubatus).
+│   │   └── healthcare.md           ← Healthcare/medical devices (da Lamonea).
 │   └── problemi-tecnici/           ← Soluzioni a problemi tecnici ricorrenti.
-│       └── _template.md
+│       ├── _template.md            ← Template per nuovi problemi.
+│       ├── query-n-plus-1.md       ← N+1 con ORM e relazioni.
+│       ├── xss-contenuto-esterno.md ← XSS da HTML esterno.
+│       └── routing-conflitti-parametrici.md ← Route statiche vs parametriche.
 │
 ├── core/                           ← Repository core LAIF clonate come riferimento.
 │   │                                 NON modificare direttamente.
@@ -127,12 +130,18 @@ SimoneAI/
 │
 ├── .tags/                          ← Sistema di tag per navigazione cross-progetto.
 │   ├── index.md                    ← Indice dei tag usati nella KB.
-│   └── skill-usage.log             ← Log uso skill KB-only (tracking automatico).
+│   └── (nessun file runtime — solo indice)
 │
 └── .claude/
-    └── skills/                     ← Skill native Claude Code — trigger layer.
-                                      Wrapper sottili che puntano alle skill KB
-                                      per auto-discovery e tracking nell'UI.
+    ├── skills/                     ← Skill native Claude Code — trigger layer.
+    │   │                             Ogni skill = directory con SKILL.md dentro.
+    │   │                             Wrapper sottili che puntano alle skill KB
+    │   │                             per auto-discovery e tracking nell'UI.
+    │   └── [skill-name]/SKILL.md   ← 17 directory (gestione-kb, init-project, ...)
+    ├── hooks/                      ← Script automazione (hook PostToolUse).
+    │   └── skill-logger.sh         ← Logga invocazioni skill native in skill-usage.log.
+    ├── settings.json               ← Configurazione hook Claude Code.
+    └── skill-usage.log             ← Log uso skill (gitignored, cresce runtime).
 ```
 
 ---
@@ -157,6 +166,5 @@ SimoneAI/
 |------|-------|
 | `CLAUDE.md` | Istruzioni operative per Claude Code — letto automaticamente a ogni sessione |
 | `System.md` | Panoramica del sistema, motivazioni, struttura ad alto livello |
-| `CHANGELOG-framework.md` | Traccia modifiche alla struttura: cartelle, skill, template, processi |
-| `CHANGELOG-contenuti.md` | Traccia modifiche ai contenuti: progetti, pattern, knowledge, decisioni |
+| `CHANGELOG.md` | Tutte le modifiche: struttura + contenuti per ogni versione |
 | `IDEAS.md` | Backlog strutturato di idee e miglioramenti futuri |

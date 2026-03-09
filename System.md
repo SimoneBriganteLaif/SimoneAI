@@ -1,6 +1,6 @@
 # Sistema Knowledge Base — LAIF
 
-**Versione**: 1.6
+**Versione**: 1.7
 **Creato**: 2026-03-08
 **Team**: ~20 sviluppatori
 
@@ -20,7 +20,7 @@
 | [knowledge/azienda/infrastruttura.md](knowledge/azienda/infrastruttura.md) | AWS, ECS, TemplateStack, deploy pipeline |
 | [knowledge/azienda/processi.md](knowledge/azienda/processi.md) | Dev workflow, CI/CD, regole Windsurf, pain point upstream |
 | [IDEAS.md](IDEAS.md) | Backlog idee e miglioramenti futuri con stato |
-| [CHANGELOG-framework.md](CHANGELOG-framework.md) | Modifiche alla struttura del sistema |
+| [CHANGELOG.md](CHANGELOG.md) | Tutte le modifiche al sistema (struttura + contenuti) |
 
 ---
 

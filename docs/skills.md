@@ -78,7 +78,7 @@ flowchart LR
 
 ---
 
-## Sistema di stato delle skill
+## Ciclo di vita delle skill
 
 Ogni skill ha un campo `stato` nel frontmatter:
 
@@ -87,7 +87,22 @@ Ogni skill ha un campo `stato` nel frontmatter:
 | `beta` | Skill in fase di rodaggio | All'inizio avvisa che è in beta. Durante l'uso, ad ogni step chiede se il processo ha senso o se va modificato. |
 | `stable` | Skill validata e collaudata | Esecuzione normale senza interruzioni extra. |
 
-Quando una skill beta viene usata abbastanza da risultare stabile, si aggiorna lo stato a `stable` e si registra nel changelog.
+### Criteri di graduazione beta → stable
+
+Una skill può essere promossa a `stable` quando soddisfa **tutti** i seguenti criteri:
+
+1. **Uso cross-progetto**: usata su almeno 2 progetti diversi **OPPURE** 5+ invocazioni totali sullo stesso
+2. **Stabilità processo**: nessuna modifica al processo conversazionale nelle ultime 3 sessioni d'uso
+3. **Loop validato**: il loop conversazionale non ha generato feedback negativi nelle ultime esecuzioni
+
+La promozione va registrata nel changelog e il campo `stato` aggiornato nel frontmatter del SKILL.md.
+
+### Skill attualmente stable
+
+- `verifica-pre-commit` — v3.0, usata ad ogni commit
+- `estrazione-requisiti` — v1.1, usata su 2 progetti (jubatus, lamonea)
+- `estrazione-decisioni` — v1.1, usata su jubatus con 5 ADR
+- `estrazione-pattern` — v1.2, usata su jubatus con 5 pattern estratti
 
 ---
 
@@ -96,7 +111,7 @@ Quando una skill beta viene usata abbastanza da risultare stabile, si aggiorna l
 | Skill | Fase | Stato | Nativa | Scopo | Legge | Scrive |
 |-------|------|-------|--------|-------|-------|--------|
 | `init-project` | Presales | beta | si | Bootstrap completo progetto | Notion, GitHub | projects/[nome]/, INDEX.md |
-| `estrazione-requisiti` | Presales | beta | si | Note → requisiti strutturati | Materiale grezzo | requisiti.md, meeting/ |
+| `estrazione-requisiti` | Presales | stable | si | Note → requisiti strutturati | Materiale grezzo | requisiti.md, meeting/ |
 | `genera-allegato-tecnico` | Presales | beta | si | Requisiti → allegato contrattuale | requisiti.md | allegato-tecnico.md |
 | `genera-mockup-brief` | Presales | beta | si | Requisiti → brief mockup per Windsurf | requisiti.md | mockup-brief.md |
 | `feature-workflow` | Development | beta | si | Orchestra ciclo completo feature (Plan→Dev→Test→Review) | requisiti.md, .feature-state.md | .feature-state.md, feature-log.md |
@@ -104,8 +119,8 @@ Quando una skill beta viene usata abbastanza da risultare stabile, si aggiorna l
 | `feature-develop` | Development | beta | — | Piano → implementazione (Claude Code o brief Windsurf) | .feature-state.md (Piano), processi.md | Codebase, .feature-state.md (Sviluppo) |
 | `feature-test` | Development | beta | — | Scrive test, esegue suite, verifica criteri e regressioni | .feature-state.md, requisiti.md, codebase | Nuovi test, .feature-state.md (Test) |
 | `feature-review` | Development | beta | — | Review codice: pattern LAIF, duplicazioni, qualità, KB | .feature-state.md, processi.md, patterns/ | .feature-state.md (Review) |
-| `estrazione-decisioni` | Development | beta | si | Documenta decisioni tecniche (ADR) | decisioni.md | decisioni.md, architettura.md |
-| `estrazione-pattern` | Development | beta | si | Fine sprint → pattern riutilizzabili | feature-log, decisioni.md | patterns/, knowledge/ |
+| `estrazione-decisioni` | Development | stable | si | Documenta decisioni tecniche (ADR) | decisioni.md | decisioni.md, architettura.md |
+| `estrazione-pattern` | Development | stable | si | Fine sprint → pattern riutilizzabili | feature-log, decisioni.md | patterns/, knowledge/ |
 | `setup-progetto-dev` | Development | beta | si | Verifica ambiente dev locale | architettura.md, MEMORY.md, stack.md | nessuno (solo report) |
 | `brainstorming-post-sviluppo` | Development | beta | si | Fine sessione → estrae miglioramenti | Lavoro svolto nella sessione | patterns/, skills/, IDEAS.md |
 | `aws-triage` | Development | beta | si | Health check rapido tutti i servizi AWS | aws-config.yaml | nessuno (diagnosi) |
@@ -154,7 +169,7 @@ flowchart TD
 
 **Path**: `skills/presales/estrazione-requisiti/SKILL.md`
 **Trigger**: Dopo un meeting con il cliente
-**Stato**: beta
+**Stato**: stable
 
 Note grezze di meeting → requisiti strutturati (RF + RNF) con priorità, criteri di accettazione, domande aperte.
 
@@ -365,7 +380,7 @@ flowchart TD
 
 **Path**: `skills/development/estrazione-decisioni/SKILL.md`
 **Trigger**: Dopo ogni decisione tecnica non banale
-**Stato**: beta
+**Stato**: stable
 
 Cattura decisioni architetturali in formato ADR. Solo per scelte che qualcuno potrebbe mettere in discussione.
 
@@ -390,7 +405,7 @@ flowchart TD
 
 **Path**: `skills/development/estrazione-pattern/SKILL.md`
 **Trigger**: Fine sprint o fine progetto
-**Stato**: beta
+**Stato**: stable
 
 Analizza UN progetto specifico ed estrae pattern riutilizzabili in `patterns/` e knowledge in `knowledge/`. Non è un audit generale (per quello c'è `audit-periodico`).
 
@@ -547,10 +562,10 @@ flowchart TD
     MODE -->|4| REV[Review idee]
 
     REG --> RQ1[Cosa è cambiato?]
-    RQ1 --> RQ2{Framework\no contenuto?}
-    RQ2 -->|Framework| CL_F[Aggiorna CHANGELOG-framework.md]
-    RQ2 -->|Contenuto| CL_C[Aggiorna CHANGELOG-contenuti.md]
-    CL_F --> RQ3{Impatta docs/?}
+    RQ1 --> RQ2{Struttura\no contenuto?}
+    RQ2 -->|Struttura| CL_S[Aggiorna CHANGELOG.md ### Struttura]
+    RQ2 -->|Contenuto| CL_C[Aggiorna CHANGELOG.md ### Contenuti]
+    CL_S --> RQ3{Impatta docs/?}
     RQ3 -->|Sì| UPD_DOC[Aggiorna docs/]
     RQ3 -->|No| DONE_R([Fatto])
     UPD_DOC --> DONE_R
@@ -603,6 +618,66 @@ flowchart TD
 
 ---
 
+## Dipendenze tra skill
+
+```mermaid
+flowchart TD
+    subgraph PRESALES["Presales (sequenziali)"]
+        IP[init-project] -->|produce meeting/| ER[estrazione-requisiti]
+        ER -->|produce requisiti.md| GAT[genera-allegato-tecnico]
+        ER -->|produce requisiti.md| GMB[genera-mockup-brief]
+    end
+
+    subgraph DEV["Development"]
+        SPD[setup-progetto-dev] -.->|verifica ambiente| FW[feature-workflow]
+        FW -->|orchestra| FPL[feature-plan]
+        FPL -->|piano| FDV[feature-develop]
+        FDV -->|codice| FTS[feature-test]
+        FDV -->|codice| FRV[feature-review]
+        FW -.->|decisioni emerse| ED[estrazione-decisioni]
+        FRV -.->|pattern individuati| EP[estrazione-pattern]
+        EP -.->|fine sessione| BPS[brainstorming-post-sviluppo]
+    end
+
+    subgraph MAINT["Maintenance"]
+        AP[audit-periodico]
+        AP -.->|analizza| EP
+    end
+
+    subgraph META["Meta"]
+        GKB[gestione-kb]
+        VPC[verifica-pre-commit]
+        CTP[contesto-progetto]
+        CTP -.->|suggerisce| FW
+    end
+
+    PRESALES -->|contratto firmato| DEV
+    DEV -->|go-live| MAINT
+
+    style ER fill:#90EE90
+    style ED fill:#90EE90
+    style EP fill:#90EE90
+    style VPC fill:#90EE90
+```
+
+> Verde = skill stable. Bianche = skill beta.
+
+---
+
+## Quando NON usare una skill (disambiguazione)
+
+| Vuoi... | NON usare | Usa invece | Motivo |
+|---------|-----------|-----------|--------|
+| Estrarre pattern a fine sprint da un progetto | `brainstorming-post-sviluppo` | `estrazione-pattern` | brainstorming analizza la sessione corrente, non il progetto intero |
+| Analizzare cosa è emerso nella sessione di oggi | `estrazione-pattern` | `brainstorming-post-sviluppo` | estrazione-pattern opera su feature-log/decisioni, non sulla sessione |
+| Sviluppare una feature end-to-end | sub-skill singole (plan, develop, test, review) | `feature-workflow` | il workflow orchestra le fasi con gate di qualità |
+| Solo pianificare senza sviluppare | `feature-workflow` | `feature-plan` standalone | il workflow forza il ciclo completo |
+| Fare audit di tutta la KB | `estrazione-pattern` | `audit-periodico` | estrazione-pattern opera su UN progetto, non sull'intera KB |
+| Registrare una modifica nel changelog | `audit-periodico` | `gestione-kb` (mod. 1) | audit è per review periodiche, non per singole registrazioni |
+| Cercare contesto su un progetto prima di lavorarci | skill manuali | `contesto-progetto/match.py` | script deterministico, zero token |
+
+---
+
 ## Differenze tra skill di manutenzione
 
 | | `estrazione-pattern` | `audit-periodico` | `gestione-kb` | `verifica-pre-commit` |
@@ -628,6 +703,8 @@ descrizione: >
 fase: presales | development | maintenance | meta
 versione: "1.0"
 stato: beta | stable
+depends-on: []           # skill che devono essere eseguite prima (opzionale)
+enables: []              # skill che questa abilita (opzionale)
 legge:
   - file/cartelle che la skill legge come input
 scrive:
