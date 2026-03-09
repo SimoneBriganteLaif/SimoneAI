@@ -1,0 +1,37 @@
+# Configurazione risorse AWS — Lamonea
+# Generato da init-project, basato su values.yaml della repository
+#
+# tags: #progetto:lamonea #stack:aws
+
+environments:
+  dev:
+    aws_profile: "lamonea-dev"
+    region: "eu-west-1"
+    account_id: "809472478744"
+    app_name: "lamonea"
+    customer_name: "lamonea"
+    resources:
+      ecs_cluster: "dev-lamonea-cluster"
+      ecs_service: "dev-lamonea-be-service"
+      ecs_task_family: "dev-lamonea-be-task"
+      log_group: "dev-lamonea-be-task-log-group"
+      rds_identifier: "dev-lamonea-db"
+      s3_data_bucket: "dev-lamonea-data"
+      s3_frontend_bucket: "dev-lamonea-fe-frontend"
+      alb_name: "dev-lamonea-be-alb"
+
+  prod:
+    aws_profile: "lamonea-prod"
+    region: "eu-west-1"
+    account_id: "889486284368"
+    app_name: "lamonea"
+    customer_name: "lamonea"
+    resources:
+      ecs_cluster: "prod-lamonea-cluster"
+      ecs_service: "prod-lamonea-be-service"
+      ecs_task_family: "prod-lamonea-be-task"
+      log_group: "prod-lamonea-be-task-log-group"
+      rds_identifier: "prod-lamonea-db"
+      s3_data_bucket: "prod-lamonea-data"
+      s3_frontend_bucket: "prod-lamonea-fe-frontend"
+      alb_name: "prod-lamonea-be-alb"

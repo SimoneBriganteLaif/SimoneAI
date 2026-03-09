@@ -14,7 +14,14 @@ Categorie usate:
 
 ## [Non rilasciato]
 
-_Nessuna modifica._
+### Progetti
+
+- `projects/lamonea/` — nuovo progetto inizializzato (Lamonea S.R.L., healthcare/medical devices)
+  - README.md compilato con contesto cliente, team, timeline, link
+  - 5 meeting notes da Notion (kickoff interno, kickoff cliente, requisiti fase 1, dubbi TS, domande 5/3)
+  - requisiti.md bozza con RF-CAT-01→08 e RF-CRM-01→10 da Notion
+  - aws-config.yaml compilato (dev: 809472478744, prod: 889486284368)
+  - INDEX.md aggiornato (3 progetti totali)
 
 ---
 

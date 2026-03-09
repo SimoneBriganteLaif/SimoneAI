@@ -8,7 +8,9 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/).
 
 ## [Non rilasciato]
 
-_Nessuna modifica._
+### Changed
+
+- `.tags/index.md` — registrato tag `#progetto:lamonea` e aggiornato `#industria:healthcare`
 
 ---
 
