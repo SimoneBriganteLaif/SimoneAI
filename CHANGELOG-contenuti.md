@@ -12,6 +12,26 @@ Categorie usate:
 
 ---
 
+## [v1.4] — 2026-03-09
+
+### Pattern
+
+- `patterns/sqlalchemy-joinedload-unique.md` — nuovo: `.unique()` obbligatorio con `joinedload()` su collections in SQLAlchemy
+- `patterns/fastapi-route-order.md` — nuovo: route statiche prima di parametriche in FastAPI
+- `patterns/fullstack-dev-preview-loop.md` — nuovo: ciclo iterativo Backend Fix → Frontend Adapt → Preview Verify
+
+### Skill
+
+- `skills/development/setup-progetto-dev/SKILL.md` — nuovo: verifica ambiente dev locale (Docker, servizi, auth, migrazioni)
+- `skills/development/brainstorming-post-sviluppo/SKILL.md` — nuovo: analisi fine sessione per estrarre pattern, skill, idee
+
+### Idee
+
+- `IDEAS.md` — aggiunta IDEA-013 (skill integrazione-email per setup OAuth)
+- `IDEAS.md` — aggiunta IDEA-014 (brainstorming post-sviluppo come comportamento autonomo, completata)
+
+---
+
 ## [v1.3] — 2026-03-09
 
 ### Progetti

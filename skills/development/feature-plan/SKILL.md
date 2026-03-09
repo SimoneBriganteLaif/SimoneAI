@@ -91,7 +91,7 @@ Procedo con la scrittura del piano?
 1. Leggi `requisiti.md` per il requisito specifico (RF-XX con criteri di accettazione)
 2. Leggi `architettura.md` per capire i componenti coinvolti
 3. Leggi `knowledge/azienda/processi.md` per le convenzioni LAIF
-4. Cerca in `patterns/` pattern riutilizzabili
+4. **Consulta `patterns/README.md`** per identificare pattern applicabili alla feature. Per ogni pattern rilevante, leggi il file completo per ottenere soluzione, codice di riferimento e checklist errori comuni. Integra i pattern nel piano come vincoli tecnici.
 5. Leggi `decisioni.md` per decisioni pregresse che impattano la feature
 6. Produci il piano con queste sezioni:
    - **Task list**: lista ordinata di micro-task, ciascuno atomico e verificabile

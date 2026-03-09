@@ -80,7 +80,9 @@ SimoneAI/
 │   │   ├── feature-test/           ← Test completo: scrive, esegue, verifica criteri.
 │   │   ├── feature-review/         ← Review: pattern LAIF, duplicazioni, qualità, KB.
 │   │   ├── estrazione-decisioni/   ← Documenta decisioni tecniche in formato ADR.
-│   │   └── estrazione-pattern/     ← Fine sprint → estrae pattern riutilizzabili.
+│   │   ├── estrazione-pattern/     ← Fine sprint → estrae pattern riutilizzabili.
+│   │   ├── setup-progetto-dev/     ← Verifica ambiente dev locale (Docker, servizi, auth).
+│   │   └── brainstorming-post-sviluppo/ ← Analisi fine sessione → pattern, skill, idee.
 │   ├── maintenance/                ← Manutenzione periodica.
 │   │   └── audit-periodico/        ← Audit mensile dell'intera KB.
 │   └── meta/                       ← Gestione del sistema stesso.

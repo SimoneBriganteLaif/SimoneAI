@@ -69,6 +69,27 @@ Quando durante la conversazione emergono idee o proposte di miglioramento al fra
 
 Questa regola vale per qualsiasi proposta che richieda modifiche non banali al framework.
 
+### Regola 4 — Operazioni su repository di progetto (BLOCCANTE)
+
+Quando operi su una repository di progetto (non sulla KB):
+
+1. **Consulta prima la KB**: leggi `projects/[nome]/` per contesto, decisioni, convenzioni
+2. **Usa SEMPRE `just`** per qualsiasi operazione (migrazioni, build, test, server). Mai comandi diretti (`alembic`, `npm`, `docker compose`, ecc.)
+3. **Non prendere iniziative su operazioni irreversibili** (migrazioni DB, eliminazione file, modifiche schema): chiedi prima schema, conferma, contesto
+4. **Se non conosci una convenzione** (es. quale schema DB usare), chiedi — non assumere
+
+### Regola 5 — Brainstorming post-sviluppo
+
+Alla fine di ogni sessione di sviluppo significativa (non per fix banali o solo consultazione KB):
+
+1. Analizza il lavoro svolto nella sessione
+2. Proponi all'utente un brainstorming seguendo `skills/development/brainstorming-post-sviluppo/SKILL.md`
+3. Presenta le idee emerse (pattern, skill, workflow, miglioramenti)
+4. Se l'utente approva: sviluppa gli asset approvati e aggiorna la KB
+5. Se l'utente declina: registra le idee più rilevanti in `IDEAS.md`
+
+**Non è bloccante**: se l'utente chiude la sessione senza brainstorming, non insistere.
+
 ---
 
 ## Come usare le skill

@@ -6,6 +6,22 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/).
 
 ---
 
+## [v1.4] — 2026-03-09
+
+### Added
+
+**Skill development**
+- `skills/development/setup-progetto-dev/` v1.0 beta — verifica ambiente dev locale (Docker, servizi, auth, migrazioni DB)
+- `skills/development/brainstorming-post-sviluppo/` v1.0 beta — analisi fine sessione per estrarre pattern, skill, idee per SimoneAI
+
+### Changed
+
+- `CLAUDE.md` — aggiunta Regola 5 (comportamento autonomo): brainstorming post-sviluppo alla fine di ogni sessione significativa
+- `docs/skills.md` — aggiunte 2 nuove skill development con diagrammi Mermaid, aggiornato diagramma globale
+- `docs/struttura.md` — aggiornato albero con le 2 nuove skill
+
+---
+
 ## [v1.3] — 2026-03-09
 
 ### Added

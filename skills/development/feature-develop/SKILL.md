@@ -64,16 +64,17 @@ Fai le domande in questo ordine, **una alla volta**:
 ## Processo di produzione — Modalità Claude Code
 
 1. Leggi il piano dalla sezione `## Piano` di `.feature-state.md`
-2. Implementa task per task seguendo l'ordine delle dipendenze definito nel piano
-3. Per ogni task:
+2. **Consulta `patterns/README.md`** e leggi i pattern referenziati nel piano. Applica le soluzioni e le checklist errori comuni di ogni pattern durante l'implementazione.
+3. Implementa task per task seguendo l'ordine delle dipendenze definito nel piano
+4. Per ogni task:
    - Implementa il codice seguendo le convenzioni LAIF (`processi.md`)
    - Verifica che compili / non ci siano errori sintattici
    - Passa al task successivo
-4. Convenzioni da seguire:
+5. Convenzioni da seguire:
    - **Backend**: RouterBuilder per endpoint, CRUDService per logica, modelli in `models.py`
    - **Frontend**: @laif/ds per componenti, soft-onion per architettura, no prop drilling
    - **Naming**: PascalCase componenti, camelCase hooks (.hook.ts), kebab-case cartelle
-5. Aggiorna `.feature-state.md` sezione `## Sviluppo` con:
+6. Aggiorna `.feature-state.md` sezione `## Sviluppo` con:
    - File creati (lista con path)
    - File modificati (lista con path e descrizione modifica)
    - Scelte implementative non ovvie (decisioni prese durante lo sviluppo)

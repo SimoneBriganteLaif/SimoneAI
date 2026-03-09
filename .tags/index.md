@@ -51,7 +51,10 @@ Tutti i tag usati nella knowledge base. Aggiornato dalla skill `maintenance/audi
 
 | Tag | File pattern |
 |-----|------------|
-| *(nessun pattern ancora)* | |
+| `#pattern:orm` | patterns/sqlalchemy-joinedload-unique.md |
+| `#pattern:api` | patterns/fastapi-route-order.md |
+| `#pattern:workflow` | patterns/fullstack-dev-preview-loop.md |
+| `#pattern:database` | patterns/sqlalchemy-joinedload-unique.md |
 
 ---
 
@@ -59,7 +62,9 @@ Tutti i tag usati nella knowledge base. Aggiornato dalla skill `maintenance/audi
 
 | Tag | File |
 |-----|------|
-| *(nessun problema documentato ancora)* | |
+| `#problema:serializzazione` | patterns/sqlalchemy-joinedload-unique.md |
+| `#problema:integrazione` | patterns/fullstack-dev-preview-loop.md |
+| `#problema:routing` | patterns/fastapi-route-order.md |
 
 ---
 
@@ -67,7 +72,7 @@ Tutti i tag usati nella knowledge base. Aggiornato dalla skill `maintenance/audi
 
 | Tag | File che lo usano |
 |-----|-----------------|
-| `#stack:nextjs` | |
+| `#stack:nextjs` | patterns/fullstack-dev-preview-loop.md |
 | `#stack:react` | |
 | `#stack:nodejs` | |
 | `#stack:typescript` | |
@@ -75,7 +80,8 @@ Tutti i tag usati nella knowledge base. Aggiornato dalla skill `maintenance/audi
 | `#stack:supabase` | |
 | `#stack:vercel` | |
 | `#stack:aws` | |
-| `#stack:fastapi` | knowledge/azienda/stack.md |
+| `#stack:fastapi` | knowledge/azienda/stack.md, patterns/fastapi-route-order.md, patterns/fullstack-dev-preview-loop.md |
+| `#stack:sqlalchemy` | patterns/sqlalchemy-joinedload-unique.md |
 | `#stack:cdk` | knowledge/azienda/infrastruttura.md |
 | *(aggiungi nuovi stack qui)* | |
 

@@ -12,7 +12,7 @@
 - [Sistema di stato](#sistema-di-stato-delle-skill)
 - [Riepilogo](#riepilogo)
 - **Presales**: [init-project](#init-project) · [estrazione-requisiti](#estrazione-requisiti) · [genera-allegato-tecnico](#genera-allegato-tecnico) · [genera-mockup-brief](#genera-mockup-brief)
-- **Development**: [feature-workflow](#feature-workflow) · [feature-plan](#feature-plan) · [feature-develop](#feature-develop) · [feature-test](#feature-test) · [feature-review](#feature-review) · [estrazione-decisioni](#estrazione-decisioni) · [estrazione-pattern](#estrazione-pattern)
+- **Development**: [feature-workflow](#feature-workflow) · [feature-plan](#feature-plan) · [feature-develop](#feature-develop) · [feature-test](#feature-test) · [feature-review](#feature-review) · [estrazione-decisioni](#estrazione-decisioni) · [estrazione-pattern](#estrazione-pattern) · [setup-progetto-dev](#setup-progetto-dev) · [brainstorming-post-sviluppo](#brainstorming-post-sviluppo)
 - **Maintenance**: [audit-periodico](#audit-periodico)
 - **Meta**: [gestione-kb](#gestione-kb) · [verifica-pre-commit](#verifica-pre-commit)
 - [Confronto skill manutenzione](#differenze-tra-skill-di-manutenzione)
@@ -42,10 +42,14 @@ flowchart LR
         FRV[feature-review]
         ED[estrazione-decisioni]
         EP[estrazione-pattern]
+        SPD[setup-progetto-dev]
+        BPS[brainstorming-post-sviluppo]
+        SPD -.->|verifica ambiente| FW
         FW --> FPL --> FDV
         FDV --> FTS & FRV
         FW -.->|decisioni| ED
         FW -.->|pattern| EP
+        FRV -.->|fine sessione| BPS
     end
 
     subgraph MAINT["Maintenance"]
@@ -101,6 +105,8 @@ Quando una skill beta viene usata abbastanza da risultare stabile, si aggiorna l
 | `feature-review` | Development | beta | Review codice: pattern LAIF, duplicazioni, qualità, KB | .feature-state.md, processi.md, patterns/ | .feature-state.md (Review) |
 | `estrazione-decisioni` | Development | beta | Documenta decisioni tecniche (ADR) | decisioni.md | decisioni.md, architettura.md |
 | `estrazione-pattern` | Development | beta | Fine sprint → pattern riutilizzabili | feature-log, decisioni.md | patterns/, knowledge/ |
+| `setup-progetto-dev` | Development | beta | Verifica ambiente dev locale | architettura.md, MEMORY.md, stack.md | nessuno (solo report) |
+| `brainstorming-post-sviluppo` | Development | beta | Fine sessione → estrae miglioramenti | Lavoro svolto nella sessione | patterns/, skills/, IDEAS.md |
 | `audit-periodico` | Maintenance | beta | Audit mensile intera KB | Tutta la KB | Report + aggiornamenti distribuiti |
 | `gestione-kb` | Meta | beta | Gestione meta-file del sistema | Meta-file, struttura cartelle | changelog, IDEAS.md, docs/ |
 | `verifica-pre-commit` | Meta | stable | Verifica ibrida coerenza KB pre-commit (script Python + check semantici) | Tutti i meta-file + struttura reale | nessuno (solo report) |
@@ -399,6 +405,52 @@ flowchart TD
     P3 --> CONFIRM{Approvato?}
     CONFIRM -->|Sì| EXEC[Crea/aggiorna file]
     CONFIRM -->|No| P2
+    EXEC --> DONE([Output riepilogo])
+```
+
+---
+
+### setup-progetto-dev
+
+**Path**: `skills/development/setup-progetto-dev/SKILL.md`
+**Trigger**: Inizio sessione di sviluppo o dopo onboarding
+**Stato**: beta
+
+Verifica che l'ambiente di sviluppo locale sia operativo: Docker, connettività servizi, autenticazione, migrazioni DB.
+
+```mermaid
+flowchart TD
+    START([Invocazione]) --> Q1[Quale progetto?]
+    Q1 --> Q2[Conferma servizi da verificare]
+    Q2 --> S1[Consulta KB progetto]
+    S1 --> S2[Verifica Docker]
+    S2 --> S3[Verifica connettività servizi]
+    S3 --> S4[Verifica autenticazione]
+    S4 --> S5[Verifica migrazioni DB]
+    S5 --> REPORT([Riepilogo stato ambiente])
+```
+
+---
+
+### brainstorming-post-sviluppo
+
+**Path**: `skills/development/brainstorming-post-sviluppo/SKILL.md`
+**Trigger**: Fine sessione di sviluppo
+**Stato**: beta
+
+Analizza il lavoro svolto nella sessione per estrarre pattern, skill, idee e miglioramenti per SimoneAI. Propone asset concreti da creare o aggiornare.
+
+```mermaid
+flowchart TD
+    START([Fine sessione]) --> A1[Analizza lavoro svolto]
+    A1 --> A2[Identifica pattern tecnici]
+    A2 --> A3[Identifica skill/workflow mancanti]
+    A3 --> A4[Identifica idee di miglioramento]
+    A4 --> PROP[Propone lista asset]
+    PROP --> CONFIRM{Approvato?}
+    CONFIRM -->|Sì| EXEC[Crea/aggiorna asset]
+    CONFIRM -->|Parziale| SELECT[Seleziona quali sviluppare]
+    SELECT --> EXEC
     EXEC --> DONE([Output riepilogo])
 ```
 

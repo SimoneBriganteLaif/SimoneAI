@@ -29,7 +29,9 @@ Ogni file pattern contiene:
 
 | Pattern | Categoria | Usato in | Ultimo aggiornamento |
 |---------|----------|---------|---------------------|
-| *(nessun pattern ancora)* | | | |
+| [sqlalchemy-joinedload-unique](sqlalchemy-joinedload-unique.md) | orm | jubatus | 2026-03-09 |
+| [fastapi-route-order](fastapi-route-order.md) | api | jubatus | 2026-03-09 |
+| [fullstack-dev-preview-loop](fullstack-dev-preview-loop.md) | workflow | jubatus | 2026-03-09 |
 
 ---
 
@@ -45,3 +47,5 @@ Ogni file pattern contiene:
 - **testing** — strategie di test, mock, CI
 - **deploy** — CI/CD, infrastruttura, rollback
 - **api** — design REST/GraphQL, versioning, rate limiting
+- **orm** — query, relazioni, serializzazione ORM
+- **workflow** — flussi di lavoro e cicli di sviluppo
