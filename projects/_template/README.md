@@ -62,11 +62,13 @@ tags:
 ├── architettura.md        ← architettura del sistema
 ├── decisioni.md           ← decisioni tecniche (ADR)
 ├── feature-log.md         ← feature completate con note
+├── stato-progetto.md      ← stato attuale, blocchi e prossimi passi
 ├── allegato-tecnico.md    ← allegato contrattuale (max 3 pag)
 ├── mockup-brief.md        ← brief per mockup Windsurf
-├── manutenzione.md        ← note post go-live
-└── repo/                  ← copia locale della repository
+└── manutenzione.md        ← note post go-live
 ```
+
+> La repository di codice vive in `/Users/simonebrigante/LAIF/repo/[nome-progetto]/`, separata dalla KB.
 
 ## Note
 

@@ -18,11 +18,22 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/).
 - `skills/development/feature-review/` v1.0 beta — revisiona codice per qualità, aderenza pattern LAIF, duplicazioni, e suggerisce pattern estraibili per la KB
 - `.feature-state.md` — nuovo file temporaneo di stato condiviso tra le fasi del workflow (creato in `projects/[nome]/`, eliminato a fine workflow)
 
+**Template progetto**
+- `projects/_template/stato-progetto.md` — nuovo file template: mappa requisiti vs implementazione, blocchi critici, prossimi passi
+- `docs/struttura.md` — aggiunto `stato-progetto.md` nell'albero template
+
 ### Changed
 
 - `docs/skills.md` — aggiunte 5 nuove skill development con diagrammi Mermaid e tabella comparativa aggiornata
 - `docs/workflow.md` — aggiornato flusso Development con il nuovo workflow multi-agente
 - `skills/README.md` — aggiunte 5 nuove skill al catalogo Development
+
+**Convenzione repository progetti**
+- Le repository di codice non vivono più dentro `projects/[nome]/repo/` ma in `/Users/simonebrigante/LAIF/repo/[nome]/`
+- Rimossi da `.gitignore` le regole `projects/*/repo/` e `projects/*/repo-*/`
+- Rimosso `projects/*/repo/` da `.obsidian/app.json` (userIgnoreFilters)
+- Aggiornati: `docs/struttura.md`, `System.md`, `projects/_template/README.md`, `projects/jubatus/README.md`
+- `skills/presales/init-project/SKILL.md` — riscritta: rimosso clone repo, analisi da path esterno, rimosso step generazione CLAUDE.md nella repo
 
 ---
 

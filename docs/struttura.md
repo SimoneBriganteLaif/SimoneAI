@@ -50,10 +50,10 @@ SimoneAI/
 │   │   ├── architettura.md        ← Stack, componenti, diagrammi, debito tecnico.
 │   │   ├── decisioni.md           ← Log ADR (Architecture Decision Record).
 │   │   ├── feature-log.md         ← Feature completate: cosa, come, problemi, PR.
+│   │   ├── stato-progetto.md     ← Stato attuale, blocchi critici, prossimi passi.
 │   │   ├── allegato-tecnico.md    ← Allegato contrattuale: max 3 pagine, non tecnico.
 │   │   ├── mockup-brief.md        ← Brief per Windsurf: schermate, flussi, brand.
-│   │   ├── manutenzione.md        ← Note post go-live.
-│   │   └── repo/                  ← Copia locale della repository.
+│   │   └── manutenzione.md        ← Note post go-live.
 │   └── [nome-progetto]/            ← Creato dalla skill init-project.
 │
 ├── patterns/                       ← Pattern tecnici riutilizzabili estratti dai progetti.

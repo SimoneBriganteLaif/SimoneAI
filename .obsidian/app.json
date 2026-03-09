@@ -2,8 +2,7 @@
   "userIgnoreFilters": [
     "core/",
     ".claude/",
-    "memory/",
-    "projects/*/repo/"
+    "memory/"
   ],
   "foldIndent": true,
   "readableLineLength": false

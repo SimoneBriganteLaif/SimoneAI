@@ -75,7 +75,8 @@ Ogni documento ha tag nel frontmatter YAML. L'indice in `.tags/index.md` permett
 Un progetto = una cartella. Ogni cartella segue il template in `_template/` e contiene:
 - **meeting/**: note meeting (una per file)
 - File di progetto in root: requisiti, architettura, decisioni (ADR), feature-log, allegato-tecnico, mockup-brief, manutenzione
-- **repo/**: copia locale della repository
+
+> Le repository di codice vivono in `/Users/simonebrigante/LAIF/repo/[nome]/`, separate dalla KB.
 
 ### `patterns/`
 Pattern tecnici riutilizzabili estratti dai progetti. Esempi: architettura multi-tenant, integrazione pagamenti, autenticazione con provider esterni. Ogni pattern include contesto, soluzione, trade-off e link ai progetti dove è stato usato.

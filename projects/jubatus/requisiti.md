@@ -1,7 +1,7 @@
 ---
 progetto: "jubatus"
-versione: "0.1"
-data: "2026-03-08"
+versione: "0.2"
+data: "2026-03-09"
 fonte: "Meeting 2026-01-23 | Meeting 2026-01-28 | Meeting 2026-02-13"
 validato-da: ""
 tags:
@@ -240,10 +240,10 @@ Il sistema deve permettere di aggiungere note interne ai ticket e link a documen
 | # | Domanda | Responsabile risposta | Scadenza | Stato |
 |---|---------|----------------------|---------|-------|
 | 1 | Schema database MySQL aggiornato | Jonathan | — | Aperta |
-| 2 | Conferma deploy su account AWS Jubatus | Jonathan/Marco/Simone | — | Aperta |
+| 2 | Conferma deploy su account AWS Jubatus | Jonathan/Marco/Simone | — | Risolta (ADR-001: confermato deploy su AWS Jubatus) |
 | 3 | Creare indirizzo email dedicato al supporto? | Team | — | Aperta |
-| 4 | Protocollo ricezione email (IMAP, webhook, altro)? | Team tecnico | — | Aperta |
-| 5 | Data model applicazione (mail, utenti, tag, categorie, risposte) | Team | — | Aperta |
+| 4 | Protocollo ricezione email (IMAP, webhook, altro)? | Team tecnico | — | Risolta (ADR-003: API native Gmail/Microsoft via OAuth) |
+| 5 | Data model applicazione (mail, utenti, tag, categorie, risposte) | Team | — | Risolta (11 tabelle SQLAlchemy implementate, vedi architettura.md) |
 
 ---
 
@@ -251,4 +251,5 @@ Il sistema deve permettere di aggiungere note interne ai ticket e link a documen
 
 | Data | Versione | Modifica | Autore |
 |------|---------|---------|--------|
+| 2026-03-09 | 0.2 | Aggiornate domande aperte (#2, #4, #5 risolte da implementazione) | Claude Code |
 | 2026-03-08 | 0.1 | Bozza generata da init-project (da 3 note meeting Notion) | Claude Code |

@@ -14,7 +14,14 @@ Categorie usate:
 
 ## [Non rilasciato]
 
-_Nessuna modifica pendente._
+### Progetti
+
+**Jubatus — Documentazione progetto compilata**
+- `projects/jubatus/architettura.md` — compilata: stack, diagramma, componenti, flussi, dipendenze, debito tecnico
+- `projects/jubatus/decisioni.md` — 5 ADR documentate (AWS deploy, FastAPI, multi-provider email, mock data, template separation)
+- `projects/jubatus/feature-log.md` — 4 feature registrate (email backend, tickets UI, scaffolding pagine, setup template)
+- `projects/jubatus/requisiti.md` — aggiornato a v0.2: 3 domande aperte risolte (#2, #4, #5)
+- `projects/jubatus/stato-progetto.md` — nuovo: mappa requisiti vs implementazione, blocchi critici, prossimi passi
 
 ---
 
@@ -26,4 +33,4 @@ _Nessuna modifica pendente._
 - `projects/jubatus/` — nuovo progetto: piattaforma customer care per Jubatus (entertainment/eventi musicali)
 - `projects/jubatus/meeting/` — 3 note meeting importate da Notion (kickoff 2026-01-23, ticketing 2026-01-28, customer care 2026-02-13)
 - `projects/jubatus/requisiti.md` — bozza v0.1 con 11 RF estratti dalle note meeting (tutti da validare)
-- `projects/jubatus/repo/CLAUDE.md` — contesto per Claude Code con stack, struttura e comandi
+- Repository codice: `/Users/simonebrigante/LAIF/repo/jubatus/`
