@@ -8,6 +8,12 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/).
 
 ## [Non rilasciato]
 
+_Nessuna modifica._
+
+---
+
+## [v1.6] — 2026-03-09
+
 ### Added
 
 **Sistema ibrido skill — trigger layer nativo**
@@ -49,6 +55,12 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/).
 - `.tags/index.md` — aggiunti tag `#stack:ecs`, `#stack:rds`, `#stack:cloudwatch`, `#stack:s3`
 - `.gitignore` — `.claude/` → `.claude/*` + `!.claude/skills/` per versionare skill native; aggiunto `*.code-workspace`
 - `System.md` — aggiornata versione a 1.6
+
+---
+
+## [v1.5] — 2026-03-09
+
+_Nessuna modifica al framework. Vedi CHANGELOG-contenuti.md per i pattern aggiunti._
 
 ---
 

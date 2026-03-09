@@ -14,6 +14,12 @@ Categorie usate:
 
 ## [Non rilasciato]
 
+_Nessuna modifica._
+
+---
+
+## [v1.6] — 2026-03-09
+
 ### Progetti
 
 - `projects/albini-castelli/` — registrato in INDEX.md (esisteva su disco con aws-config.yaml, non era tracciato)
