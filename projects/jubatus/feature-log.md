@@ -12,6 +12,34 @@ tags:
 
 ---
 
+## [2026-03] — Email Body & Metadata nel Frontend
+
+**Requisito di riferimento**: RF-02, RF-03
+**Developer**: Team LAIF
+**Sprint / periodo**: MVP
+
+**Descrizione**:
+Refactoring frontend per mostrare il corpo completo delle email (HTML sanitizzato), destinatari (To/Cc), mittente con email, e allegati con nome e dimensione. Pattern two-level detail: lista leggera + dettaglio on-demand.
+
+**Implementazione**:
+- Backend: `ThreadDetailResponse` con `MessageDetailResponse` (body_html, recipients, attachments) in `schema/email.py`
+- Backend: eager loading completo in `get_thread()` (recipients, attachments, labels, category) in `message_service.py`
+- Frontend: hook `useThreadDetail(threadId)` con fetch condizionale (`enabled: threadId !== null`)
+- Frontend: `ConversationThread.tsx` renderizza HTML con DOMPurify, mostra recipients e allegati
+- Frontend: utility condivisa `mapThreadDetailToMessages()` usata da `CommandCenterView` e `CleanFlowDetail`
+- Dipendenza aggiunta: `dompurify` + `@types/dompurify`
+
+**Problemi e soluzioni**:
+- SQLAlchemy `joinedload` con stringa causava 500 → risolto con import `EmailMessageLabel` e attributo class-bound
+- Hook `useThreadDetail` aggiunto solo in CleanFlowDetail ma non in CommandCenterView → risolto, aggiunto a entrambe le viste
+- Mapping duplicato in 2 viste → estratto in `utils/mapThreadMessages.ts`
+
+**Note per il futuro**:
+- DOMPurify non è SSR-safe di default — se si passa a SSR, usare `isomorphic-dompurify`
+- Allegati mostrano nome e dimensione ma il download non è ancora implementato
+
+---
+
 ## [2026-03] — Modulo Email Backend
 
 **Requisito di riferimento**: RF-01, RF-02, RF-03, RF-08

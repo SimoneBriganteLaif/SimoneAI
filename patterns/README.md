@@ -32,6 +32,8 @@ Ogni file pattern contiene:
 | [sqlalchemy-joinedload-unique](sqlalchemy-joinedload-unique.md) | orm | jubatus | 2026-03-09 |
 | [fastapi-route-order](fastapi-route-order.md) | api | jubatus | 2026-03-09 |
 | [fullstack-dev-preview-loop](fullstack-dev-preview-loop.md) | workflow | jubatus | 2026-03-09 |
+| [list-detail-lazy-loading](list-detail-lazy-loading.md) | performance | jubatus | 2026-03-09 |
+| [html-sanitization-dompurify](html-sanitization-dompurify.md) | sicurezza | jubatus | 2026-03-09 |
 
 ---
 

@@ -12,6 +12,25 @@ Categorie usate:
 
 ---
 
+## [Non rilasciato]
+
+*(nessuna modifica in attesa)*
+
+---
+
+## [v1.5] — 2026-03-09
+
+### Pattern
+
+- `patterns/list-detail-lazy-loading.md` — nuovo: lista leggera + dettaglio on-demand per UI con dati pesanti (body HTML, allegati)
+- `patterns/html-sanitization-dompurify.md` — nuovo: sanitizzazione XSS con DOMPurify per HTML da fonti esterne (email, CMS)
+
+### Knowledge
+
+- `knowledge/azienda/processi.md` — aggiunta checklist refactoring: verifica multi-vista, utility condivise, sanitizzazione HTML
+
+---
+
 ## [v1.4] — 2026-03-09
 
 ### Pattern

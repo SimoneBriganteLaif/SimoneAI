@@ -78,6 +78,12 @@ Il progetto include regole Windsurf in `.windsurf/rules/` che guidano l'AI duran
 - No prop drilling (usare Redux o Context)
 - Design responsive obbligatorio
 
+### Checklist refactoring
+
+- Quando modifichi un hook, un tipo, o cambi la shape dei dati: **verifica TUTTE le viste** che consumano quei dati. Cerca con grep i file che importano quel hook/tipo.
+- Quando estrai logica condivisa (mapping, utility): verifica che ogni consumatore usi la versione condivisa e non una copia locale.
+- HTML da fonti esterne (email, CMS): sanitizzare con DOMPurify (vedi pattern `html-sanitization-dompurify`).
+
 ---
 
 ## CI/CD
