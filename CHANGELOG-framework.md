@@ -8,7 +8,21 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/).
 
 ## [Non rilasciato]
 
-_Nessuna modifica pendente._
+### Added
+
+**Workflow multi-agente per feature development**
+- `skills/development/feature-workflow/` v1.0 beta — orchestratore che coordina il ciclo completo di una feature (Plan → Develop → Test + Review → Exit) con 3 gate di qualità tra le fasi
+- `skills/development/feature-plan/` v1.0 beta — analizza un requisito e produce un piano di implementazione tecnico (task, file, dipendenze, rischi, criteri)
+- `skills/development/feature-develop/` v1.0 beta — implementa una feature dal piano (modalità Claude Code diretto o brief per Windsurf)
+- `skills/development/feature-test/` v1.0 beta — testa una feature in modo completo (scrive test, esegue suite, verifica criteri, edge case, regressioni)
+- `skills/development/feature-review/` v1.0 beta — revisiona codice per qualità, aderenza pattern LAIF, duplicazioni, e suggerisce pattern estraibili per la KB
+- `.feature-state.md` — nuovo file temporaneo di stato condiviso tra le fasi del workflow (creato in `projects/[nome]/`, eliminato a fine workflow)
+
+### Changed
+
+- `docs/skills.md` — aggiunte 5 nuove skill development con diagrammi Mermaid e tabella comparativa aggiornata
+- `docs/workflow.md` — aggiornato flusso Development con il nuovo workflow multi-agente
+- `skills/README.md` — aggiunte 5 nuove skill al catalogo Development
 
 ---
 

@@ -2,7 +2,7 @@
 
 ← [System.md](../System.md) · [workflow.md](workflow.md) · [struttura.md](struttura.md)
 
-**Ultimo aggiornamento**: 2026-03-08
+**Ultimo aggiornamento**: 2026-03-09
 
 ---
 
@@ -12,7 +12,7 @@
 - [Sistema di stato](#sistema-di-stato-delle-skill)
 - [Riepilogo](#riepilogo)
 - **Presales**: [init-project](#init-project) · [estrazione-requisiti](#estrazione-requisiti) · [genera-allegato-tecnico](#genera-allegato-tecnico) · [genera-mockup-brief](#genera-mockup-brief)
-- **Development**: [estrazione-decisioni](#estrazione-decisioni) · [estrazione-pattern](#estrazione-pattern)
+- **Development**: [feature-workflow](#feature-workflow) · [feature-plan](#feature-plan) · [feature-develop](#feature-develop) · [feature-test](#feature-test) · [feature-review](#feature-review) · [estrazione-decisioni](#estrazione-decisioni) · [estrazione-pattern](#estrazione-pattern)
 - **Maintenance**: [audit-periodico](#audit-periodico)
 - **Meta**: [gestione-kb](#gestione-kb) · [verifica-pre-commit](#verifica-pre-commit)
 - [Confronto skill manutenzione](#differenze-tra-skill-di-manutenzione)
@@ -35,8 +35,17 @@ flowchart LR
     end
 
     subgraph DEV["Development"]
+        FW[feature-workflow]
+        FPL[feature-plan]
+        FDV[feature-develop]
+        FTS[feature-test]
+        FRV[feature-review]
         ED[estrazione-decisioni]
         EP[estrazione-pattern]
+        FW --> FPL --> FDV
+        FDV --> FTS & FRV
+        FW -.->|decisioni| ED
+        FW -.->|pattern| EP
     end
 
     subgraph MAINT["Maintenance"]
@@ -85,6 +94,11 @@ Quando una skill beta viene usata abbastanza da risultare stabile, si aggiorna l
 | `estrazione-requisiti` | Presales | beta | Note → requisiti strutturati | Materiale grezzo | requisiti.md, meeting/ |
 | `genera-allegato-tecnico` | Presales | beta | Requisiti → allegato contrattuale | requisiti.md | allegato-tecnico.md |
 | `genera-mockup-brief` | Presales | beta | Requisiti → brief mockup per Windsurf | requisiti.md | mockup-brief.md |
+| `feature-workflow` | Development | beta | Orchestra ciclo completo feature (Plan→Dev→Test→Review) | requisiti.md, .feature-state.md | .feature-state.md, feature-log.md |
+| `feature-plan` | Development | beta | Requisito → piano implementazione tecnico | requisiti.md, architettura.md, patterns/ | .feature-state.md (Piano) |
+| `feature-develop` | Development | beta | Piano → implementazione (Claude Code o brief Windsurf) | .feature-state.md (Piano), processi.md | Codebase, .feature-state.md (Sviluppo) |
+| `feature-test` | Development | beta | Scrive test, esegue suite, verifica criteri e regressioni | .feature-state.md, requisiti.md, codebase | Nuovi test, .feature-state.md (Test) |
+| `feature-review` | Development | beta | Review codice: pattern LAIF, duplicazioni, qualità, KB | .feature-state.md, processi.md, patterns/ | .feature-state.md (Review) |
 | `estrazione-decisioni` | Development | beta | Documenta decisioni tecniche (ADR) | decisioni.md | decisioni.md, architettura.md |
 | `estrazione-pattern` | Development | beta | Fine sprint → pattern riutilizzabili | feature-log, decisioni.md | patterns/, knowledge/ |
 | `audit-periodico` | Maintenance | beta | Audit mensile intera KB | Tutta la KB | Report + aggiornamenti distribuiti |
@@ -197,6 +211,142 @@ flowchart TD
 ---
 
 ## Development
+
+### feature-workflow
+
+**Path**: `skills/development/feature-workflow/SKILL.md`
+**Trigger**: Sviluppo feature end-to-end
+**Stato**: beta
+
+Orchestra il ciclo completo: Plan → Develop → Test + Review → Exit. Coordina 4 sub-skill con gate di qualità. Può essere ripreso da una fase precedente.
+
+```mermaid
+flowchart TD
+    START([Invocazione]) --> Q1[Quale progetto?]
+    Q1 --> Q2[Quale requisito RF-XX?]
+    Q2 --> Q3{.feature-state.md\nesiste?}
+    Q3 -->|Sì| RESUME[Riprendi da fase corrente]
+    Q3 -->|No| PLAN
+
+    PLAN[Fase 1: feature-plan] --> G1{GATE 1\nPiano approvato?}
+    G1 -->|No| PLAN
+    G1 -->|Sì| DEV[Fase 2: feature-develop]
+    DEV --> G2{GATE 2\nSviluppo completo?}
+    G2 -->|No| DEV
+    G2 -->|Sì| PAR
+
+    PAR[Fase 3: Test + Review] --> TEST[feature-test]
+    PAR --> REV[feature-review]
+    TEST & REV --> G3{GATE 3\nTutti PASS?}
+    G3 -->|No| FIX[Fix list → Develop]
+    FIX --> DEV
+    G3 -->|Sì| EXIT[Exit: feature-log + commit]
+    EXIT --> DONE([Output riepilogo])
+
+    RESUME --> G1
+```
+
+---
+
+### feature-plan
+
+**Path**: `skills/development/feature-plan/SKILL.md`
+**Trigger**: Prima di sviluppare una feature
+**Stato**: beta
+
+Analizza un requisito e produce un piano tecnico: task list, file coinvolti, dipendenze, criteri di accettazione, rischi, pattern da applicare.
+
+```mermaid
+flowchart TD
+    START([Invocazione]) --> Q1[Qual è il requisito?]
+    Q1 --> Q2[Vincoli tecnici noti?]
+    Q2 --> Q3[Pattern esistenti da riutilizzare?]
+    Q3 --> Q4[Backend / frontend / fullstack?]
+    Q4 --> Q5[Complessità percepita?]
+    Q5 --> READ[Legge requisiti + architettura + processi + patterns]
+    READ --> PLAN[Produce piano tecnico]
+    PLAN --> CONFIRM{Approvato?}
+    CONFIRM -->|No| PLAN
+    CONFIRM -->|Sì| WRITE[Scrive .feature-state.md]
+    WRITE --> DONE([Output riepilogo])
+```
+
+---
+
+### feature-develop
+
+**Path**: `skills/development/feature-develop/SKILL.md`
+**Trigger**: Piano approvato (GATE 1 passato)
+**Stato**: beta
+
+Implementa la feature dal piano. Due modalità: sviluppo diretto (Claude Code) o brief autocontenuto per Windsurf.
+
+```mermaid
+flowchart TD
+    START([Invocazione]) --> Q1{Claude Code\no Windsurf?}
+    Q1 -->|Claude Code| CC[Legge piano]
+    Q1 -->|Windsurf| WS[Legge piano]
+
+    CC --> LOOP{Per ogni task}
+    LOOP --> IMPL[Implementa task]
+    IMPL --> CHECK[Verifica compila]
+    CHECK --> LOOP
+    LOOP -->|Tutti completati| UPDATE[Aggiorna .feature-state.md]
+
+    WS --> BRIEF[Genera brief autocontenuto]
+    BRIEF --> SHOW[Mostra brief all'utente]
+    SHOW --> UPDATE
+
+    UPDATE --> DONE([Output riepilogo])
+```
+
+---
+
+### feature-test
+
+**Path**: `skills/development/feature-test/SKILL.md`
+**Trigger**: Sviluppo completato (GATE 2 passato)
+**Stato**: beta
+
+Test completo: scrive test mancanti, esegue suite, verifica criteri di accettazione, testa edge case, controlla regressioni.
+
+```mermaid
+flowchart TD
+    START([Invocazione]) --> Q1[Edge case specifici?]
+    Q1 --> Q2[Test suite esistente?]
+    Q2 --> READ[Legge criteri + file modificati]
+    READ --> WRITE[Scrive nuovi test]
+    WRITE --> RUN[Esegue suite completa]
+    RUN --> VERIFY[Verifica criteri di accettazione]
+    VERIFY --> REGR[Controlla regressioni]
+    REGR --> REPORT{Tutti PASS?}
+    REPORT -->|Sì| PASS([PASS])
+    REPORT -->|No| FAIL([FAIL + lista problemi])
+```
+
+---
+
+### feature-review
+
+**Path**: `skills/development/feature-review/SKILL.md`
+**Trigger**: Sviluppo completato (GATE 2 passato)
+**Stato**: beta
+
+Review autonoma: check aderenza pattern LAIF, duplicazioni, qualità, sicurezza. Confronta con `patterns/` e suggerisce nuovi pattern estraibili.
+
+```mermaid
+flowchart TD
+    START([Invocazione autonoma]) --> READ[Legge file modificati]
+    READ --> C1[Check 1: Pattern LAIF]
+    C1 --> C2[Check 2: Duplicazioni]
+    C2 --> C3[Check 3: Qualità + sicurezza]
+    C3 --> C4[Check 4: Confronto con KB patterns/]
+    C4 --> CLASS{Issue critiche?}
+    CLASS -->|Sì| FAIL([FAIL + fix list])
+    CLASS -->|No| PASS([PASS + suggerimenti])
+```
+
+---
 
 ### estrazione-decisioni
 

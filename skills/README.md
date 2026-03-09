@@ -19,6 +19,11 @@ Le skill sono istruzioni operative per Claude Code. Ogni skill è una **cartella
 
 | Skill | Stato | Trigger | Legge | Scrive |
 |-------|-------|---------|-------|--------|
+| `development/feature-workflow/` | beta | Sviluppo feature end-to-end | requisiti.md, .feature-state.md | .feature-state.md, feature-log.md |
+| `development/feature-plan/` | beta | Prima di sviluppare una feature | requisiti.md, architettura.md, patterns/ | .feature-state.md (Piano) |
+| `development/feature-develop/` | beta | Piano approvato, da implementare | .feature-state.md (Piano), processi.md | Codebase, .feature-state.md (Sviluppo) |
+| `development/feature-test/` | beta | Sviluppo completato, da testare | .feature-state.md, requisiti.md, codebase | Nuovi test, .feature-state.md (Test) |
+| `development/feature-review/` | beta | Sviluppo completato, da revisionare | .feature-state.md, processi.md, patterns/ | .feature-state.md (Review) |
 | `development/estrazione-decisioni/` | beta | Decisione tecnica non banale | decisioni.md | decisioni.md, architettura.md |
 | `development/estrazione-pattern/` | beta | Fine sprint o fine progetto | feature-log, decisioni | patterns/, knowledge/ |
 

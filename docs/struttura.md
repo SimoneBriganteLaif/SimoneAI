@@ -72,6 +72,11 @@ SimoneAI/
 │   │   ├── genera-allegato-tecnico/ ← Requisiti → allegato contrattuale.
 │   │   └── genera-mockup-brief/    ← Requisiti → brief mockup per Windsurf.
 │   ├── development/                ← Fase sviluppo: durante lo sprint.
+│   │   ├── feature-workflow/       ← Orchestra ciclo completo feature (Plan→Dev→Test→Review).
+│   │   ├── feature-plan/           ← Requisito → piano implementazione tecnico.
+│   │   ├── feature-develop/        ← Piano → implementazione (Claude Code o Windsurf brief).
+│   │   ├── feature-test/           ← Test completo: scrive, esegue, verifica criteri.
+│   │   ├── feature-review/         ← Review: pattern LAIF, duplicazioni, qualità, KB.
 │   │   ├── estrazione-decisioni/   ← Documenta decisioni tecniche in formato ADR.
 │   │   └── estrazione-pattern/     ← Fine sprint → estrae pattern riutilizzabili.
 │   ├── maintenance/                ← Manutenzione periodica.

@@ -2,7 +2,7 @@
 
 ← [System.md](../System.md) · [skills.md](skills.md) · [struttura.md](struttura.md)
 
-**Ultimo aggiornamento**: 2026-03-08
+**Ultimo aggiornamento**: 2026-03-09
 
 ---
 
@@ -33,9 +33,10 @@ flowchart TD
     B -->|Generare contratto| F3[genera-allegato-tecnico]
     B -->|Generare brief mockup| F4[genera-mockup-brief]
 
+    C -->|Nuova feature| F5a[feature-workflow\nPlan→Dev→Test→Review]
     C -->|Decisione tecnica rilevante| F5[estrazione-decisioni]
     C -->|Fine sprint| F6[estrazione-pattern]
-    C -->|Commit su KB| F7[verifica-pre-commit\nautonom a]
+    C -->|Commit su KB| F7[verifica-pre-commit\nautonoma]
 
     D -->|Audit KB completo| F8[audit-periodico]
     D -->|Registro modifica struttura/contenuto| F9[gestione-kb\nmod. 1]
@@ -59,11 +60,17 @@ flowchart LR
     end
 
     subgraph DEV["Development"]
-        D1[Sviluppo su Windsurf]
+        FW[feature-workflow]
+        FP[feature-plan]
+        FD[feature-develop]
+        FT[feature-test]
+        FR[feature-review]
         D2[estrazione-decisioni]
         D3[estrazione-pattern]
-        D1 -.->|decisione tecnica| D2
-        D1 -.->|fine sprint| D3
+        FW --> FP --> FD
+        FD --> FT & FR
+        FW -.->|decisione tecnica| D2
+        FW -.->|fine sprint| D3
     end
 
     subgraph MAINT["Maintenance"]
@@ -174,34 +181,60 @@ sequenceDiagram
 
 ## Flusso Development
 
+### Feature Workflow (ciclo completo)
+
 ```mermaid
 sequenceDiagram
     participant U as Utente
     participant CC as Claude Code
     participant WS as Windsurf
 
-    Note over U,WS: Sprint di sviluppo
+    Note over U,CC: Nuova feature da sviluppare
 
-    U->>WS: Implementa feature X
-    WS->>WS: Scrive codice
-    WS-->>U: Feature implementata
+    U->>CC: Sviluppa feature RF-XX
+    CC->>CC: skill: feature-workflow
 
-    U->>CC: Rivedi il codice
-    CC->>CC: Code review
-    CC-->>U: Feedback
-
-    alt Decisione tecnica rilevante
-        U->>CC: Documenta questa decisione
-        CC->>CC: skill: estrazione-decisioni
-        CC->>U: Domande (una alla volta)
-        U->>CC: Risposte
-        CC->>CC: Scrive ADR + aggiorna architettura.md
-        CC-->>U: Decisione documentata
+    rect rgb(230, 245, 255)
+    Note over CC: Fase 1 — Plan
+    CC->>CC: skill: feature-plan
+    CC->>U: Domande sul requisito
+    U->>CC: Risposte
+    CC->>CC: Produce piano tecnico
+    CC->>U: Piano proposto — approvi?
+    U->>CC: Approvato (GATE 1)
     end
 
-    U->>CC: Esegui test
-    CC->>CC: Esegue test suite
-    CC-->>U: Risultati
+    rect rgb(230, 255, 230)
+    Note over CC,WS: Fase 2 — Develop
+    CC->>CC: skill: feature-develop
+    alt Claude Code diretto
+        CC->>CC: Implementa task per task
+    else Brief per Windsurf
+        CC-->>WS: Brief autocontenuto
+        WS->>WS: Implementa
+    end
+    CC->>U: Sviluppo completo — confermi?
+    U->>CC: Confermato (GATE 2)
+    end
+
+    rect rgb(255, 245, 230)
+    Note over CC: Fase 3 — Test + Review (paralleli)
+    par Test
+        CC->>CC: skill: feature-test
+        CC->>CC: Scrive test + esegue suite
+    and Review
+        CC->>CC: skill: feature-review
+        CC->>CC: Check pattern, duplicazioni, qualità
+    end
+    end
+
+    alt GATE 3 PASS
+        CC->>CC: Aggiorna feature-log.md
+        CC-->>U: Feature completata
+    else GATE 3 FAIL
+        CC->>U: Fix list da test/review
+        CC->>CC: Torna a Develop con fix
+    end
 
     Note over U,CC: Fine sprint
 
@@ -211,6 +244,37 @@ sequenceDiagram
     U->>CC: Risposte
     CC->>CC: Estrae pattern → patterns/
     CC-->>U: KB aggiornata
+```
+
+### Flusso alternativo (senza orchestratore)
+
+Le sub-skill possono essere invocate singolarmente per task semplici o quando serve solo una fase specifica:
+
+| Skill standalone | Quando usarla da sola |
+|-----------------|----------------------|
+| `feature-plan` | Voglio solo pianificare, senza sviluppare subito |
+| `feature-develop` | Il piano è già stato fatto, devo solo implementare |
+| `feature-test` | Il codice è pronto, devo solo testare |
+| `feature-review` | Il codice è pronto, voglio solo una review |
+
+### Flusso legacy (senza feature-workflow)
+
+```mermaid
+sequenceDiagram
+    participant U as Utente
+    participant CC as Claude Code
+    participant WS as Windsurf
+
+    U->>WS: Implementa feature X
+    WS->>WS: Scrive codice
+    WS-->>U: Feature implementata
+    U->>CC: Rivedi il codice
+    CC->>CC: Code review
+    CC-->>U: Feedback
+
+    alt Decisione tecnica rilevante
+        CC->>CC: skill: estrazione-decisioni
+    end
 ```
 
 ---
