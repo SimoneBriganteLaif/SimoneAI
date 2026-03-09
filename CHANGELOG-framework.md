@@ -6,7 +6,7 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/).
 
 ---
 
-## [Non rilasciato]
+## [v1.3] — 2026-03-09
 
 ### Added
 
@@ -30,10 +30,20 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/).
 
 **Convenzione repository progetti**
 - Le repository di codice non vivono più dentro `projects/[nome]/repo/` ma in `/Users/simonebrigante/LAIF/repo/[nome]/`
-- Rimossi da `.gitignore` le regole `projects/*/repo/` e `projects/*/repo-*/`
-- Rimosso `projects/*/repo/` da `.obsidian/app.json` (userIgnoreFilters)
+- `.gitignore` — mantenute regole `projects/*/repo/` e `projects/*/repo-*/` per ignorare eventuali copie locali residue
+- Rimossa copia residua `projects/jubatus/repo/` (ora in path esterno)
+- Rimosso `projects/*/repo/` da `.obsidian/app.json` (userIgnoreFilters) — non più necessario
 - Aggiornati: `docs/struttura.md`, `System.md`, `projects/_template/README.md`, `projects/jubatus/README.md`
 - `skills/presales/init-project/SKILL.md` — riscritta: rimosso clone repo, analisi da path esterno, rimosso step generazione CLAUDE.md nella repo
+
+### Fixed
+
+**Allineamento documentazione post-review v1.3**
+- `docs/struttura.md` — aggiunto `projects/_archivio/` e `docs/setup.md` nell'albero (esistevano su disco ma mancavano nella documentazione)
+- `docs/skills.md` — `verifica-pre-commit`: corretto stato da "beta" a "stable", aggiornata descrizione e diagramma Mermaid (da sub-agent a ibrido script+semantica)
+- `System.md` — aggiornata versione da 1.0 a 1.3
+- `.tags/index.md` — aggiornato tag `#progetto:jubatus` con i nuovi file (architettura, decisioni, feature-log, stato-progetto)
+- `skills/README.md` — `verifica-pre-commit` già allineata a stato stable (coerente con SKILL.md v3.0)
 
 ---
 

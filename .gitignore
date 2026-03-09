@@ -9,6 +9,10 @@ core/laif-template/
 core/ds/
 core/laif-cdk/
 
+# Repository progetti (vivono in /Users/simonebrigante/LAIF/repo/[nome]/)
+projects/*/repo/
+projects/*/repo-*/
+
 # macOS
 .DS_Store
 ._*

@@ -103,7 +103,7 @@ Quando una skill beta viene usata abbastanza da risultare stabile, si aggiorna l
 | `estrazione-pattern` | Development | beta | Fine sprint → pattern riutilizzabili | feature-log, decisioni.md | patterns/, knowledge/ |
 | `audit-periodico` | Maintenance | beta | Audit mensile intera KB | Tutta la KB | Report + aggiornamenti distribuiti |
 | `gestione-kb` | Meta | beta | Gestione meta-file del sistema | Meta-file, struttura cartelle | changelog, IDEAS.md, docs/ |
-| `verifica-pre-commit` | Meta | beta | Verifica autonoma coerenza KB pre-commit (5 check paralleli) | Tutti i meta-file + struttura reale | nessuno (solo report) |
+| `verifica-pre-commit` | Meta | stable | Verifica ibrida coerenza KB pre-commit (script Python + check semantici) | Tutti i meta-file + struttura reale | nessuno (solo report) |
 
 ---
 
@@ -485,14 +485,14 @@ flowchart TD
 
 **Path**: `skills/meta/verifica-pre-commit/SKILL.md`
 **Trigger**: Automatico — dopo ogni modifica a file KB, prima di ogni `git commit`
-**Stato**: beta
+**Stato**: stable
 
-Skill autonoma (nessun loop conversazionale). Esegue 5 check in parallelo e restituisce PASS/FAIL con issue specifiche. Il commit è bloccato finché tutti i check non passano.
+Verifica ibrida: 4 check automatizzati (script Python) + check semantici (parent agent). Il commit è bloccato finché tutti i check non passano.
 
 ```mermaid
 flowchart TD
-    START([Invocata come sub-agent]) --> INPUT[Riceve lista file modificati]
-    INPUT --> PAR{Check paralleli}
+    START([Invocazione pre-commit]) --> SCRIPT[Esegue run_all.py]
+    SCRIPT --> PAR{Check paralleli}
 
     PAR --> C1[Check 1\nCoerenza referenze\ncross-file]
     PAR --> C2[Check 2\nChangelog\naggiornato]

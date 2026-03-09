@@ -16,7 +16,7 @@ Tutti i tag usati nella knowledge base. Aggiornato dalla skill `maintenance/audi
 
 | Tag | File che lo usano |
 |-----|-----------------|
-| `#progetto:jubatus` | projects/jubatus/README.md, projects/jubatus/requisiti.md, projects/jubatus/meeting/*.md |
+| `#progetto:jubatus` | projects/jubatus/README.md, projects/jubatus/requisiti.md, projects/jubatus/architettura.md, projects/jubatus/decisioni.md, projects/jubatus/feature-log.md, projects/jubatus/stato-progetto.md, projects/jubatus/meeting/*.md |
 
 ---
 
@@ -81,4 +81,4 @@ Tutti i tag usati nella knowledge base. Aggiornato dalla skill `maintenance/audi
 
 ---
 
-*Ultimo aggiornamento: 2026-03-08*
+*Ultimo aggiornamento: 2026-03-09*

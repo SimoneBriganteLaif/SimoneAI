@@ -2,7 +2,7 @@
 
 ← [System.md](../System.md) · [skills.md](skills.md) · [workflow.md](workflow.md)
 
-**Ultimo aggiornamento**: 2026-03-08
+**Ultimo aggiornamento**: 2026-03-09
 
 ---
 
@@ -36,12 +36,14 @@ SimoneAI/
 │   │                                 sia come contesto per gli agenti AI.
 │   ├── struttura.md                ← Questo file. Mappa delle cartelle e convenzioni.
 │   ├── skills.md                   ← Catalogo completo delle skill con flussi Mermaid.
-│   └── workflow.md                 ← Flussi di lavoro per fase + divisione Claude Code/Windsurf.
+│   ├── workflow.md                 ← Flussi di lavoro per fase + divisione Claude Code/Windsurf.
+│   └── setup.md                    ← Guida installazione: Claude Code, Windsurf, MCP, environment.
 │
 ├── projects/                       ← Un progetto = una cartella.
 │   │                                 Ogni cartella segue il template _template/.
 │   ├── INDEX.md                    ← Registro di tutti i progetti: stato, stack, date.
 │   │                                 Aggiornato automaticamente da init-project.
+│   ├── _archivio/                  ← Progetti archiviati (chiusi o sospesi).
 │   ├── _template/                  ← Template base — NON copiare manualmente,
 │   │   │                             usa la skill init-project.
 │   │   ├── README.md               ← Overview progetto: cliente, stack, link, timeline.

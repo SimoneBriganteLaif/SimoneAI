@@ -12,7 +12,7 @@ Categorie usate:
 
 ---
 
-## [Non rilasciato]
+## [v1.3] — 2026-03-09
 
 ### Progetti
 
