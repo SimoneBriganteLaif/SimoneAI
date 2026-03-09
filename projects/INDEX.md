@@ -6,7 +6,7 @@ Aggiornato automaticamente dalla skill `skills/presales/init-project/`.
 
 | Progetto | Cliente | Industria | Stato | Inizio | Fine | Stack | Repo |
 |---------|---------|----------|-------|--------|------|-------|------|
-| *(nessun progetto ancora)* | | | | | | | |
+| [jubatus](jubatus/README.md) | Jubatus | Entertainment/Eventi | in-sviluppo | 2026-01-23 | — | FastAPI, Next.js, PostgreSQL, AWS | [GitHub](https://github.com/laif-group/jubatus.git) |
 
 ---
 
@@ -25,7 +25,7 @@ Aggiornato automaticamente dalla skill `skills/presales/init-project/`.
 
 ## Statistiche
 
-- **Totale progetti**: 0
-- **In sviluppo**: 0
+- **Totale progetti**: 1
+- **In sviluppo**: 1
 - **Completati**: 0
 - **Ultimo aggiornamento**: 2026-03-08

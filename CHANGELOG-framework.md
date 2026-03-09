@@ -6,6 +6,38 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/).
 
 ---
 
+## [Non rilasciato]
+
+### Added
+
+**Gestione repository progetti**
+- `.gitignore` — aggiunta regola `projects/*/repo/` e `projects/*/repo-*/` per ignorare repo Git annidate nei progetti
+- `projects/_archivio/` — creata directory per progetti archiviati
+
+**Configurazione Obsidian**
+- `.obsidian/app.json` — aggiunto filtro `projects/*/repo/` per escludere le repo dei progetti da explorer e ricerca
+- `.obsidian/graph.json` — aggiunto `-path:repo` al filtro del grafo per escludere le repo dei progetti
+
+### Changed
+
+**Skill verifica-pre-commit v3.0 — ibrido script + semantica**
+- `skills/meta/verifica-pre-commit/` — riscritta completamente:
+  - 5 script Python deterministici: `run_all.py`, `check_refs.py`, `check_changelog.py`, `check_tags.py`, `check_struttura.py`
+  - Check semantici documentati in SKILL.md (referenze non-link, contenuto changelog, IDEAS, skills/README.md)
+  - `check_struttura.py` — check bidirezionale: reale→documentazione + documentazione→reale
+  - `check_tags.py` — aggiunto check consistenza tag per progetto (#progetto: e #industria: uguali in tutti i file)
+- `CLAUDE.md` — aggiornate regole autonome: rimossi sub-agent, aggiunto approccio ibrido script+semantica, aggiunta regola gestione idee/proposte
+
+**Ristrutturazione template progetto**
+- `projects/_template/` — struttura piatta per tipo di contenuto (era: presales/ → development/ → maintenance/)
+  - Rimossi: `presales/`, `development/`, `maintenance/` (sotto-cartelle per fase)
+  - File in root: `meeting/`, `requisiti.md`, `architettura.md`, `decisioni.md`, `feature-log.md`, `allegato-tecnico.md`, `mockup-brief.md`, `manutenzione.md`
+  - Rinominati: `decisioni-tecniche.md` → `decisioni.md`, `requisiti-mockup.md` → `mockup-brief.md`, `note.md` → `manutenzione.md`, `note-meeting/` → `meeting/`
+- `projects/jubatus/` — migrato alla nuova struttura piatta
+- Aggiornati riferimenti alla vecchia struttura in: `CLAUDE.md`, `docs/struttura.md`, `docs/skills.md`, `docs/workflow.md`, `System.md`
+
+---
+
 ## [v1.1] — 2026-03-08
 
 ### Added

@@ -9,6 +9,10 @@ core/laif-template/
 core/ds/
 core/laif-cdk/
 
+# Repository progetti (sono repo Git annidate, gestite separatamente)
+projects/*/repo/
+projects/*/repo-*/
+
 # macOS
 .DS_Store
 ._*

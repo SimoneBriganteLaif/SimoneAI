@@ -1,6 +1,6 @@
 {
   "collapse-filter": false,
-  "search": "-path:core -path:.claude -path:memory",
+  "search": "-path:core -path:.claude -path:memory -path:repo",
   "showTags": false,
   "showAttachments": false,
   "hideUnresolved": false,
@@ -46,6 +46,6 @@
   "repelStrength": 10,
   "linkStrength": 1,
   "linkDistance": 180,
-  "scale": 1.459996591167814,
+  "scale": 1.5115040834859466,
   "close": true
 }

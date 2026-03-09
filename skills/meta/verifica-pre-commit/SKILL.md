@@ -1,234 +1,164 @@
 ---
 nome: "Verifica Pre-Commit"
 descrizione: >
-  Skill autonoma di verifica della coerenza della KB prima di ogni commit.
-  Esegue 5 check in parallelo (referenze cross-file, changelog, IDEAS, tag, struttura).
-  Restituisce PASS o FAIL con issue specifiche da risolvere.
-  NON ha loop conversazionale — progettata per girare come sub-agent.
-  NON corregge: rileva e riporta. È il parent agent che corregge.
+  Verifica ibrida della coerenza della KB: script Python per i check
+  meccanici + check semantici eseguiti dal parent agent.
+  FONDAMENTALE: il commit non può procedere senza PASS completo.
 fase: meta
-versione: "1.0"
-stato: beta
+versione: "3.0"
+stato: stable
 legge:
-  - CLAUDE.md
-  - System.md
   - CHANGELOG-framework.md
   - CHANGELOG-contenuti.md
   - IDEAS.md
   - docs/struttura.md
-  - docs/skills.md
-  - docs/workflow.md
   - .tags/index.md
-  - skills/ (frontmatter di tutti i SKILL.md)
+  - skills/README.md
+  - frontmatter dei file modificati
 scrive: []
-aggiornato: "2026-03-08"
+aggiornato: "2026-03-09"
 ---
 
 # Skill: Verifica Pre-Commit
 
 ## Obiettivo
 
-Verificare in autonomia che la KB sia coerente prima di ogni commit. Nessuna conversazione, nessuna domanda: solo lettura, verifica e report.
+Verificare in modo completo che la KB sia coerente prima di un commit.
+La verifica è **ibrida**: check meccanici automatizzati (script Python) + check semantici (parent agent).
+Il commit è bloccato finché tutti i check — sia script che semantici — non passano.
 
 ## Perimetro
 
-**Fa**: rileva inconsistenze, changelog mancanti, idee non aggiornate, tag assenti, drift struttura.
+**Fa**: rileva inconsistenze di ogni tipo — referenze rotte, changelog incompleti, tag mancanti o inconsistenti, struttura disallineata, idee non aggiornate, skills/README.md fuori sync.
 **NON fa**: correggere i problemi — li riporta al parent agent che li risolve.
-**NON fa**: audit dei progetti o dei pattern (per quello: `audit-periodico`).
-**NON fa**: sync interattivo della documentazione (per quello: `gestione-kb` modalità 3).
+**NON fa**: audit completo dei progetti (per quello: `audit-periodico`).
 
 ---
 
-## Quando viene invocata
+## Esecuzione
 
-Questa skill viene invocata automaticamente dal parent agent (Claude Code) in questi momenti:
+### Fase 1 — Script automatici
 
-1. **Prima di ogni `git commit`** — BLOCCANTE: il commit non procede se il risultato è FAIL
-2. **Al termine di qualsiasi sessione in cui sono stati modificati file della KB**
-3. **Su richiesta esplicita dell'utente** per spot-check della coerenza
+```bash
+python3 skills/meta/verifica-pre-commit/run_all.py
+```
+
+Esegue 4 check meccanici. Se non si passano file, li ricava da `git diff`.
+
+### Fase 2 — Check semantici (obbligatori)
+
+Il parent agent esegue i check semantici **dopo** gli script. Sono elencati sotto in ogni sezione di check.
+
+### Risultato finale
+
+**PASS** solo quando: tutti gli script passano **E** tutti i check semantici passano.
 
 ---
 
-## Input
-
-Il parent agent passa (in formato testo) la lista dei file modificati. Se non disponibile, esegui `git diff --name-only HEAD` per ricavarla.
-
-```
-File modificati:
-- CLAUDE.md
-- docs/skills.md
-- skills/meta/verifica-pre-commit/SKILL.md
-```
-
-In alternativa, il parent può richiedere **full scan** (nessun file specifico): controlla tutto.
+## I 5 check — dettaglio completo
 
 ---
 
-## Processo di verifica
+### Check 1 — Referenze cross-file
 
-Esegui i 5 check **in parallelo** (usa sub-agent separati se i file modificati sono più di 3).
+**Script**: `check_refs.py file1.md [file2.md ...]`
+Estrae i link markdown `[testo](target)`, risolve i percorsi relativi, verifica che il target esista. Ignora URL esterni, ancore, blocchi di codice e inline code.
 
----
+**Check semantico 1a — Referenze non-link**:
+Percorsi citati come testo libero (es. `vedi projects/jubatus/requisiti.md` senza sintassi `[]()`) non sono catturati dallo script. Il parent agent deve:
+1. Scorrere i file modificati cercando percorsi interni citati fuori da link markdown
+2. Verificare che esistano
 
-### Check 1 — Coerenza referenze cross-file
-
-**Mappa delle dipendenze da verificare:**
-
-| Se è modificato... | Verifica anche... |
-|---|---|
-| Un file in `skills/[fase]/[nome]/` | `CLAUDE.md` (sezione workflow), `docs/skills.md` (tabella + sezione), `docs/workflow.md` (diagrammi Mermaid) |
-| `skills/README.md` | `docs/skills.md` (deve essere allineato) |
-| Una cartella aggiunta/rimossa in `skills/` | `CLAUDE.md`, `docs/struttura.md`, `docs/skills.md`, `System.md` |
-| Una cartella aggiunta/rimossa in `projects/` o `knowledge/` | `CLAUDE.md`, `docs/struttura.md`, `System.md` |
-| `CLAUDE.md` | `System.md` (struttura e skill citate), `docs/workflow.md` (flussi) |
-| `docs/struttura.md` | Struttura cartelle reale (confronta albero documentato vs `ls`) |
-
-**Come verificare:**
-1. Per ogni file modificato, individua i file dipendenti dalla tabella sopra
-2. Leggi i file dipendenti
-3. Verifica che i nomi, percorsi e strutture citati siano ancora corretti
-4. Segnala ogni discrepanza con: file sorgente → file dipendente → issue specifica
-
-**Output check:**
-```
-Check 1 — Coerenza referenze: ✓ PASS | ✗ FAIL
-  [Se FAIL — una riga per issue:]
-  - docs/skills.md:31 → cita "verifica-commit" ma il percorso è "verifica-pre-commit"
-```
+**Check semantico 1b — Coerenza skills/README.md**:
+Se sono state modificate skill (aggiunte, rimosse, rinominate):
+1. Leggere `skills/README.md`
+2. Verificare che la tabella riepilogo sia allineata con le skill reali (nomi, fase, stato, legge/scrive)
 
 ---
 
 ### Check 2 — Changelog aggiornato
 
-**Regola**: ogni commit deve avere almeno un'entry nel changelog appropriato.
+**Script**: `check_changelog.py file1 [file2 ...]`
+Classifica i file in "framework" o "contenuti" e verifica che la sezione `[Non rilasciato]` del changelog corrispondente non sia vuota.
 
-**Come verificare:**
-1. Leggi `CHANGELOG-framework.md` e `CHANGELOG-contenuti.md`
-2. Controlla se esiste una sezione `## [Non rilasciato]` con entry recenti
-3. Classifica le modifiche:
-   - Modifiche a struttura, skill, template, processi → devono essere in `CHANGELOG-framework.md`
-   - Modifiche a contenuti (progetti, pattern, knowledge aziendale) → in `CHANGELOG-contenuti.md`
-4. Verifica che le modifiche nella lista di input siano tracciate nel changelog corretto
-
-**Output check:**
-```
-Check 2 — Changelog: ✓ PASS | ✗ FAIL
-  [Se FAIL:]
-  - skills/meta/verifica-pre-commit/SKILL.md aggiunta ma non tracciata in CHANGELOG-framework.md
-```
+**Check semantico 2a — Contenuto del changelog**:
+Lo script verifica solo che il changelog non sia vuoto. Il parent agent deve:
+1. Leggere la sezione `[Non rilasciato]` del changelog appropriato
+2. Verificare che le entry descrivano effettivamente le modifiche fatte
+3. Verificare che non manchino modifiche significative
+4. Verificare che le entry siano nel changelog giusto (framework vs contenuti)
 
 ---
 
-### Check 3 — IDEAS.md aggiornato
+### Check 3 — IDEAS.md
 
-**Regola**: se qualcosa di implementato corrisponde a un'idea in stato `proposta` o `approvata`, quella idea va marcata come `completata`.
+**Nessuno script** — check interamente semantico.
 
-**Come verificare:**
-1. Leggi `IDEAS.md` — filtra idee con stato `proposta` o `approvata`
-2. Per ciascuna, controlla se i file nella lista modificati le implementano (cerca match semantici: nomi file, concetti, percorsi citati nell'idea)
-3. Segnala le idee che sembrano completate ma non sono marcate come tali
+**Check semantico 3a — Idee completate**:
+1. Leggere `IDEAS.md`, filtrare idee con stato `proposta` o `approvata`
+2. Confrontare con i file modificati (match per keyword, concetti, percorsi)
+3. Segnalare idee che sembrano completate ma non sono marcate come tali
 
-**Match rapidi da controllare sempre:**
-- Nuova skill aggiunta → c'è un'idea per quella skill?
-- Nuovo file in `docs/` → c'è un'idea per quella documentazione?
-- Nuovo processo automatico → c'è un'idea per quell'automazione?
-
-**Output check:**
-```
-Check 3 — IDEAS.md: ✓ PASS | ✗ FAIL
-  [Se FAIL:]
-  - IDEA-001 menziona "scheduled task pre-commit" — il nuovo skill verifica-pre-commit implementa parte di questo?
-    → Valuta se aggiornare stato o aggiungere nota
-```
+**Check semantico 3b — Nuove idee emerse**:
+1. Se durante la sessione sono emerse idee o proposte non ancora registrate
+2. Verificare che siano state registrate in IDEAS.md o esplicitamente rifiutate dall'utente
 
 ---
 
 ### Check 4 — Tag frontmatter
 
-**Regola**: ogni file .md nuovo o modificato che non è un file di sistema (CLAUDE.md, System.md, CHANGELOG*.md, IDEAS.md, README.md) deve avere tag nel frontmatter.
+**Script**: `check_tags.py file1.md [file2.md ...]`
+Per ogni file .md (esclusi file di sistema e directory `docs/`, `.tags/`, `core/`):
+- Verifica frontmatter presente
+- Verifica almeno un tag `#categoria:valore`
+- Verifica tag registrati in `.tags/index.md`
+- **Verifica consistenza progetto**: tutti i file di un progetto devono usare gli stessi `#progetto:` e `#industria:`
 
-**Come verificare:**
-1. Per ogni file .md nella lista modificati (esclusi file di sistema), leggi il frontmatter
-2. Verifica presenza di almeno un tag riconosciuto (vedi tabella tag in CLAUDE.md)
-3. Verifica che i tag usati siano registrati in `.tags/index.md`
-
-**Output check:**
-```
-Check 4 — Tag: ✓ PASS | ✗ FAIL
-  [Se FAIL:]
-  - skills/meta/verifica-pre-commit/SKILL.md: tag mancanti nel frontmatter
-  - knowledge/azienda/nuovo-file.md: tag #stack:laravel non in .tags/index.md
-```
+Nessun check semantico aggiuntivo — lo script copre tutti i casi.
 
 ---
 
 ### Check 5 — Struttura vs documentazione
 
-**Regola**: `docs/struttura.md` deve riflettere l'albero reale delle cartelle principali.
+**Script**: `check_struttura.py` (nessun input)
+Check **bidirezionale**:
+- **Diretto**: directory reali (skills, projects, knowledge, core) devono essere in `docs/struttura.md` e `projects/INDEX.md`
+- **Inverso**: directory documentate in `docs/struttura.md` devono esistere su disco
 
-**Come verificare:**
-1. Lista le cartelle di primo e secondo livello effettivamente esistenti:
-   - `ls skills/` → confronta con skills documentate
-   - `ls projects/` → confronta
-   - `ls knowledge/` → confronta
-   - `ls core/` → confronta
-2. Leggi `docs/struttura.md` e confronta
-3. Segnala: cartelle esistenti ma non documentate, cartelle documentate ma inesistenti
-
-**Output check:**
-```
-Check 5 — Struttura: ✓ PASS | ✗ FAIL
-  [Se FAIL:]
-  - skills/meta/verifica-pre-commit/ esiste ma non è in docs/struttura.md
-```
+Nessun check semantico aggiuntivo — lo script copre tutti i casi.
 
 ---
 
-## Output finale (obbligatorio)
+## Script disponibili
 
-```
-═══════════════════════════════════════
-VERIFICA PRE-COMMIT — [PASS | FAIL]
-File verificati: [N] | Issue trovate: [N]
-═══════════════════════════════════════
+| Script | Check | Input | Cosa fa |
+|--------|-------|-------|---------|
+| `run_all.py` | tutti | file (o auto da git) | Runner: esegue check 1,2,4,5 |
+| `check_refs.py` | 1 | file .md | Link markdown → file esistenti |
+| `check_changelog.py` | 2 | file | Changelog non vuoto per tipo modifica |
+| `check_tags.py` | 4 | file .md | Tag presenti, registrati e consistenti per progetto |
+| `check_struttura.py` | 5 | nessuno | Struttura reale ↔ documentazione (bidirezionale) |
 
-Check 1 — Coerenza referenze:   [✓ PASS | ✗ FAIL (N issue)]
-Check 2 — Changelog:            [✓ PASS | ✗ FAIL (N issue)]
-Check 3 — IDEAS.md:             [✓ PASS | ✗ FAIL (N issue)]
-Check 4 — Tag frontmatter:      [✓ PASS | ✗ FAIL (N issue)]
-Check 5 — Struttura vs docs:    [✓ PASS | ✗ FAIL (N issue)]
+Tutti: exit 0 = PASS, exit 1 = FAIL con dettaglio issue su stdout.
 
-[Se FAIL:]
-────────────────────────────────────────
-ACTION REQUIRED — risolvi prima del commit:
+---
 
-1. [Issue specifica con file:riga e descrizione]
-2. [Issue specifica con file:riga e descrizione]
-...
+## Checklist semantica per il parent agent
 
-[Se PASS:]
-────────────────────────────────────────
-KB coerente — commit autorizzato.
-```
+Dopo aver eseguito `run_all.py`, verifica:
+
+- [ ] **1a**: Percorsi interni citati come testo libero (non link) puntano a file esistenti?
+- [ ] **1b**: Se skill modificate → `skills/README.md` è allineato?
+- [ ] **2a**: Le entry nel changelog descrivono accuratamente le modifiche fatte?
+- [ ] **3a**: Idee in IDEAS.md con stato `proposta`/`approvata` sono state implementate dai file modificati?
+- [ ] **3b**: Nuove idee emerse in sessione sono state registrate o rifiutate?
 
 ---
 
 ## Comportamento del parent agent
 
-Quando questo sub-agent restituisce **FAIL**:
-1. Il parent agent **NON procede con il commit**
-2. Il parent agent risolve **tutte** le issue in modo autonomo (senza chiedere all'utente, salvo ambiguità reali)
-3. Il parent agent riesegue `verifica-pre-commit` finché non restituisce PASS
-4. Solo a quel punto: esegue il commit
-
----
-
-## Checklist qualità
-
-- [ ] Tutti e 5 i check sono stati eseguiti (nessuno saltato)
-- [ ] Ogni FAIL ha un'issue specifica con file e descrizione (non messaggi generici)
-- [ ] Il risultato finale è PASS solo quando tutti e 5 i check sono PASS
-- [ ] I sub-agent paralleli (se usati) hanno tutti completato prima del report finale
+- **FAIL** → risolvi le issue autonomamente, riesegui, ripeti finché PASS
+- **PASS completo** (script + checklist semantica) → commit autorizzato
 
 ---
 ← [Catalogo skill](../../../docs/skills.md) · [Workflow](../../../docs/workflow.md) · [System.md](../../../System.md)

@@ -1,7 +1,7 @@
 ---
 nome: "Estrazione Pattern"
 descrizione: >
-  A fine sprint o fine progetto, analizza feature-log.md e decisioni-tecniche.md
+  A fine sprint o fine progetto, analizza feature-log.md e decisioni.md
   di UN PROGETTO SPECIFICO per estrarre pattern riutilizzabili in patterns/ e
   aggiornare la knowledge cross-progetto in knowledge/.
   NON è un audit generale della KB (per quello usa audit-periodico).
@@ -9,8 +9,8 @@ fase: development
 versione: "1.2"
 stato: beta
 legge:
-  - projects/[nome]/development/feature-log.md
-  - projects/[nome]/development/decisioni-tecniche.md
+  - projects/[nome]/feature-log.md
+  - projects/[nome]/decisioni.md
   - patterns/ (per verificare duplicati)
 scrive:
   - patterns/[nuovo-pattern].md (nuovo o aggiornato)
@@ -48,8 +48,8 @@ Trasforma l'esperienza accumulata su un progetto specifico in asset riutilizzabi
 
 ## Prerequisiti
 
-- [ ] Accesso a `projects/[nome]/development/feature-log.md`
-- [ ] Accesso a `projects/[nome]/development/decisioni-tecniche.md`
+- [ ] Accesso a `projects/[nome]/feature-log.md`
+- [ ] Accesso a `projects/[nome]/decisioni.md`
 
 ---
 
@@ -57,7 +57,7 @@ Trasforma l'esperienza accumulata su un progetto specifico in asset riutilizzabi
 
 ### Fase 1 — Ricognizione (automatica)
 
-Leggi `feature-log.md` e `decisioni-tecniche.md`. Poi chiedi:
+Leggi `feature-log.md` e `decisioni.md`. Poi chiedi:
 
 1. C'è qualcosa che hai risolto in questo progetto che pensi si ripresenterà su altri?
 2. Hai usato o adattato pattern da altri progetti LAIF?

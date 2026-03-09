@@ -6,12 +6,12 @@ descrizione: >
 fase: presales
 versione: "1.0"
 stato: beta
-dipende-da: "projects/[nome]/presales/requisiti.md (completo e validato)"
+dipende-da: "projects/[nome]/requisiti.md (completo e validato)"
 legge:
-  - projects/[nome]/presales/requisiti.md
+  - projects/[nome]/requisiti.md
   - projects/[nome]/README.md
 scrive:
-  - projects/[nome]/presales/requisiti-mockup.md
+  - projects/[nome]/mockup-brief.md
 aggiornato: "2026-03-08"
 ---
 
@@ -33,7 +33,7 @@ Produce il brief per i mockup: documento operativo per Windsurf che descrive le 
 
 ## Prerequisiti
 
-- [ ] `projects/[nome]/presales/requisiti.md` completo (nessuna domanda aperta critica)
+- [ ] `projects/[nome]/requisiti.md` completo (nessuna domanda aperta critica)
 - [ ] `projects/[nome]/README.md` con info cliente compilate
 
 Se mancano, blocca e indica cosa completare prima.
@@ -72,7 +72,7 @@ Ad ogni step, se la skill è in stato **beta**, chiedi se il processo ha senso o
 3. Sezione "cosa NON mockuppare" — evita false aspettative
 4. Aggiungi header per Windsurf:
    "Windsurf: questo file è il brief completo per i mockup. Non richiede ulteriori chiarimenti per iniziare."
-5. Salva in `projects/[nome]/presales/requisiti-mockup.md`
+5. Salva in `projects/[nome]/mockup-brief.md`
 
 ---
 
@@ -82,14 +82,14 @@ Ad ogni step, se la skill è in stato **beta**, chiedi se il processo ha senso o
 ✓ COMPLETATO — Genera Mockup Brief
 
 File prodotto:
-  projects/[nome]/presales/requisiti-mockup.md  (X schermate)
+  projects/[nome]/mockup-brief.md  (X schermate)
 
 Riepilogo:
   Schermate da mockuppare: [lista titoli]
   Dispositivi: [desktop/mobile/entrambi]
 
 Prossimi passi:
-  → Il file è pronto in projects/[nome]/presales/requisiti-mockup.md
+  → Il file è pronto in projects/[nome]/mockup-brief.md
     Windsurf può leggerlo direttamente da quella path
 ```
 

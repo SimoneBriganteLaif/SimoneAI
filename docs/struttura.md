@@ -45,17 +45,15 @@ SimoneAI/
 │   ├── _template/                  ← Template base — NON copiare manualmente,
 │   │   │                             usa la skill init-project.
 │   │   ├── README.md               ← Overview progetto: cliente, stack, link, timeline.
-│   │   ├── presales/
-│   │   │   ├── note-meeting/       ← Note grezze dai meeting (una per file, con data).
-│   │   │   ├── requisiti.md        ← Requisiti strutturati: RF, RNF, domande aperte.
-│   │   │   ├── requisiti-mockup.md ← Brief per Windsurf: schermate, flussi, brand.
-│   │   │   └── allegato-tecnico.md ← Allegato contrattuale: max 3 pagine, non tecnico.
-│   │   ├── development/
-│   │   │   ├── architettura.md     ← Stack, componenti, diagrammi, debito tecnico.
-│   │   │   ├── decisioni-tecniche.md ← Log ADR (Architecture Decision Record).
-│   │   │   └── feature-log.md     ← Feature completate: cosa, come, problemi, PR.
-│   │   └── maintenance/
-│   │       └── note.md             ← Note post go-live.
+│   │   ├── meeting/               ← Note meeting (una per file, con data).
+│   │   ├── requisiti.md           ← Requisiti strutturati: RF, RNF, domande aperte.
+│   │   ├── architettura.md        ← Stack, componenti, diagrammi, debito tecnico.
+│   │   ├── decisioni.md           ← Log ADR (Architecture Decision Record).
+│   │   ├── feature-log.md         ← Feature completate: cosa, come, problemi, PR.
+│   │   ├── allegato-tecnico.md    ← Allegato contrattuale: max 3 pagine, non tecnico.
+│   │   ├── mockup-brief.md        ← Brief per Windsurf: schermate, flussi, brand.
+│   │   ├── manutenzione.md        ← Note post go-live.
+│   │   └── repo/                  ← Copia locale della repository.
 │   └── [nome-progetto]/            ← Creato dalla skill init-project.
 │
 ├── patterns/                       ← Pattern tecnici riutilizzabili estratti dai progetti.

@@ -16,7 +16,7 @@ Tutti i tag usati nella knowledge base. Aggiornato dalla skill `maintenance/audi
 
 | Tag | File che lo usano |
 |-----|-----------------|
-| *(nessun progetto ancora)* | |
+| `#progetto:jubatus` | projects/jubatus/README.md, projects/jubatus/requisiti.md, projects/jubatus/meeting/*.md |
 
 ---
 
@@ -31,6 +31,7 @@ Tutti i tag usati nella knowledge base. Aggiornato dalla skill `maintenance/audi
 | `#industria:marketplace` | |
 | `#industria:enterprise` | |
 | `#industria:software` | knowledge/azienda/ |
+| `#industria:entertainment` | projects/jubatus/ |
 | *(aggiungi nuove industrie qui)* | |
 
 ---

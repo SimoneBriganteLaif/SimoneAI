@@ -6,12 +6,12 @@ descrizione: >
 fase: presales
 versione: "1.0"
 stato: beta
-dipende-da: "projects/[nome]/presales/requisiti.md (completo e validato)"
+dipende-da: "projects/[nome]/requisiti.md (completo e validato)"
 legge:
-  - projects/[nome]/presales/requisiti.md
+  - projects/[nome]/requisiti.md
   - projects/[nome]/README.md
 scrive:
-  - projects/[nome]/presales/allegato-tecnico.md
+  - projects/[nome]/allegato-tecnico.md
 aggiornato: "2026-03-08"
 ---
 
@@ -33,7 +33,7 @@ Produce l'allegato tecnico per il contratto: documento non tecnico (max 3 pagine
 
 ## Prerequisiti
 
-- [ ] `projects/[nome]/presales/requisiti.md` completo (nessuna domanda aperta critica)
+- [ ] `projects/[nome]/requisiti.md` completo (nessuna domanda aperta critica)
 - [ ] `projects/[nome]/README.md` con info cliente compilate
 
 Se mancano, blocca e indica cosa completare prima.
@@ -79,7 +79,7 @@ Ad ogni step, se la skill è in stato **beta**, chiedi se il processo ha senso o
 2. Scrivi in linguaggio **non tecnico**: niente acronimi, niente stack, niente architettura
 3. Test auto: "Un CEO capisce tutto senza chiedere?" — se no, riscrivi
 4. Verifica: max 3 pagine (~1500 parole totali)
-5. Salva in `projects/[nome]/presales/allegato-tecnico.md`
+5. Salva in `projects/[nome]/allegato-tecnico.md`
 
 ---
 
@@ -89,7 +89,7 @@ Ad ogni step, se la skill è in stato **beta**, chiedi se il processo ha senso o
 ✓ COMPLETATO — Genera Allegato Tecnico
 
 File prodotto:
-  projects/[nome]/presales/allegato-tecnico.md  (~X pagine)
+  projects/[nome]/allegato-tecnico.md  (~X pagine)
 
 Riepilogo:
   Funzionalità incluse: [N]

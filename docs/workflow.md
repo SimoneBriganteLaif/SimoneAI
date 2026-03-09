@@ -166,7 +166,7 @@ sequenceDiagram
     CC->>CC: skill: genera-mockup-brief
     CC->>U: Domande su stile, flussi, brand
     U->>CC: Risposte
-    CC->>CC: Scrive requisiti-mockup.md
+    CC->>CC: Scrive mockup-brief.md
     CC-->>U: Brief mockup pronto per Windsurf
 ```
 

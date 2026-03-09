@@ -11,16 +11,16 @@ Le skill sono istruzioni operative per Claude Code. Ogni skill è una **cartella
 | Skill | Stato | Trigger | Legge | Scrive |
 |-------|-------|---------|-------|--------|
 | `presales/init-project/` | beta | Inizio nuovo progetto | Notion, GitHub | projects/[nome]/, INDEX.md |
-| `presales/estrazione-requisiti/` | beta | Dopo un meeting cliente | Materiale grezzo | requisiti.md, note-meeting/ |
+| `presales/estrazione-requisiti/` | beta | Dopo un meeting cliente | Materiale grezzo | requisiti.md, meeting/ |
 | `presales/genera-allegato-tecnico/` | beta | Requisiti validati, serve contratto | requisiti.md | allegato-tecnico.md |
-| `presales/genera-mockup-brief/` | beta | Requisiti validati, servono mockup | requisiti.md | requisiti-mockup.md |
+| `presales/genera-mockup-brief/` | beta | Requisiti validati, servono mockup | requisiti.md | mockup-brief.md |
 
 ### Development
 
 | Skill | Stato | Trigger | Legge | Scrive |
 |-------|-------|---------|-------|--------|
-| `development/estrazione-decisioni/` | beta | Decisione tecnica non banale | decisioni-tecniche.md | decisioni-tecniche.md, architettura.md |
-| `development/estrazione-pattern/` | beta | Fine sprint o fine progetto | feature-log, decisioni-tecniche | patterns/, knowledge/ |
+| `development/estrazione-decisioni/` | beta | Decisione tecnica non banale | decisioni.md | decisioni.md, architettura.md |
+| `development/estrazione-pattern/` | beta | Fine sprint o fine progetto | feature-log, decisioni | patterns/, knowledge/ |
 
 ### Maintenance
 
@@ -33,6 +33,7 @@ Le skill sono istruzioni operative per Claude Code. Ogni skill è una **cartella
 | Skill | Stato | Trigger | Legge | Scrive |
 |-------|-------|---------|-------|--------|
 | `meta/gestione-kb/` | beta | Dopo modifiche KB, nuove idee, periodicamente | Meta-file | changelog, IDEAS.md, docs/ |
+| `meta/verifica-pre-commit/` | stable | Prima di ogni commit | Tutti i file modificati | — (solo lettura) |
 
 ---
 

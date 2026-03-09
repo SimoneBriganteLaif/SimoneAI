@@ -55,7 +55,7 @@ Se sì, elencale pure tutte.
 Incolla i link alle pagine Notion con le note di meeting per questo progetto.
 Puoi incollare più link, uno per riga.
 
-(Le pagine verranno lette via MCP e salvate come note-meeting nella KB)
+(Le pagine verranno lette via MCP e salvate in meeting/ nella KB)
 ```
 
 ### Domanda 4 — Info cliente (solo se non emergono da Notion)
@@ -83,7 +83,7 @@ Controlla se `projects/[nome]/` esiste già:
 Per ogni URL Notion fornito:
 1. Leggi il contenuto della pagina tramite MCP
 2. Estrai: titolo, data, partecipanti, contenuto completo
-3. Salva in `projects/[nome]/presales/note-meeting/[YYYY-MM-DD]-[titolo-slugificato].md`
+3. Salva in `projects/[nome]/meeting/[YYYY-MM-DD]-[titolo-slugificato].md`
 
 Formato nota meeting:
 ```markdown
@@ -136,7 +136,7 @@ Compila `projects/[nome]/README.md` con:
 ### Step 6 — Genera bozza requisiti (condizionale)
 
 Se le pagine Notion contengono note di meeting con requisiti identificabili:
-- Crea una bozza di `projects/[nome]/presales/requisiti.md`
+- Crea una bozza di `projects/[nome]/requisiti.md`
 - Segna ogni requisito come "Da validare" nel campo priorità
 - Aggiungi una nota in testa: "Bozza generata automaticamente da init-project. Validare con la skill estrazione-requisiti."
 
@@ -154,8 +154,8 @@ Crea `projects/[nome]/repo/CLAUDE.md` con questo contenuto:
 ## Contesto
 Questo progetto è documentato nella Knowledge Base LAIF:
 - README: ~/LAIF/Progetti/_AI/KnowledgeBase/projects/[nome]/README.md
-- Architettura: ~/LAIF/Progetti/_AI/KnowledgeBase/projects/[nome]/development/architettura.md
-- Decisioni tecniche: ~/LAIF/Progetti/_AI/KnowledgeBase/projects/[nome]/development/decisioni-tecniche.md
+- Architettura: ~/LAIF/Progetti/_AI/KnowledgeBase/projects/[nome]/architettura.md
+- Decisioni tecniche: ~/LAIF/Progetti/_AI/KnowledgeBase/projects/[nome]/decisioni.md
 
 ## Stack
 [stack rilevato dallo Step 4]
@@ -174,7 +174,7 @@ Questo progetto è documentato nella Knowledge Base LAIF:
 
 ## Note per Claude Code
 - La documentazione di progetto è in italiano
-- Per decisioni architetturali, aggiorna sempre decisioni-tecniche.md nella KB
+- Per decisioni architetturali, aggiorna sempre decisioni.md nella KB
 - Windsurf agisce solo su questa repo, Claude Code gestisce la KB
 ```
 
@@ -196,7 +196,7 @@ Struttura creata:
 
 Notion elaborato:
   [N] pagine lette
-  [N] note-meeting salvate:
+  [N] note meeting salvate:
     → [YYYY-MM-DD]-[titolo].md
     → ...
 
@@ -204,8 +204,8 @@ Stack rilevato: [framework] + [db] + [hosting]
 
 File generati:
   ✓ projects/[nome]/README.md
-  ✓ projects/[nome]/presales/note-meeting/...
-  [✓ projects/[nome]/presales/requisiti.md (bozza)]
+  ✓ projects/[nome]/meeting/...
+  [✓ projects/[nome]/requisiti.md (bozza)]
   ✓ projects/[nome]/repo/CLAUDE.md
   ✓ projects/INDEX.md (aggiornato)
 
@@ -223,7 +223,7 @@ Prossimi passi:
 ## Checklist qualità
 
 - [ ] `projects/[nome]/README.md` ha cliente, industria, stack e link repo
-- [ ] Tutte le pagine Notion sono state salvate in `note-meeting/`
+- [ ] Tutte le pagine Notion sono state salvate in `meeting/`
 - [ ] La repo è clonata e accessibile
 - [ ] `CLAUDE.md` nella repo è compilato con dati reali (non solo placeholder)
 - [ ] `projects/INDEX.md` aggiornato

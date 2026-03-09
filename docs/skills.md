@@ -82,11 +82,11 @@ Quando una skill beta viene usata abbastanza da risultare stabile, si aggiorna l
 | Skill | Fase | Stato | Scopo | Legge | Scrive |
 |-------|------|-------|-------|-------|--------|
 | `init-project` | Presales | beta | Bootstrap completo progetto | Notion, GitHub | projects/[nome]/, INDEX.md |
-| `estrazione-requisiti` | Presales | beta | Note → requisiti strutturati | Materiale grezzo | requisiti.md, note-meeting/ |
+| `estrazione-requisiti` | Presales | beta | Note → requisiti strutturati | Materiale grezzo | requisiti.md, meeting/ |
 | `genera-allegato-tecnico` | Presales | beta | Requisiti → allegato contrattuale | requisiti.md | allegato-tecnico.md |
-| `genera-mockup-brief` | Presales | beta | Requisiti → brief mockup per Windsurf | requisiti.md | requisiti-mockup.md |
-| `estrazione-decisioni` | Development | beta | Documenta decisioni tecniche (ADR) | decisioni-tecniche.md | decisioni-tecniche.md, architettura.md |
-| `estrazione-pattern` | Development | beta | Fine sprint → pattern riutilizzabili | feature-log, decisioni-tecniche | patterns/, knowledge/ |
+| `genera-mockup-brief` | Presales | beta | Requisiti → brief mockup per Windsurf | requisiti.md | mockup-brief.md |
+| `estrazione-decisioni` | Development | beta | Documenta decisioni tecniche (ADR) | decisioni.md | decisioni.md, architettura.md |
+| `estrazione-pattern` | Development | beta | Fine sprint → pattern riutilizzabili | feature-log, decisioni.md | patterns/, knowledge/ |
 | `audit-periodico` | Maintenance | beta | Audit mensile intera KB | Tutta la KB | Report + aggiornamenti distribuiti |
 | `gestione-kb` | Meta | beta | Gestione meta-file del sistema | Meta-file, struttura cartelle | changelog, IDEAS.md, docs/ |
 | `verifica-pre-commit` | Meta | beta | Verifica autonoma coerenza KB pre-commit (5 check paralleli) | Tutti i meta-file + struttura reale | nessuno (solo report) |
@@ -190,7 +190,7 @@ flowchart TD
     Q1 --> Q2[Brand guidelines?]
     Q2 --> Q3[Dispositivi prioritari?]
     Q3 --> Q4[Vincoli UI?]
-    Q4 --> WRITE[Scrive requisiti-mockup.md]
+    Q4 --> WRITE[Scrive mockup-brief.md]
     WRITE --> DONE([Output riepilogo])
 ```
 
@@ -215,7 +215,7 @@ flowchart TD
     Q4 --> Q5[Trade-off accettati?]
     Q5 --> Q6{Impatto su\narchitettura?}
     Q6 --> Q7[Reversibile?]
-    Q7 --> WRITE[Scrive ADR in decisioni-tecniche.md]
+    Q7 --> WRITE[Scrive ADR in decisioni.md]
     Q6 -->|Sì| UPDATE[Aggiorna architettura.md]
     WRITE --> DONE([Output riepilogo])
     UPDATE --> DONE

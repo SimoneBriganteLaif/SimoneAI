@@ -56,18 +56,16 @@ tags:
 
 ```
 [nome-progetto]/
-├── README.md                  ← questo file
-├── presales/
-│   ├── note-meeting/          ← trascrizioni e note grezze dei meeting
-│   ├── requisiti.md           ← requisiti estratti e validati
-│   ├── allegato-tecnico.md    ← allegato contrattuale (max 3 pag, non tecnico)
-│   └── requisiti-mockup.md    ← brief per mockup in Windsurf
-├── development/
-│   ├── architettura.md        ← decisioni architetturali
-│   ├── decisioni-tecniche.md  ← log delle decisioni tecniche (ADR)
-│   └── feature-log.md         ← feature completate con note
-└── maintenance/
-    └── note.md                ← note post go-live
+├── README.md              ← questo file
+├── meeting/               ← note meeting (una per file)
+├── requisiti.md           ← requisiti estratti e validati
+├── architettura.md        ← architettura del sistema
+├── decisioni.md           ← decisioni tecniche (ADR)
+├── feature-log.md         ← feature completate con note
+├── allegato-tecnico.md    ← allegato contrattuale (max 3 pag)
+├── mockup-brief.md        ← brief per mockup Windsurf
+├── manutenzione.md        ← note post go-live
+└── repo/                  ← copia locale della repository
 ```
 
 ## Note

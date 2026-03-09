@@ -11,8 +11,8 @@ legge:
   - Materiale grezzo (testo incollato, file, pagine Notion)
   - projects/[nome]/ (se esiste)
 scrive:
-  - projects/[nome]/presales/requisiti.md
-  - projects/[nome]/presales/note-meeting/[data]-[fonte].md
+  - projects/[nome]/requisiti.md
+  - projects/[nome]/meeting/[data]-[fonte].md
   - projects/INDEX.md (se progetto nuovo)
 aggiornato: "2026-03-08"
 ---
@@ -85,8 +85,8 @@ Attendi conferma prima di procedere.
 ## Processo di produzione
 
 1. Se non esiste `projects/[nome]/`, creala copiando la struttura da `projects/_template/`
-2. Salva il materiale grezzo in `projects/[nome]/presales/note-meeting/[YYYY-MM-DD]-[fonte].md`
-3. Scrivi `projects/[nome]/presales/requisiti.md` seguendo il template
+2. Salva il materiale grezzo in `projects/[nome]/meeting/[YYYY-MM-DD]-[fonte].md`
+3. Scrivi `projects/[nome]/requisiti.md` seguendo il template
 4. Aggiorna `projects/[nome]/README.md` con le informazioni base se mancanti
 5. Aggiorna `projects/INDEX.md` se il progetto è nuovo
 
@@ -98,8 +98,8 @@ Attendi conferma prima di procedere.
 ✓ COMPLETATO — Estrazione Requisiti
 
 File prodotti:
-  projects/[nome]/presales/requisiti.md
-  projects/[nome]/presales/note-meeting/[data]-[fonte].md
+  projects/[nome]/requisiti.md
+  projects/[nome]/meeting/[data]-[fonte].md
 
 Riepilogo:
   RF identificati: [N] (Alta: X, Media: Y, Bassa: Z)
@@ -120,7 +120,7 @@ Prossimi passi:
 - [ ] Ogni RF ha criteri di accettazione misurabili
 - [ ] Le ambiguità sono in "domande aperte", non nei requisiti
 - [ ] Le esclusioni sono esplicite
-- [ ] Il materiale grezzo è salvato in `note-meeting/`
+- [ ] Il materiale grezzo è salvato in `meeting/`
 - [ ] I tag nel frontmatter di `requisiti.md` sono corretti
 
 ---

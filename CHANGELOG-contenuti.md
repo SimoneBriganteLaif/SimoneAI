@@ -14,4 +14,10 @@ Categorie usate:
 
 ## [Non rilasciato]
 
-_Nessun contenuto operativo ancora creato. Il changelog si popolerà con l'uso del sistema._
+### Progetti
+
+**Jubatus — Inizializzazione**
+- `projects/jubatus/` — nuovo progetto: piattaforma customer care per Jubatus (entertainment/eventi musicali)
+- `projects/jubatus/meeting/` — 3 note meeting importate da Notion (kickoff 2026-01-23, ticketing 2026-01-28, customer care 2026-02-13)
+- `projects/jubatus/requisiti.md` — bozza v0.1 con 11 RF estratti dalle note meeting (tutti da validare)
+- `projects/jubatus/repo/CLAUDE.md` — contesto per Claude Code con stack, struttura e comandi

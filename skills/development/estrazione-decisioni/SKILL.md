@@ -8,11 +8,11 @@ fase: development
 versione: "1.1"
 stato: beta
 legge:
-  - projects/[nome]/development/decisioni-tecniche.md (per numero ADR)
-  - projects/[nome]/development/architettura.md (per valutare impatto)
+  - projects/[nome]/decisioni.md (per numero ADR)
+  - projects/[nome]/architettura.md (per valutare impatto)
 scrive:
-  - projects/[nome]/development/decisioni-tecniche.md (nuovo ADR)
-  - projects/[nome]/development/architettura.md (se impatto architetturale)
+  - projects/[nome]/decisioni.md (nuovo ADR)
+  - projects/[nome]/architettura.md (se impatto architetturale)
 aggiornato: "2026-03-08"
 ---
 
@@ -80,7 +80,7 @@ Scrivo?
 
 ## Processo di produzione
 
-1. Leggi `decisioni-tecniche.md` per determinare il prossimo numero ADR
+1. Leggi `decisioni.md` per determinare il prossimo numero ADR
 2. Aggiungi la nuova sezione ADR in **cima** al documento (ordine cronologico inverso)
 3. Aggiorna l'indice in fondo al documento
 4. Se la decisione impatta l'architettura: aggiorna le sezioni rilevanti di `architettura.md`
@@ -95,8 +95,8 @@ Scrivo?
 
 ADR aggiunto: [ADR-NNN] — [titolo]
 Documenti aggiornati:
-  projects/[nome]/development/decisioni-tecniche.md
-  [projects/[nome]/development/architettura.md  ← solo se impatta arch]
+  projects/[nome]/decisioni.md
+  [projects/[nome]/architettura.md  ← solo se impatta arch]
 
 Pattern riutilizzabile rilevato: [sì/no]
   → [Se sì: considera di estrarlo in patterns/ con la skill estrazione-pattern]
@@ -114,7 +114,7 @@ Prossimi passi:
 - [ ] Le alternative scartate sono documentate con motivazione
 - [ ] I trade-off sono onesti — nessuna decisione è perfetta
 - [ ] Le conseguenze per gli altri dev sono chiare
-- [ ] L'indice in fondo a `decisioni-tecniche.md` è aggiornato
+- [ ] L'indice in fondo a `decisioni.md` è aggiornato
 
 ---
 ← [Catalogo skill](../../../docs/skills.md) · [Workflow](../../../docs/workflow.md) · [System.md](../../../System.md)

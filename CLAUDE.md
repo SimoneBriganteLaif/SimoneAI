@@ -38,36 +38,36 @@ Per la documentazione completa della struttura vedi `docs/struttura.md`.
 
 ---
 
-## Agenti autonomi (comportamento obbligatorio)
+## Comportamenti autonomi (obbligatori)
 
-Claude Code deve invocare questi agenti **in autonomia, senza aspettare che l'utente li chieda**, nelle situazioni seguenti.
+Claude Code deve seguire queste regole **in autonomia, senza aspettare che l'utente le chieda**.
 
-### Regola 1 — Dopo qualsiasi modifica a file della KB
-
-Ogni volta che Claude Code modifica uno o più file in questa cartella:
-
-1. Lancia `skills/meta/verifica-pre-commit/` come sub-agent (autonomo, no input utente)
-2. Se il sub-agent restituisce **FAIL**: risolvi tutte le issue riportate in autonomia
-3. Riesegui la verifica finché non restituisce **PASS**
-
-### Regola 2 — Prima di ogni `git commit` (BLOCCANTE)
+### Regola 1 — Prima di ogni `git commit` (BLOCCANTE)
 
 Il commit **non può procedere** finché la verifica non passa:
 
-1. Esegui `skills/meta/verifica-pre-commit/` come sub-agent
-2. Se **FAIL**: risolvi tutto, poi riesegui
-3. Solo con **PASS**: procedi con il commit
+1. Esegui `python3 skills/meta/verifica-pre-commit/run_all.py`
+2. Completa i check semantici descritti in `skills/meta/verifica-pre-commit/SKILL.md`
+3. Se **FAIL**: risolvi tutto, poi riesegui
+4. Solo con **PASS completo** (script + semantica): procedi con il commit
 
-### Regola 3 — Quando percepisci drift documentazione
+### Regola 2 — Quando percepisci drift documentazione
 
 Se durante il lavoro noti che la struttura reale non corrisponde a quella documentata (es. una cartella esiste ma non è in `docs/struttura.md`):
 
 1. Esegui `skills/meta/gestione-kb/` modalità 3 (sync) in autonomia
 2. Registra il sync nel changelog
 
-### Regola 4 — Commit con più di 3 file modificati
+### Regola 3 — Gestione idee e proposte
 
-Usa sub-agent paralleli: lancia agenti simultanei per i 5 check del `verifica-pre-commit` invece di eseguirli in sequenza.
+Quando durante la conversazione emergono idee o proposte di miglioramento al framework (dall'utente o da te):
+
+1. **Non svilupparle subito** (a meno che l'utente non lo chieda esplicitamente)
+2. Chiedi all'utente: *"Vuoi che lo implementi ora o lo segno in IDEAS.md?"*
+3. Se l'utente sceglie di segnarlo: registra in `IDEAS.md` via `skills/meta/gestione-kb/` modalità 2
+4. Se l'utente sceglie di farlo subito: procedi con l'implementazione
+
+Questa regola vale per qualsiasi proposta che richieda modifiche non banali al framework.
 
 ---
 
@@ -99,7 +99,7 @@ Ogni skill ha:
 
 ### Development
 1. Decisione tecnica → `skills/development/estrazione-decisioni/`
-2. Feature completata → aggiorna `projects/[nome]/development/feature-log.md` direttamente
+2. Feature completata → aggiorna `projects/[nome]/feature-log.md` direttamente
 3. Fine sprint → `skills/development/estrazione-pattern/`
 
 ### Maintenance / Consulta
@@ -139,11 +139,13 @@ Per le convenzioni di sviluppo e regole Windsurf: `knowledge/azienda/processi.md
 
 ## Processo pre-commit
 
-La verifica pre-commit è **automatica** tramite la skill dedicata — vedi sezione "Agenti autonomi" sopra.
+La verifica pre-commit è **ibrida**: 4 check automatizzati (script Python) + check semantici (eseguiti dal parent agent). Vedi sezione "Comportamenti autonomi" sopra.
 
-Skill: `skills/meta/verifica-pre-commit/SKILL.md`
+```bash
+python3 skills/meta/verifica-pre-commit/run_all.py
+```
 
-La skill esegue 5 check in parallelo: coerenza referenze cross-file, changelog, IDEAS.md, tag frontmatter, struttura vs documentazione. Il commit è autorizzato solo quando tutti e 5 i check passano.
+Dettagli completi: `skills/meta/verifica-pre-commit/SKILL.md`
 
 ## Tag standard
 
