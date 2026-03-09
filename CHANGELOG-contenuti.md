@@ -14,7 +14,13 @@ Categorie usate:
 
 ## [Non rilasciato]
 
-*(nessuna modifica in attesa)*
+### Progetti
+
+- `projects/albini-castelli/` — registrato in INDEX.md (esisteva su disco con aws-config.yaml, non era tracciato)
+
+### Skill
+
+- Aggiunte righe di tracking uso (`.tags/skill-usage.log`) a 5 skill KB-only: feature-plan, feature-develop, feature-test, feature-review, verifica-pre-commit
 
 ---
 

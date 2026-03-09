@@ -87,6 +87,7 @@ Fai le domande in questo ordine, **una alla volta**:
    - La suite pre-esistente passa ancora?
    - Funzionalità correlate non sono state rotte?
 8. Aggiorna `.feature-state.md` sezione `## Test` con il report
+9. **Tracking**: `echo "$(date +%Y-%m-%d\ %H:%M) | feature-test | [progetto] | [PASS/FAIL]" >> .tags/skill-usage.log`
 
 ### Formato report test
 

@@ -1,8 +1,9 @@
 # Claude Code memory (specifico per sessione/macchina)
 memory/
 
-# Claude Code internals
-.claude/
+# Claude Code internals (escludi tutto tranne skills/)
+.claude/*
+!.claude/skills/
 
 # Repository core clonate (sono repo Git annidate)
 core/laif-template/
@@ -13,6 +14,9 @@ core/laif-cdk/
 projects/*/repo/
 projects/*/repo-*/
 
+# Report generati (artefatti runtime)
+projects/*/reports/
+
 # macOS
 .DS_Store
 ._*
@@ -21,3 +25,4 @@ projects/*/repo-*/
 *.swp
 *.swo
 *~
+*.code-workspace

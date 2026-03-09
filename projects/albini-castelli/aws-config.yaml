@@ -1,0 +1,35 @@
+# AWS Config per albini-castelli
+# Generato da: skills/development/aws-diagnostics/_shared/config-discovery.md
+# Sorgente CDK: /Users/simonebrigante/LAIF/repo/albini-castelli-infra/
+
+environments:
+  dev:
+    aws_profile: "albini-castelli-dev"
+    region: "eu-west-1"
+    account_id: "893990996376"
+    app_name: "albini-castelli"
+    customer_name: "albini-castelli"
+    resources:
+      ecs_cluster: "dev-albini-castelli-cluster"
+      ecs_service: "dev-albini-castelli-be-service"
+      ecs_task_family: "dev-albini-castelli-be-task"
+      log_group: "dev-albini-castelli-be-task-log-group"
+      rds_identifier: "dev-albini-castelli-db"
+      s3_data_bucket: "dev-albini-castelli-data"
+      s3_frontend_bucket: "dev-albini-castelli-fe-frontend"
+      alb_name: "dev-albini-castelli-be-alb"
+  prod:
+    aws_profile: "albini-castelli-prod"
+    region: "eu-west-1"
+    account_id: "456128143654"
+    app_name: "albini-castelli"
+    customer_name: "albini-castelli"
+    resources:
+      ecs_cluster: "prod-albini-castelli-be-cluster"
+      ecs_service: "prod-albini-castelli-be-service"
+      ecs_task_family: "prod-albini-castelli-be-task"
+      log_group: "prod-albini-castelli-be-task-log-group"
+      rds_identifier: "prod-albini-castelli-db"
+      s3_data_bucket: "prod-albini-castelli-data-bucket"
+      s3_frontend_bucket: "prod-albini-castelli-fe-build"
+      alb_name: "prod-albini-castelli-be-alb"

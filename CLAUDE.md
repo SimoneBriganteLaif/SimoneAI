@@ -23,7 +23,9 @@ KnowledgeBase/
 │   ├── laif-template/      ← base per tutti i progetti (fork)
 │   ├── ds/                 ← design system (@laif/ds)
 │   └── laif-cdk/           ← infrastruttura AWS (CDK)
-└── .tags/                  ← indice dei tag per ricerca rapida
+├── .tags/                  ← indice dei tag per ricerca rapida
+└── .claude/
+    └── skills/             ← trigger layer skill native Claude Code
 ```
 
 Per la documentazione completa della struttura vedi `docs/struttura.md`.
@@ -105,6 +107,33 @@ Ogni skill ha:
 - **Output in chat**: riepilogo obbligatorio al termine
 
 **Skill in beta**: all'inizio avvisa che è in beta. Durante l'uso, ad ogni step chiede se il processo ha senso o se va modificato.
+
+## Sistema ibrido skill
+
+Le skill operano in due formati complementari:
+
+### Native skill (`.claude/skills/`)
+- Auto-scoperte da Claude Code, appaiono nell'UI
+- Invocabili via Skill tool
+- Contengono trigger condition e rimando alla KB
+- Tracciamento automatico
+
+### KB skill (`skills/`)
+- Documentazione completa con loop conversazionale
+- Metadata estesi (fase, versione, legge, scrive)
+- Fonte autorevole del processo
+
+Quando una native skill esiste, Claude la usa come entry point.
+Il processo dettagliato resta nel SKILL.md della KB.
+
+### Skill solo-KB (senza native)
+Skill complesse con orchestrazione multi-step o sub-skill che vengono invocate dal loro orchestratore:
+- `feature-plan`, `feature-develop`, `feature-test`, `feature-review` — invocate da `feature-workflow`
+- `verifica-pre-commit` — obbligatoria e automatica via Regola 1
+
+### Tracking uso
+- **Skill native**: tracciate automaticamente dal Skill tool
+- **Skill solo-KB**: scrivono una riga in `.tags/skill-usage.log` al completamento
 
 ## Workflow per fase
 

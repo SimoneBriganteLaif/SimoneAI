@@ -8,37 +8,45 @@ Le skill sono istruzioni operative per Claude Code. Ogni skill è una **cartella
 
 ### Presales
 
-| Skill | Stato | Trigger | Legge | Scrive |
-|-------|-------|---------|-------|--------|
-| `presales/init-project/` | beta | Inizio nuovo progetto | Notion, GitHub | projects/[nome]/, INDEX.md |
-| `presales/estrazione-requisiti/` | beta | Dopo un meeting cliente | Materiale grezzo | requisiti.md, meeting/ |
-| `presales/genera-allegato-tecnico/` | beta | Requisiti validati, serve contratto | requisiti.md | allegato-tecnico.md |
-| `presales/genera-mockup-brief/` | beta | Requisiti validati, servono mockup | requisiti.md | mockup-brief.md |
+| Skill | Stato | Nativa | Trigger | Legge | Scrive |
+|-------|-------|--------|---------|-------|--------|
+| `presales/init-project/` | beta | si | Inizio nuovo progetto | Notion, GitHub | projects/[nome]/, INDEX.md |
+| `presales/estrazione-requisiti/` | beta | si | Dopo un meeting cliente | Materiale grezzo | requisiti.md, meeting/ |
+| `presales/genera-allegato-tecnico/` | beta | si | Requisiti validati, serve contratto | requisiti.md | allegato-tecnico.md |
+| `presales/genera-mockup-brief/` | beta | si | Requisiti validati, servono mockup | requisiti.md | mockup-brief.md |
 
 ### Development
 
-| Skill | Stato | Trigger | Legge | Scrive |
-|-------|-------|---------|-------|--------|
-| `development/feature-workflow/` | beta | Sviluppo feature end-to-end | requisiti.md, .feature-state.md | .feature-state.md, feature-log.md |
-| `development/feature-plan/` | beta | Prima di sviluppare una feature | requisiti.md, architettura.md, patterns/ | .feature-state.md (Piano) |
-| `development/feature-develop/` | beta | Piano approvato, da implementare | .feature-state.md (Piano), processi.md | Codebase, .feature-state.md (Sviluppo) |
-| `development/feature-test/` | beta | Sviluppo completato, da testare | .feature-state.md, requisiti.md, codebase | Nuovi test, .feature-state.md (Test) |
-| `development/feature-review/` | beta | Sviluppo completato, da revisionare | .feature-state.md, processi.md, patterns/ | .feature-state.md (Review) |
-| `development/estrazione-decisioni/` | beta | Decisione tecnica non banale | decisioni.md | decisioni.md, architettura.md |
-| `development/estrazione-pattern/` | beta | Fine sprint o fine progetto | feature-log, decisioni | patterns/, knowledge/ |
+| Skill | Stato | Nativa | Trigger | Legge | Scrive |
+|-------|-------|--------|---------|-------|--------|
+| `development/feature-workflow/` | beta | si | Sviluppo feature end-to-end | requisiti.md, .feature-state.md | .feature-state.md, feature-log.md |
+| `development/feature-plan/` | beta | — | Prima di sviluppare una feature | requisiti.md, architettura.md, patterns/ | .feature-state.md (Piano) |
+| `development/feature-develop/` | beta | — | Piano approvato, da implementare | .feature-state.md (Piano), processi.md | Codebase, .feature-state.md (Sviluppo) |
+| `development/feature-test/` | beta | — | Sviluppo completato, da testare | .feature-state.md, requisiti.md, codebase | Nuovi test, .feature-state.md (Test) |
+| `development/feature-review/` | beta | — | Sviluppo completato, da revisionare | .feature-state.md, processi.md, patterns/ | .feature-state.md (Review) |
+| `development/estrazione-decisioni/` | beta | si | Decisione tecnica non banale | decisioni.md | decisioni.md, architettura.md |
+| `development/estrazione-pattern/` | beta | si | Fine sprint o fine progetto | feature-log, decisioni | patterns/, knowledge/ |
+| `development/setup-progetto-dev/` | beta | si | Inizio sessione dev | architettura.md, MEMORY.md, stack.md | nessuno (solo report) |
+| `development/brainstorming-post-sviluppo/` | beta | si | Fine sessione dev | Lavoro svolto nella sessione | patterns/, skills/, IDEAS.md |
+| `development/aws-diagnostics/aws-health-report/` | beta | si | Report HTML completo infrastruttura | aws-config.yaml | reports/aws-report-*.html |
+| `development/aws-diagnostics/aws-triage/` | beta | si | Debug AWS, primo check | aws-config.yaml | — (diagnosi) |
+| `development/aws-diagnostics/aws-ecs-diagnose/` | beta | si | Problemi ECS (deploy, task, capacity) | aws-config.yaml | — (diagnosi) |
+| `development/aws-diagnostics/aws-logs-diagnose/` | beta | si | Errori nei log, query CloudWatch | aws-config.yaml | — (diagnosi) |
+| `development/aws-diagnostics/aws-rds-diagnose/` | beta | si | Problemi database RDS | aws-config.yaml | — (diagnosi) |
+| `development/aws-diagnostics/aws-s3-diagnose/` | beta | si | Inventario bucket S3 | aws-config.yaml | — (diagnosi) |
 
 ### Maintenance
 
-| Skill | Stato | Trigger | Legge | Scrive |
-|-------|-------|---------|-------|--------|
-| `maintenance/audit-periodico/` | beta | Fine mese | Tutta la KB | Report + aggiornamenti distribuiti |
+| Skill | Stato | Nativa | Trigger | Legge | Scrive |
+|-------|-------|--------|---------|-------|--------|
+| `maintenance/audit-periodico/` | beta | si | Fine mese | Tutta la KB | Report + aggiornamenti distribuiti |
 
 ### Meta
 
-| Skill | Stato | Trigger | Legge | Scrive |
-|-------|-------|---------|-------|--------|
-| `meta/gestione-kb/` | beta | Dopo modifiche KB, nuove idee, periodicamente | Meta-file | changelog, IDEAS.md, docs/ |
-| `meta/verifica-pre-commit/` | stable | Prima di ogni commit | Tutti i file modificati | — (solo lettura) |
+| Skill | Stato | Nativa | Trigger | Legge | Scrive |
+|-------|-------|--------|---------|-------|--------|
+| `meta/gestione-kb/` | beta | si | Dopo modifiche KB, nuove idee, periodicamente | Meta-file | changelog, IDEAS.md, docs/ |
+| `meta/verifica-pre-commit/` | stable | — | Prima di ogni commit | Tutti i file modificati | — (solo lettura) |
 
 ---
 

@@ -1,0 +1,46 @@
+# AWS Config per [NOME_PROGETTO]
+# Generato da: skills/development/aws-diagnostics/_shared/config-discovery.md
+# Nomi risorse derivati dalle convenzioni CDK LAIF.
+# Modificabile manualmente se le risorse hanno nomi custom.
+#
+# Per generare questo file:
+#   1. Leggi il CDK config del progetto (dev.yaml / prod.yaml)
+#   2. Applica le naming convention CDK
+#   3. Chiedi all'utente i profili AWS CLI
+#
+# Naming convention:
+#   ECS:  {env}-{app_name}-cluster, {env}-{app_name}-be-service, etc.
+#   RDS:  {env}-{customer_name}-db  (nota: usa customer_name, non app_name)
+#   S3:   {env}-{app_name}-data, {env}-{app_name}-fe-frontend
+
+environments:
+  dev:
+    aws_profile: "CLIENTE-dev"
+    region: "eu-west-1"
+    account_id: "ACCOUNT_ID_DEV"
+    app_name: "APP_NAME"
+    customer_name: "CUSTOMER_NAME"
+    resources:
+      ecs_cluster: "dev-APP_NAME-cluster"
+      ecs_service: "dev-APP_NAME-be-service"
+      ecs_task_family: "dev-APP_NAME-be-task"
+      log_group: "dev-APP_NAME-be-task-log-group"
+      rds_identifier: "dev-CUSTOMER_NAME-db"
+      s3_data_bucket: "dev-APP_NAME-data"
+      s3_frontend_bucket: "dev-APP_NAME-fe-frontend"
+      alb_name: "dev-APP_NAME-be-alb"
+  prod:
+    aws_profile: "CLIENTE-prod"
+    region: "eu-west-1"
+    account_id: "ACCOUNT_ID_PROD"
+    app_name: "APP_NAME"
+    customer_name: "CUSTOMER_NAME"
+    resources:
+      ecs_cluster: "prod-APP_NAME-cluster"
+      ecs_service: "prod-APP_NAME-be-service"
+      ecs_task_family: "prod-APP_NAME-be-task"
+      log_group: "prod-APP_NAME-be-task-log-group"
+      rds_identifier: "prod-CUSTOMER_NAME-db"
+      s3_data_bucket: "prod-APP_NAME-data"
+      s3_frontend_bucket: "prod-APP_NAME-fe-frontend"
+      alb_name: "prod-APP_NAME-be-alb"

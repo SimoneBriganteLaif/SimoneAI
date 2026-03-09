@@ -101,6 +101,7 @@ Procedo con la scrittura del piano?
    - **Rischi**: cosa potrebbe andare storto e come mitigare
    - **Pattern da applicare**: riferimenti a `patterns/` o convenzioni LAIF specifiche
 7. Scrivi il piano nella sezione `## Piano` di `.feature-state.md`
+8. **Tracking**: `echo "$(date +%Y-%m-%d\ %H:%M) | feature-plan | [progetto] | completata" >> .tags/skill-usage.log`
 
 ---
 

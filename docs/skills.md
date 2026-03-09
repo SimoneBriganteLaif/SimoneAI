@@ -12,7 +12,7 @@
 - [Sistema di stato](#sistema-di-stato-delle-skill)
 - [Riepilogo](#riepilogo)
 - **Presales**: [init-project](#init-project) · [estrazione-requisiti](#estrazione-requisiti) · [genera-allegato-tecnico](#genera-allegato-tecnico) · [genera-mockup-brief](#genera-mockup-brief)
-- **Development**: [feature-workflow](#feature-workflow) · [feature-plan](#feature-plan) · [feature-develop](#feature-develop) · [feature-test](#feature-test) · [feature-review](#feature-review) · [estrazione-decisioni](#estrazione-decisioni) · [estrazione-pattern](#estrazione-pattern) · [setup-progetto-dev](#setup-progetto-dev) · [brainstorming-post-sviluppo](#brainstorming-post-sviluppo)
+- **Development**: [feature-workflow](#feature-workflow) · [feature-plan](#feature-plan) · [feature-develop](#feature-develop) · [feature-test](#feature-test) · [feature-review](#feature-review) · [estrazione-decisioni](#estrazione-decisioni) · [estrazione-pattern](#estrazione-pattern) · [setup-progetto-dev](#setup-progetto-dev) · [brainstorming-post-sviluppo](#brainstorming-post-sviluppo) · [AWS Diagnostics](#aws-diagnostics-pacchetto)
 - **Maintenance**: [audit-periodico](#audit-periodico)
 - **Meta**: [gestione-kb](#gestione-kb) · [verifica-pre-commit](#verifica-pre-commit)
 - [Confronto skill manutenzione](#differenze-tra-skill-di-manutenzione)
@@ -44,6 +44,7 @@ flowchart LR
         EP[estrazione-pattern]
         SPD[setup-progetto-dev]
         BPS[brainstorming-post-sviluppo]
+        AWS[aws-diagnostics]
         SPD -.->|verifica ambiente| FW
         FW --> FPL --> FDV
         FDV --> FTS & FRV
@@ -92,24 +93,30 @@ Quando una skill beta viene usata abbastanza da risultare stabile, si aggiorna l
 
 ## Riepilogo
 
-| Skill | Fase | Stato | Scopo | Legge | Scrive |
-|-------|------|-------|-------|-------|--------|
-| `init-project` | Presales | beta | Bootstrap completo progetto | Notion, GitHub | projects/[nome]/, INDEX.md |
-| `estrazione-requisiti` | Presales | beta | Note → requisiti strutturati | Materiale grezzo | requisiti.md, meeting/ |
-| `genera-allegato-tecnico` | Presales | beta | Requisiti → allegato contrattuale | requisiti.md | allegato-tecnico.md |
-| `genera-mockup-brief` | Presales | beta | Requisiti → brief mockup per Windsurf | requisiti.md | mockup-brief.md |
-| `feature-workflow` | Development | beta | Orchestra ciclo completo feature (Plan→Dev→Test→Review) | requisiti.md, .feature-state.md | .feature-state.md, feature-log.md |
-| `feature-plan` | Development | beta | Requisito → piano implementazione tecnico | requisiti.md, architettura.md, patterns/ | .feature-state.md (Piano) |
-| `feature-develop` | Development | beta | Piano → implementazione (Claude Code o brief Windsurf) | .feature-state.md (Piano), processi.md | Codebase, .feature-state.md (Sviluppo) |
-| `feature-test` | Development | beta | Scrive test, esegue suite, verifica criteri e regressioni | .feature-state.md, requisiti.md, codebase | Nuovi test, .feature-state.md (Test) |
-| `feature-review` | Development | beta | Review codice: pattern LAIF, duplicazioni, qualità, KB | .feature-state.md, processi.md, patterns/ | .feature-state.md (Review) |
-| `estrazione-decisioni` | Development | beta | Documenta decisioni tecniche (ADR) | decisioni.md | decisioni.md, architettura.md |
-| `estrazione-pattern` | Development | beta | Fine sprint → pattern riutilizzabili | feature-log, decisioni.md | patterns/, knowledge/ |
-| `setup-progetto-dev` | Development | beta | Verifica ambiente dev locale | architettura.md, MEMORY.md, stack.md | nessuno (solo report) |
-| `brainstorming-post-sviluppo` | Development | beta | Fine sessione → estrae miglioramenti | Lavoro svolto nella sessione | patterns/, skills/, IDEAS.md |
-| `audit-periodico` | Maintenance | beta | Audit mensile intera KB | Tutta la KB | Report + aggiornamenti distribuiti |
-| `gestione-kb` | Meta | beta | Gestione meta-file del sistema | Meta-file, struttura cartelle | changelog, IDEAS.md, docs/ |
-| `verifica-pre-commit` | Meta | stable | Verifica ibrida coerenza KB pre-commit (script Python + check semantici) | Tutti i meta-file + struttura reale | nessuno (solo report) |
+| Skill | Fase | Stato | Nativa | Scopo | Legge | Scrive |
+|-------|------|-------|--------|-------|-------|--------|
+| `init-project` | Presales | beta | si | Bootstrap completo progetto | Notion, GitHub | projects/[nome]/, INDEX.md |
+| `estrazione-requisiti` | Presales | beta | si | Note → requisiti strutturati | Materiale grezzo | requisiti.md, meeting/ |
+| `genera-allegato-tecnico` | Presales | beta | si | Requisiti → allegato contrattuale | requisiti.md | allegato-tecnico.md |
+| `genera-mockup-brief` | Presales | beta | si | Requisiti → brief mockup per Windsurf | requisiti.md | mockup-brief.md |
+| `feature-workflow` | Development | beta | si | Orchestra ciclo completo feature (Plan→Dev→Test→Review) | requisiti.md, .feature-state.md | .feature-state.md, feature-log.md |
+| `feature-plan` | Development | beta | — | Requisito → piano implementazione tecnico | requisiti.md, architettura.md, patterns/ | .feature-state.md (Piano) |
+| `feature-develop` | Development | beta | — | Piano → implementazione (Claude Code o brief Windsurf) | .feature-state.md (Piano), processi.md | Codebase, .feature-state.md (Sviluppo) |
+| `feature-test` | Development | beta | — | Scrive test, esegue suite, verifica criteri e regressioni | .feature-state.md, requisiti.md, codebase | Nuovi test, .feature-state.md (Test) |
+| `feature-review` | Development | beta | — | Review codice: pattern LAIF, duplicazioni, qualità, KB | .feature-state.md, processi.md, patterns/ | .feature-state.md (Review) |
+| `estrazione-decisioni` | Development | beta | si | Documenta decisioni tecniche (ADR) | decisioni.md | decisioni.md, architettura.md |
+| `estrazione-pattern` | Development | beta | si | Fine sprint → pattern riutilizzabili | feature-log, decisioni.md | patterns/, knowledge/ |
+| `setup-progetto-dev` | Development | beta | si | Verifica ambiente dev locale | architettura.md, MEMORY.md, stack.md | nessuno (solo report) |
+| `brainstorming-post-sviluppo` | Development | beta | si | Fine sessione → estrae miglioramenti | Lavoro svolto nella sessione | patterns/, skills/, IDEAS.md |
+| `aws-triage` | Development | beta | si | Health check rapido tutti i servizi AWS | aws-config.yaml | nessuno (diagnosi) |
+| `aws-ecs-diagnose` | Development | beta | si | Deep-dive ECS (deployment, task, capacity, config) | aws-config.yaml | nessuno (diagnosi) |
+| `aws-logs-diagnose` | Development | beta | si | Query CloudWatch Logs Insights (6 template + custom) | aws-config.yaml | nessuno (diagnosi) |
+| `aws-rds-diagnose` | Development | beta | si | Stato RDS, connessioni, log PostgreSQL, parametri | aws-config.yaml | nessuno (diagnosi) |
+| `aws-s3-diagnose` | Development | beta | si | Inventario bucket S3, dimensioni, upload recenti | aws-config.yaml | nessuno (diagnosi) |
+| `aws-health-report` | Development | beta | si | Report HTML interattivo salute infrastruttura AWS | aws-config.yaml | reports/aws-report-*.html |
+| `audit-periodico` | Maintenance | beta | si | Audit mensile intera KB | Tutta la KB | Report + aggiornamenti distribuiti |
+| `gestione-kb` | Meta | beta | si | Gestione meta-file del sistema | Meta-file, struttura cartelle | changelog, IDEAS.md, docs/ |
+| `verifica-pre-commit` | Meta | stable | — | Verifica ibrida coerenza KB pre-commit (script Python + check semantici) | Tutti i meta-file + struttura reale | nessuno (solo report) |
 
 ---
 
@@ -453,6 +460,42 @@ flowchart TD
     SELECT --> EXEC
     EXEC --> DONE([Output riepilogo])
 ```
+
+---
+
+### AWS Diagnostics (pacchetto)
+
+**Path**: `skills/development/aws-diagnostics/`
+**Trigger**: Debug ambienti AWS, troubleshooting servizi
+**Stato**: beta (tutte le skill)
+
+Pacchetto di 5 skill diagnostiche read-only per ambienti AWS LAIF. Ogni skill ha un `SKILL.md` + `run.py` eseguibile. Libreria Python condivisa in `_shared/`.
+
+```mermaid
+flowchart TD
+    START([Problema AWS]) --> Q1{Sai quale\nservizio?}
+    Q1 -->|No| TRIAGE[aws-triage]
+    Q1 -->|Sì| Q2{Quale?}
+
+    TRIAGE --> R{Risultato}
+    R -->|ECS| ECS[aws-ecs-diagnose]
+    R -->|Logs| LOGS[aws-logs-diagnose]
+    R -->|RDS| RDS[aws-rds-diagnose]
+    R -->|S3| S3[aws-s3-diagnose]
+
+    Q2 -->|ECS| ECS
+    Q2 -->|Logs| LOGS
+    Q2 -->|Database| RDS
+    Q2 -->|Storage| S3
+```
+
+| Skill | Scopo | Script |
+|-------|-------|--------|
+| `aws-triage` | Health check rapido (ECS + RDS + Logs + S3) | `run.py --project X --env dev` |
+| `aws-ecs-diagnose` | Deployment, task failure, capacity, config | `run.py --project X --env dev --mode all` |
+| `aws-logs-diagnose` | Query Logs Insights (6 template + custom) | `run.py --project X --env dev --query-type errors` |
+| `aws-rds-diagnose` | Stato, connessioni, log PostgreSQL, parametri | `run.py --project X --env dev --mode status` |
+| `aws-s3-diagnose` | Dimensioni, upload recenti, file grandi | `run.py --project X --env dev --bucket all` |
 
 ---
 

@@ -116,6 +116,8 @@ Verifica rispetto a `knowledge/azienda/processi.md`:
 | **Critica** | Viola convenzioni LAIF, introduce bug, duplicazione significativa, problema sicurezza | Blocca GATE 3 |
 | **Minore** | Naming non ottimale, codice migliorabile, suggerimenti stilistici | Non blocca GATE 3 |
 
+3. **Tracking**: `echo "$(date +%Y-%m-%d\ %H:%M) | feature-review | [progetto] | [PASS/FAIL]" >> .tags/skill-usage.log`
+
 ### Formato report review
 
 ```markdown

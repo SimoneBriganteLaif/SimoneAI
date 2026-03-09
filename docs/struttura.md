@@ -55,7 +55,8 @@ SimoneAI/
 │   │   ├── stato-progetto.md     ← Stato attuale, blocchi critici, prossimi passi.
 │   │   ├── allegato-tecnico.md    ← Allegato contrattuale: max 3 pagine, non tecnico.
 │   │   ├── mockup-brief.md        ← Brief per Windsurf: schermate, flussi, brand.
-│   │   └── manutenzione.md        ← Note post go-live.
+│   │   ├── manutenzione.md        ← Note post go-live.
+│   │   └── aws-config.yaml        ← Config AWS: profili, regione, nomi risorse.
 │   └── [nome-progetto]/            ← Creato dalla skill init-project.
 │
 ├── patterns/                       ← Pattern tecnici riutilizzabili estratti dai progetti.
@@ -82,7 +83,22 @@ SimoneAI/
 │   │   ├── estrazione-decisioni/   ← Documenta decisioni tecniche in formato ADR.
 │   │   ├── estrazione-pattern/     ← Fine sprint → estrae pattern riutilizzabili.
 │   │   ├── setup-progetto-dev/     ← Verifica ambiente dev locale (Docker, servizi, auth).
-│   │   └── brainstorming-post-sviluppo/ ← Analisi fine sessione → pattern, skill, idee.
+│   │   ├── brainstorming-post-sviluppo/ ← Analisi fine sessione → pattern, skill, idee.
+│   │   └── aws-diagnostics/       ← Skill diagnostiche AWS read-only.
+│   │       ├── README.md           ← Overview, flowchart selezione, naming convention.
+│   │       ├── _shared/            ← Libreria Python + doc condivisi.
+│   │       │   ├── config.py       ← Gestione aws-config.yaml.
+│   │       │   ├── aws_runner.py   ← Wrapper AWS CLI (whitelist read-only).
+│   │       │   ├── output.py       ← Formattazione tabelle e semafori.
+│   │       │   ├── collectors.py   ← Layer raccolta dati (return dict, no print).
+│   │       │   ├── config-discovery.md ← Procedura generazione config.
+│   │       │   └── query-templates.md  ← Query CloudWatch Logs Insights.
+│   │       ├── aws-health-report/  ← Report HTML completo con grafici SVG.
+│   │       ├── aws-triage/         ← Health check rapido tutti i servizi.
+│   │       ├── aws-ecs-diagnose/   ← Deep-dive ECS (deployment, task, capacity).
+│   │       ├── aws-logs-diagnose/  ← Query CloudWatch Logs Insights.
+│   │       ├── aws-rds-diagnose/   ← Stato RDS, connessioni, log PostgreSQL.
+│   │       └── aws-s3-diagnose/    ← Inventario bucket, dimensioni, upload.
 │   ├── maintenance/                ← Manutenzione periodica.
 │   │   └── audit-periodico/        ← Audit mensile dell'intera KB.
 │   └── meta/                       ← Gestione del sistema stesso.
@@ -109,8 +125,14 @@ SimoneAI/
 │   ├── ds/                         ← Design System condiviso (@laif/ds).
 │   └── laif-cdk/                   ← Infrastruttura AWS via CDK.
 │
-└── .tags/                          ← Sistema di tag per navigazione cross-progetto.
-    └── index.md                    ← Indice dei tag usati nella KB.
+├── .tags/                          ← Sistema di tag per navigazione cross-progetto.
+│   ├── index.md                    ← Indice dei tag usati nella KB.
+│   └── skill-usage.log             ← Log uso skill KB-only (tracking automatico).
+│
+└── .claude/
+    └── skills/                     ← Skill native Claude Code — trigger layer.
+                                      Wrapper sottili che puntano alle skill KB
+                                      per auto-discovery e tracking nell'UI.
 ```
 
 ---

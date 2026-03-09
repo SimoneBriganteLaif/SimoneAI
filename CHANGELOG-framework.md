@@ -6,6 +6,52 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/).
 
 ---
 
+## [Non rilasciato]
+
+### Added
+
+**Sistema ibrido skill — trigger layer nativo**
+- `.claude/skills/` — 17 file skill native Claude Code (auto-discovery, UI, tracking automatico)
+  - Presales: `init-project`, `estrazione-requisiti`, `genera-allegato-tecnico`, `genera-mockup-brief`
+  - Development: `feature-workflow`, `estrazione-decisioni`, `estrazione-pattern`, `setup-progetto-dev`, `brainstorming-post-sviluppo`
+  - AWS: `aws-triage`, `aws-ecs-diagnose`, `aws-logs-diagnose`, `aws-rds-diagnose`, `aws-s3-diagnose`, `aws-health-report`
+  - Maintenance: `audit-periodico`
+  - Meta: `gestione-kb`
+- `.tags/skill-usage.log` — log uso skill KB-only (tracking automatico per skill senza wrapper nativo)
+
+### Changed
+
+- `CLAUDE.md` — aggiunta sezione "Sistema ibrido skill" con spiegazione formato duale native/KB e tracking
+- `docs/struttura.md` — aggiunta `.claude/skills/` e `.tags/skill-usage.log` all'albero
+- `skills/README.md` — aggiunta colonna "Nativa" nella tabella skill
+- `docs/skills.md` — aggiunta colonna "Nativa" nel Riepilogo
+- `skills/development/feature-plan/SKILL.md` — aggiunta riga tracking uso
+- `skills/development/feature-develop/SKILL.md` — aggiunta riga tracking uso (entrambe le modalità)
+- `skills/development/feature-test/SKILL.md` — aggiunta riga tracking uso
+- `skills/development/feature-review/SKILL.md` — aggiunta riga tracking uso
+- `skills/meta/verifica-pre-commit/SKILL.md` — aggiunta riga tracking uso
+
+**AWS Diagnostics — pacchetto skill read-only**
+- `skills/development/aws-diagnostics/` — 5 skill con script Python per diagnosi ambienti AWS LAIF
+  - `aws-triage/` — health check rapido su tutti i servizi (ECS, RDS, Logs, S3)
+  - `aws-ecs-diagnose/` — deep-dive ECS (deployment, task failure, capacity, config)
+  - `aws-logs-diagnose/` — query CloudWatch Logs Insights (6 template + custom)
+  - `aws-rds-diagnose/` — stato RDS, connessioni, log PostgreSQL, parametri
+  - `aws-s3-diagnose/` — inventario bucket, dimensioni, upload recenti
+  - `_shared/` — libreria Python condivisa (config, aws_runner, output) + documentazione
+- `projects/_template/aws-config.yaml` — template configurazione risorse AWS per nuovi progetti
+
+### Changed
+
+- `docs/skills.md` — aggiunte 5 skill AWS diagnostics con diagrammi Mermaid, aggiornato diagramma globale
+- `docs/struttura.md` — aggiornato albero con aws-diagnostics/ e aws-config.yaml nel template progetto
+- `skills/README.md` — aggiunte 5 skill AWS diagnostics alla tabella Development
+- `.tags/index.md` — aggiunti tag `#stack:ecs`, `#stack:rds`, `#stack:cloudwatch`, `#stack:s3`
+- `.gitignore` — `.claude/` → `.claude/*` + `!.claude/skills/` per versionare skill native; aggiunto `*.code-workspace`
+- `System.md` — aggiornata versione a 1.6
+
+---
+
 ## [v1.4] — 2026-03-09
 
 ### Added
