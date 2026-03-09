@@ -12,7 +12,6 @@ legge:
   - Repository GitHub (clone + analisi)
 scrive:
   - projects/[nome]/ (intera struttura da _template/)
-  - projects/[nome]/repo/CLAUDE.md
   - projects/INDEX.md
 aggiornato: "2026-03-08"
 ---
@@ -100,23 +99,13 @@ tipo: [kickoff | follow-up | review | commerciale]
 [Contenuto completo della pagina]
 ```
 
-### Step 3 — Clona la repository
+### Step 3 — Analizza la repository
 
-```bash
-git clone [url-repo] projects/[nome]/repo/
-```
-
-Se ci sono repo aggiuntive:
-```bash
-git clone [url-repo-infra] projects/[nome]/repo-infra/
-# ecc.
-```
-
-### Step 4 — Analizza la repository
+La repository vive in `/Users/simonebrigante/LAIF/repo/[nome]/` (non dentro la KB).
 
 Leggi e analizza:
-1. `projects/[nome]/repo/README.md` — overview del progetto
-2. `projects/[nome]/repo/package.json` (o Gemfile, pyproject.toml, go.mod, ecc.) — stack e dipendenze
+1. `/Users/simonebrigante/LAIF/repo/[nome]/README.md` — overview del progetto
+2. `/Users/simonebrigante/LAIF/repo/[nome]/package.json` (o Gemfile, pyproject.toml, go.mod, ecc.) — stack e dipendenze
 3. Struttura cartelle di primo e secondo livello (max 2 livelli di profondità)
 
 Da questa analisi estrai:
@@ -125,15 +114,15 @@ Da questa analisi estrai:
 - **Struttura del progetto** (frontend, backend, shared, ecc.)
 - **Comandi principali** (npm run dev, npm test, npm run build, ecc.)
 
-### Step 5 — Popola README.md del progetto
+### Step 4 — Popola README.md del progetto
 
 Compila `projects/[nome]/README.md` con:
 - Info cliente (da Notion o dalle risposte alle domande)
 - Stack rilevato dalla repo
-- Link alla repo e alle repo aggiuntive
-- Path locale della repo clonata
+- Link alla repo GitHub
+- Path locale della repo (`/Users/simonebrigante/LAIF/repo/[nome]/`)
 
-### Step 6 — Genera bozza requisiti (condizionale)
+### Step 5 — Genera bozza requisiti (condizionale)
 
 Se le pagine Notion contengono note di meeting con requisiti identificabili:
 - Crea una bozza di `projects/[nome]/requisiti.md`
@@ -144,41 +133,7 @@ Se il materiale Notion è troppo generico o insufficiente:
 - Non creare requisiti.md (meglio vuoto che sbagliato)
 - Segnalalo nell'output
 
-### Step 7 — Genera CLAUDE.md nella repo
-
-Crea `projects/[nome]/repo/CLAUDE.md` con questo contenuto:
-
-```markdown
-# [Nome Progetto] — CLAUDE.md
-
-## Contesto
-Questo progetto è documentato nella Knowledge Base LAIF:
-- README: ~/LAIF/Progetti/_AI/KnowledgeBase/projects/[nome]/README.md
-- Architettura: ~/LAIF/Progetti/_AI/KnowledgeBase/projects/[nome]/architettura.md
-- Decisioni tecniche: ~/LAIF/Progetti/_AI/KnowledgeBase/projects/[nome]/decisioni.md
-
-## Stack
-[stack rilevato dallo Step 4]
-
-## Struttura del progetto
-[struttura cartelle rilevata dallo Step 4]
-
-## Comandi principali
-[comandi rilevati dallo Step 4]
-
-## Convenzioni di codice
-<!-- Da compilare con il team — esempi: -->
-- Lingua variabili/funzioni: [inglese/italiano]
-- Naming convention: [camelCase/snake_case/ecc.]
-- Struttura componenti: [da definire]
-
-## Note per Claude Code
-- La documentazione di progetto è in italiano
-- Per decisioni architetturali, aggiorna sempre decisioni.md nella KB
-- Windsurf agisce solo su questa repo, Claude Code gestisce la KB
-```
-
-### Step 8 — Aggiorna projects/INDEX.md
+### Step 6 — Aggiorna projects/INDEX.md
 
 Aggiungi o aggiorna la riga del progetto in `projects/INDEX.md`.
 
@@ -191,8 +146,9 @@ Aggiungi o aggiorna la riga del progetto in `projects/INDEX.md`.
 
 Struttura creata:
   projects/[nome]/                    [nuovo / aggiornato]
-  projects/[nome]/repo/               [clonata da github.com/...]
-  [projects/[nome]/repo-infra/]       [se presente]
+
+Repository analizzata:
+  /Users/simonebrigante/LAIF/repo/[nome]/
 
 Notion elaborato:
   [N] pagine lette
@@ -206,14 +162,12 @@ File generati:
   ✓ projects/[nome]/README.md
   ✓ projects/[nome]/meeting/...
   [✓ projects/[nome]/requisiti.md (bozza)]
-  ✓ projects/[nome]/repo/CLAUDE.md
   ✓ projects/INDEX.md (aggiornato)
 
 Prossimi passi:
   1. → Esegui skills/presales/estrazione-requisiti/ per strutturare i requisiti
        [le note meeting sono già disponibili come input]
-  2. → Completa la sezione "Convenzioni di codice" in projects/[nome]/repo/CLAUDE.md
-  3. → Quando i requisiti sono pronti, esegui:
+  2. → Quando i requisiti sono pronti, esegui:
        skills/presales/genera-allegato-tecnico/
        skills/presales/genera-mockup-brief/
 ```
@@ -224,8 +178,7 @@ Prossimi passi:
 
 - [ ] `projects/[nome]/README.md` ha cliente, industria, stack e link repo
 - [ ] Tutte le pagine Notion sono state salvate in `meeting/`
-- [ ] La repo è clonata e accessibile
-- [ ] `CLAUDE.md` nella repo è compilato con dati reali (non solo placeholder)
+- [ ] La repo è stata analizzata (in `/Users/simonebrigante/LAIF/repo/[nome]/`)
 - [ ] `projects/INDEX.md` aggiornato
 - [ ] Nessun file esistente è stato sovrascritto (modalità merge rispettata)
 
@@ -233,12 +186,10 @@ Prossimi passi:
 
 ## Gestione errori
 
-**Repo non accessibile (permessi / URL errato)**:
+**Repo non accessibile (non trovata in /Users/simonebrigante/LAIF/repo/)**:
 ```
-Non riesco ad accedere a [url]. Possibili cause:
-- URL errato (controlla il link)
-- Repo privata senza autenticazione git configurata
-Vuoi fornire un URL alternativo o procedere senza clonare la repo?
+Non trovo la repo [nome] in /Users/simonebrigante/LAIF/repo/.
+Assicurati che sia clonata localmente. Vuoi procedere senza analizzare la repo?
 ```
 
 **Pagina Notion non leggibile**:

@@ -91,9 +91,11 @@ jubatus/
 ├── architettura.md        ← architettura del sistema
 ├── decisioni.md           ← decisioni tecniche (ADR)
 ├── feature-log.md         ← feature completate con note
-├── manutenzione.md        ← note post go-live
-└── repo/                  ← copia locale della repository
+├── stato-progetto.md      ← stato attuale e prossimi passi
+└── manutenzione.md        ← note post go-live
 ```
+
+> Repository codice: `/Users/simonebrigante/LAIF/repo/jubatus/`
 
 ## Note
 

@@ -8,7 +8,20 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/).
 
 ## [Non rilasciato]
 
-_Nessuna modifica pendente._
+### Added
+
+**Template progetto**
+- `projects/_template/stato-progetto.md` — nuovo file template: mappa requisiti vs implementazione, blocchi critici, prossimi passi
+- `docs/struttura.md` — aggiunto `stato-progetto.md` nell'albero template
+
+### Changed
+
+**Convenzione repository progetti**
+- Le repository di codice non vivono più dentro `projects/[nome]/repo/` ma in `/Users/simonebrigante/LAIF/repo/[nome]/`
+- Rimossi da `.gitignore` le regole `projects/*/repo/` e `projects/*/repo-*/`
+- Rimosso `projects/*/repo/` da `.obsidian/app.json` (userIgnoreFilters)
+- Aggiornati: `docs/struttura.md`, `System.md`, `projects/_template/README.md`, `projects/jubatus/README.md`
+- `skills/presales/init-project/SKILL.md` — riscritta: rimosso clone repo, analisi da path esterno, rimosso step generazione CLAUDE.md nella repo
 
 ---
 
