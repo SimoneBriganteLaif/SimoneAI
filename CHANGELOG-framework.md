@@ -8,6 +8,12 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/).
 
 ## [Non rilasciato]
 
+_Nessuna modifica pendente._
+
+---
+
+## [v1.2] — 2026-03-09
+
 ### Added
 
 **Gestione repository progetti**

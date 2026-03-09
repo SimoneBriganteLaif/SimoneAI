@@ -14,6 +14,12 @@ Categorie usate:
 
 ## [Non rilasciato]
 
+_Nessuna modifica pendente._
+
+---
+
+## [v1.2] — 2026-03-09
+
 ### Progetti
 
 **Jubatus — Inizializzazione**
