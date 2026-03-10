@@ -34,6 +34,7 @@ Ogni file pattern contiene:
 | [fullstack-dev-preview-loop](fullstack-dev-preview-loop.md) | workflow | jubatus | 2026-03-09 |
 | [list-detail-lazy-loading](list-detail-lazy-loading.md) | performance | jubatus | 2026-03-09 |
 | [html-sanitization-dompurify](html-sanitization-dompurify.md) | sicurezza | jubatus | 2026-03-09 |
+| [dayjs-isoweek-manipulate-mapping](dayjs-isoweek-manipulate-mapping.md) | integrazione | umbra | 2026-03-10 |
 
 ---
 

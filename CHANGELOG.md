@@ -29,10 +29,32 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/).
 - `projects/umbra/allegato-tecnico.md` — riferimento a contratto firmato
 - `projects/umbra/mockup-brief.md` — template vuoto
 
+**Progetto Umbra — sviluppo modulo WOW (ciclo Windsurf)**
+- `projects/umbra/decisioni.md` — 3 ADR: isoWeek (ADR-001), layout WOW main (ADR-002), tab budget (ADR-003)
+- `projects/umbra/windsurf-briefs/2026-03-10T1448-gantt-week-extension.md` — brief Windsurf per estensione Gantt WEEK in laif-ds
+- `projects/umbra/windsurf-briefs/2026-03-10T1452-wow-ui-refactor.md` — brief Windsurf per refactor UI WOW in 3 pagine
+- `projects/umbra/windsurf-briefs/2026-03-10T1509-wow-ui-refactor-report.md` — report Windsurf: 14/14 task completati
+- `projects/umbra/windsurf-briefs/2026-03-10T1524-gantt-week-extension-report.md` — report Windsurf: 13/13 task completati
+
+**Progetto Jubatus — permessi AWS**
+- `projects/jubatus/permessi-aws.md` — documentazione completa permessi AWS per deploy (fase setup + operazioni correnti, policy IAM, least privilege)
+
+**Pattern**
+- `patterns/dayjs-isoweek-manipulate-mapping.md` — mapping `"isoWeek"` → `"week"` per `ManipulateType` di dayjs, con variante helper centralizzato
+
+**Knowledge**
+- `knowledge/azienda/laif-ds-local-link.md` — procedura completa per linkare laif-ds locale via `npm link` nei progetti consumer
+- `knowledge/problemi-tecnici/laif-ds-type-export.md` — `RawGanttDataType` non esportato dal barrel export di laif-ds, workaround e fix raccomandato
+
+**Idee**
+- `IDEAS.md` — aggiunta IDEA-015 (standard logging cross-progetto)
+
 #### Changed
 
+- `projects/umbra/stato-progetto.md` — aggiornato con mappa requisiti vs implementazione (11 RF), blocchi critici (dati mancanti, SFTP, ponte S400), prossimi passi (review WOW settimana 11, modulo A settimane 11-12)
+- `patterns/README.md` — aggiunto `dayjs-isoweek-manipulate-mapping` all'indice pattern
 - `projects/INDEX.md` — aggiunto Umbra (4 progetti totali, 3 in sviluppo)
-- `.tags/index.md` — registrato tag `#progetto:umbra`
+- `.tags/index.md` — registrato tag `#progetto:umbra`, nuovi tag stack e pattern
 
 ### Struttura
 

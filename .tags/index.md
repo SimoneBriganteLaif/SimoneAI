@@ -16,9 +16,9 @@ Tutti i tag usati nella knowledge base. Aggiornato dalla skill `maintenance/audi
 
 | Tag | File che lo usano |
 |-----|-----------------|
-| `#progetto:jubatus` | projects/jubatus/README.md, projects/jubatus/requisiti.md, projects/jubatus/architettura.md, projects/jubatus/decisioni.md, projects/jubatus/feature-log.md, projects/jubatus/stato-progetto.md, projects/jubatus/meeting/*.md |
+| `#progetto:jubatus` | projects/jubatus/README.md, projects/jubatus/requisiti.md, projects/jubatus/architettura.md, projects/jubatus/decisioni.md, projects/jubatus/feature-log.md, projects/jubatus/stato-progetto.md, projects/jubatus/permessi-aws.md, projects/jubatus/meeting/*.md |
 | `#progetto:lamonea` | projects/lamonea/README.md, projects/lamonea/requisiti.md, projects/lamonea/architettura.md, projects/lamonea/decisioni.md, projects/lamonea/feature-log.md, projects/lamonea/stato-progetto.md, projects/lamonea/allegato-tecnico.md, projects/lamonea/mockup-brief.md, projects/lamonea/manutenzione.md, projects/lamonea/aws-config.yaml, projects/lamonea/meeting/*.md |
-| `#progetto:umbra` | projects/umbra/README.md, projects/umbra/requisiti.md, projects/umbra/architettura.md, projects/umbra/decisioni.md, projects/umbra/feature-log.md, projects/umbra/stato-progetto.md, projects/umbra/allegato-tecnico.md, projects/umbra/mockup-brief.md, projects/umbra/manutenzione.md, projects/umbra/aws-config.yaml, projects/umbra/meeting/*.md |
+| `#progetto:umbra` | projects/umbra/README.md, projects/umbra/requisiti.md, projects/umbra/architettura.md, projects/umbra/decisioni.md, projects/umbra/feature-log.md, projects/umbra/stato-progetto.md, projects/umbra/allegato-tecnico.md, projects/umbra/mockup-brief.md, projects/umbra/manutenzione.md, projects/umbra/aws-config.yaml, projects/umbra/meeting/*.md, projects/umbra/windsurf-briefs/*.md |
 
 ---
 
@@ -60,6 +60,7 @@ Tutti i tag usati nella knowledge base. Aggiornato dalla skill `maintenance/audi
 | `#pattern:database` | patterns/sqlalchemy-joinedload-unique.md |
 | `#pattern:performance` | patterns/list-detail-lazy-loading.md |
 | `#pattern:sicurezza` | patterns/html-sanitization-dompurify.md |
+| `#pattern:integrazione` | patterns/dayjs-isoweek-manipulate-mapping.md |
 
 ---
 
@@ -73,6 +74,8 @@ Tutti i tag usati nella knowledge base. Aggiornato dalla skill `maintenance/audi
 | `#problema:performance` | patterns/list-detail-lazy-loading.md, knowledge/problemi-tecnici/query-n-plus-1.md |
 | `#problema:xss` | patterns/html-sanitization-dompurify.md, knowledge/problemi-tecnici/xss-contenuto-esterno.md |
 | `#problema:sicurezza` | knowledge/problemi-tecnici/xss-contenuto-esterno.md |
+| `#problema:integrazione` | knowledge/problemi-tecnici/laif-ds-type-export.md |
+| `#knowledge:azienda` | knowledge/azienda/laif-ds-local-link.md |
 
 ---
 
@@ -90,7 +93,10 @@ Tutti i tag usati nella knowledge base. Aggiornato dalla skill `maintenance/audi
 | `#stack:aws` | skills/development/aws-diagnostics/ |
 | `#stack:fastapi` | knowledge/azienda/stack.md, patterns/fastapi-route-order.md, patterns/fullstack-dev-preview-loop.md, patterns/list-detail-lazy-loading.md, knowledge/problemi-tecnici/query-n-plus-1.md, knowledge/problemi-tecnici/routing-conflitti-parametrici.md |
 | `#stack:sqlalchemy` | patterns/sqlalchemy-joinedload-unique.md, knowledge/problemi-tecnici/query-n-plus-1.md |
-| `#stack:cdk` | knowledge/azienda/infrastruttura.md |
+| `#stack:dayjs` | patterns/dayjs-isoweek-manipulate-mapping.md |
+| `#stack:laif-ds` | knowledge/azienda/laif-ds-local-link.md, knowledge/problemi-tecnici/laif-ds-type-export.md, patterns/dayjs-isoweek-manipulate-mapping.md |
+| `#stack:npm` | knowledge/azienda/laif-ds-local-link.md |
+| `#stack:cdk` | knowledge/azienda/infrastruttura.md, projects/jubatus/permessi-aws.md |
 | `#stack:ecs` | skills/development/aws-diagnostics/aws-ecs-diagnose/, skills/development/aws-diagnostics/aws-triage/ |
 | `#stack:rds` | skills/development/aws-diagnostics/aws-rds-diagnose/, skills/development/aws-diagnostics/aws-triage/ |
 | `#stack:cloudwatch` | skills/development/aws-diagnostics/aws-logs-diagnose/, skills/development/aws-diagnostics/aws-triage/ |

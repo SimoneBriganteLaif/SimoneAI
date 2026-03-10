@@ -14,7 +14,7 @@ tags:
 
 ## Stato complessivo
 
-Il progetto ha due moduli. Il modulo A (schedulazione settimanale) e in sviluppo: SFTP configurato, file settimanali depositati, parsing e riaggregazione in corso. Il modulo B (promozioni WOW) e in fase di analisi avanzata: requisiti raccolti in 3 meeting con il marketing, mockup interfaccia presentato il 3 marzo, validazione UI/UX pianificata per il 12 marzo.
+Il progetto ha due moduli. Il modulo A (schedulazione settimanale) e in sviluppo: SFTP configurato, file settimanali depositati, parsing e riaggregazione in corso. Il modulo B (promozioni WOW) ha completato il primo ciclo di sviluppo UI: Windsurf ha implementato sia l'estensione Gantt WEEK in laif-ds (13/13 task) sia il refactor UI WOW in 3 pagine (14/14 task). Le modifiche sono linkate localmente via `npm link` e pronte per review visuale. Validazione UI/UX pianificata per il 12 marzo.
 
 ---
 
@@ -26,8 +26,8 @@ Il progetto ha due moduli. Il modulo A (schedulazione settimanale) e in sviluppo
 | RF-02 | Integrazione SFTP automatica | Parziale | — | In sviluppo |
 | RF-03 | Formato output CSV | OK | — | Completato |
 | RF-04 | Gestione varianti prodotto | Non iniziato | Non iniziato | Non iniziato |
-| RF-05 | Modulo marketing WOW | Non iniziato | Non iniziato | In analisi |
-| RF-06 | Vista Gantt pianificazione | Non iniziato | Non iniziato | In analisi |
+| RF-05 | Modulo marketing WOW | Non iniziato | Scaffold UI (3 pagine) | In sviluppo |
+| RF-06 | Vista Gantt pianificazione | Non iniziato | Gantt WEEK + wrapper | In review |
 | RF-07 | Suggerimenti AI prioritizzati | Non iniziato | Non iniziato | In analisi |
 | RF-08 | Vincoli temporali per fornitore | Non iniziato | Non iniziato | In analisi |
 | RF-09 | Conversione sell-out -> sell-in | Non iniziato | Non iniziato | In analisi |
@@ -60,10 +60,15 @@ Adriano deve configurare l'accesso diretto dall'S400 alla cartella SFTP in DMZ. 
 
 ## Prossimi passi suggeriti
 
-### Priorita 1 — Validazione UI modulo WOW (settimana 11)
+### Priorita 1 — Review e test modulo WOW (settimana 11)
 
-1. **Follow-up 12 marzo ore 10-11**: validare grafica e flusso con Alessandra
-2. **Sviluppare mockup funzionale** con dati finti per iterazione rapida
+1. **Sviluppo Windsurf completato** (10 marzo):
+   - Gantt WEEK extension in laif-ds: 13/13 task completati (report: `windsurf-briefs/2026-03-10T1524-gantt-week-extension-report.md`)
+   - UI refactor WOW in 3 pagine: 14/14 task completati (report: `windsurf-briefs/2026-03-10T1509-wow-ui-refactor-report.md`)
+2. **Integrazione locale**: laif-ds linkata via `npm link`, `WowGanttView.tsx` aggiornato a `GanttDimensions.WEEK`
+3. **Da fare**: review visuale, test navigazione 3 pagine, verificare rendering Gantt settimanale
+4. **Decisioni documentate**: 3 ADR in `decisioni.md` (isoWeek, layout main, tab budget)
+5. **Follow-up 12 marzo ore 10-11**: validare grafica e flusso con Alessandra
 
 ### Priorita 2 — Completare modulo A (settimane 11-12)
 
@@ -77,6 +82,9 @@ Adriano deve configurare l'accesso diretto dall'S400 alla cartella SFTP in DMZ. 
 - Sviluppo algoritmo suggerimento WOW
 - Frontend modulo marketing
 - Tracciamento performance promozioni
+- Helper `toManipulateUnit()` in laif-ds — estrarre mapping `"isoWeek" → "week"` duplicato in 3+ punti del Gantt (vedi pattern `dayjs-isoweek-manipulate-mapping`)
+- Grafico amcharts5 in WowStoricoPage — delta performance per fornitore nel tempo (amcharts5 già in uso)
+- PR laif-ds: esportare `RawGanttDataType` nel barrel export (vedi `knowledge/problemi-tecnici/laif-ds-type-export.md`)
 
 ---
 
