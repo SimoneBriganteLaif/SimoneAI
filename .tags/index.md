@@ -45,6 +45,7 @@ Tutti i tag usati nella knowledge base. Aggiornato dalla skill `maintenance/audi
 | `#fase:dev` | Documenti di sviluppo (ADR, feature log, architettura) |
 | `#fase:manutenzione` | Note post go-live |
 | `#fase:contesto` | Conoscenza aziendale/contestuale (knowledge/azienda/) |
+| `#fase:development` | Skill di sviluppo (feature-workflow, windsurf-feedback, ecc.) |
 
 ---
 
@@ -97,4 +98,4 @@ Tutti i tag usati nella knowledge base. Aggiornato dalla skill `maintenance/audi
 
 ---
 
-*Ultimo aggiornamento: 2026-03-09*
+*Ultimo aggiornamento: 2026-03-10*

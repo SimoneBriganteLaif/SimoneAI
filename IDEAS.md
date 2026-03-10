@@ -9,7 +9,7 @@ Raccolta strutturata di idee per evolvere il sistema. Le idee vengono valutate p
 | ID | Idea | Categoria | Effort | Priorità | Stato | Data | Note |
 |----|------|-----------|--------|----------|-------|------|------|
 | IDEA-001 | Scheduled task giornaliera: git diff → auto-changelog → commit/tag se modifiche + sync repo core (IDEA-008) | automazione | M | alta | proposta | 2026-03-08 | Usare scheduled tasks di Claude Code. "Staccare una versione" giornaliera solo se ci sono diff. Includere anche pull repo core + aggiornamento knowledge se cambiate |
-| IDEA-002 | Definire skill operative per Windsurf (istruzioni per sviluppo codice) | skill | M | alta | proposta | 2026-03-08 | Complementare alle skill Claude Code — guida come Windsurf deve operare sui repo |
+| IDEA-002 | Definire skill operative per Windsurf (istruzioni per sviluppo codice) | skill | M | alta | completata | 2026-03-08 | Implementato come ciclo Windsurf: brief strutturato + report feedback + skill `windsurf-feedback`. Regola 6 in CLAUDE.md per selezione executor. Completata 2026-03-10 |
 | IDEA-003 | Guida setup ambiente: installazione, configurazione, primo utilizzo | processo | S | media | completata | 2026-03-08 | Completata: vedi `docs/setup.md` |
 | IDEA-004 | Valutare estensione multi-utente del sistema | processo | L | bassa | proposta | 2026-03-08 | Per ora uso personale. Valutare permessi, conflitti, workflow collaborativo |
 | IDEA-005 | Sezione "Persone" per gestione team: one-to-one, obiettivi, crescita | struttura | M | bassa | proposta | 2026-03-08 | Tracciare esiti 1:1, obiettivi individuali, percorsi di crescita dei membri del team. Da valutare quando il sistema sarà più maturo |

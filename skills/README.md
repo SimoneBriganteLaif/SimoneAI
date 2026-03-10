@@ -28,6 +28,7 @@ Le skill sono istruzioni operative per Claude Code. Ogni skill è una **cartella
 | `development/estrazione-pattern/` | stable | si | Fine sprint o fine progetto | feature-log, decisioni | patterns/, knowledge/ |
 | `development/setup-progetto-dev/` | beta | si | Inizio sessione dev | architettura.md, MEMORY.md, stack.md | nessuno (solo report) |
 | `development/brainstorming-post-sviluppo/` | beta | si | Fine sessione dev | Lavoro svolto nella sessione | patterns/, skills/, IDEAS.md |
+| `development/windsurf-feedback/` | beta | si | Report feedback da Windsurf | Report .md da Windsurf | knowledge/, patterns/, decisioni.md |
 | `development/aws-diagnostics/aws-health-report/` | beta | si | Report HTML completo infrastruttura | aws-config.yaml | reports/aws-report-*.html |
 | `development/aws-diagnostics/aws-triage/` | beta | si | Debug AWS, primo check | aws-config.yaml | — (diagnosi) |
 | `development/aws-diagnostics/aws-ecs-diagnose/` | beta | si | Problemi ECS (deploy, task, capacity) | aws-config.yaml | — (diagnosi) |

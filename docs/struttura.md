@@ -2,7 +2,7 @@
 
 ← [System.md](../System.md) · [skills.md](skills.md) · [workflow.md](workflow.md)
 
-**Ultimo aggiornamento**: 2026-03-09
+**Ultimo aggiornamento**: 2026-03-10
 
 ---
 
@@ -53,7 +53,9 @@ SimoneAI/
 │   │   ├── allegato-tecnico.md    ← Allegato contrattuale: max 3 pagine, non tecnico.
 │   │   ├── mockup-brief.md        ← Brief per Windsurf: schermate, flussi, brand.
 │   │   ├── manutenzione.md        ← Note post go-live.
-│   │   └── aws-config.yaml        ← Config AWS: profili, regione, nomi risorse.
+│   │   ├── aws-config.yaml        ← Config AWS: profili, regione, nomi risorse.
+│   │   └── windsurf-briefs/       ← Brief di sviluppo per Windsurf + report feedback.
+│   │       └── [RF-XX]-[nome].md  ← Brief autocontenuto generato da feature-develop.
 │   └── [nome-progetto]/            ← Creato dalla skill init-project.
 │
 ├── patterns/                       ← Pattern tecnici riutilizzabili estratti dai progetti.
@@ -81,6 +83,7 @@ SimoneAI/
 │   │   ├── estrazione-pattern/     ← Fine sprint → estrae pattern riutilizzabili.
 │   │   ├── setup-progetto-dev/     ← Verifica ambiente dev locale (Docker, servizi, auth).
 │   │   ├── brainstorming-post-sviluppo/ ← Analisi fine sessione → pattern, skill, idee.
+│   │   ├── windsurf-feedback/     ← Processa report feedback Windsurf → KB.
 │   │   └── aws-diagnostics/       ← Skill diagnostiche AWS read-only.
 │   │       ├── README.md           ← Overview, flowchart selezione, naming convention.
 │   │       ├── _shared/            ← Libreria Python + doc condivisi.

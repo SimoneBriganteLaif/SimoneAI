@@ -12,6 +12,22 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/).
 
 #### Added
 
+**Ciclo Windsurf — flusso di sviluppo Claude Code + Windsurf**
+- `skills/development/windsurf-feedback/` v1.0 beta — nuova skill: processa report feedback Windsurf, estrae difficolta/pattern/decisioni e arricchisce la KB
+- `.claude/skills/windsurf-feedback/SKILL.md` — trigger layer nativo per la nuova skill
+- `projects/_template/windsurf-briefs/` — nuova directory nel template progetto per brief e report Windsurf
+- `~/.codeium/windsurf/skills/claude-brief/SKILL.md` — skill globale Windsurf: guida lettura brief, implementazione ordinata, compilazione report feedback strutturato
+
+#### Changed
+
+- `skills/development/feature-workflow/SKILL.md` — v1.1: aggiunta selezione executor (Claude Code o Windsurf) nel loop conversazionale, sotto-flusso Windsurf con brief→report→feedback, campo `executor` in `.feature-state.md`, KB Enrichment in fase Exit, fix brief per GATE 3 FAIL
+- `skills/development/feature-develop/SKILL.md` — v1.1: brief Windsurf arricchito con template strutturato a 9 sezioni (include template report feedback), salvataggio in `windsurf-briefs/` anziche solo in chat, domanda executor condizionale (salta se da feature-workflow)
+- `CLAUDE.md` — aggiunta Regola 6 (selezione executor prima dello sviluppo), aggiornata sezione "Divisione strumenti" con ciclo Windsurf completo
+- `docs/workflow.md` — aggiunta sezione "Flusso Windsurf (ciclo completo)" con sequence diagram, tabelle contenuto brief/report, aggiornato diagramma divisione strumenti e flusso Development
+- `docs/skills.md` — aggiunta skill `windsurf-feedback` a indice, riepilogo, diagramma globale, diagramma dipendenze, tabella disambiguazione
+- `docs/struttura.md` — aggiunta `windsurf-briefs/` al template progetto, aggiunta `windsurf-feedback/` alle skill development
+- `IDEAS.md` — IDEA-002 stato: proposta → completata
+
 **v1.7 — Miglioramenti gestione skill e knowledge**
 - `CHANGELOG.md` — changelog unificato (merge di CHANGELOG-framework.md + CHANGELOG-contenuti.md), sezioni `### Struttura` e `### Contenuti` per versione
 - `skills/meta/contesto-progetto/match.py` — script deterministico: dato un progetto, trova pattern/knowledge/industrie rilevanti per tag matching

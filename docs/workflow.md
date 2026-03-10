@@ -2,7 +2,7 @@
 
 ← [System.md](../System.md) · [skills.md](skills.md) · [struttura.md](struttura.md)
 
-**Ultimo aggiornamento**: 2026-03-09
+**Ultimo aggiornamento**: 2026-03-10
 
 ---
 
@@ -13,6 +13,7 @@
 - [Divisione strumenti: Claude Code vs Windsurf](#divisione-strumenti-claude-code-vs-windsurf)
 - [Flusso Presales](#flusso-presales)
 - [Flusso Development](#flusso-development)
+- [Flusso Windsurf (ciclo completo)](#flusso-windsurf-ciclo-completo)
 - [Flusso Maintenance](#flusso-maintenance)
 - [Flusso Meta / Gestione KB](#flusso-meta--gestione-kb)
 
@@ -90,24 +91,34 @@ flowchart LR
 flowchart TD
     subgraph CC["Claude Code"]
         CC1[Gestione Knowledge Base]
-        CC2[Review del codice]
-        CC3[Esecuzione test]
-        CC4[Aggiornamento KB post-sviluppo]
-        CC5[Gestione meta-file\nchangelog, idee, docs]
+        CC2[Pianificazione feature]
+        CC3[Generazione brief Windsurf]
+        CC4[Review del codice]
+        CC5[Esecuzione test]
+        CC6[Processamento feedback]
+        CC7[KB Enrichment]
+        CC8[Gestione meta-file\nchangelog, idee, docs]
     end
 
     subgraph WS["Windsurf"]
+        WS0["Skill: claude-brief\n(~/.codeium/windsurf/skills/)"]
         WS1[Scrittura codice]
         WS2[Implementazione feature]
         WS3[Debug e fix]
         WS4[Refactoring]
+        WS5[Compilazione report feedback]
+        WS0 -.->|guida| WS1
+        WS0 -.->|guida| WS5
     end
 
-    CC1 -->|brief + requisiti| WS1
-    WS1 -->|codice scritto| CC2
-    CC2 -->|feedback| WS3
-    WS2 -->|feature completata| CC4
-    CC3 -->|risultati test| WS3
+    CC2 -->|piano approvato| CC3
+    CC3 -->|brief autocontenuto| WS1
+    WS1 -->|report feedback| CC6
+    CC6 -->|codice pronto| CC4
+    CC6 -->|codice pronto| CC5
+    CC4 -->|feedback fix| WS3
+    CC5 -->|test falliti| WS3
+    CC6 -->|pattern, decisioni, problemi| CC7
 ```
 
 ### Quando usare cosa
@@ -117,8 +128,11 @@ flowchart TD
 | Creare/gestire progetti nella KB | Claude Code | Gestione file .md, skill conversazionali |
 | Estrarre requisiti da note meeting | Claude Code | Processo strutturato con loop conversazionale |
 | Generare documenti per il cliente | Claude Code | Template e formato specifico |
-| Scrivere codice applicativo | Windsurf | Più token, più libertà, sviluppo intensivo |
-| Fare code review | Claude Code | Verifica qualità e aderenza a decisioni |
+| Generare brief per Windsurf | Claude Code | Brief autocontenuto con contesto KB |
+| Scrivere codice applicativo | Windsurf | Piu token, piu liberta, sviluppo intensivo |
+| Compilare report feedback | Windsurf | Documenta difficolta, decisioni, pattern |
+| Processare feedback Windsurf | Claude Code | Smista nella KB: pattern, decisioni, problemi |
+| Fare code review | Claude Code | Verifica qualita e aderenza a decisioni |
 | Eseguire test | Claude Code | Validazione post-sviluppo |
 | Documentare decisioni tecniche | Claude Code | ADR nella KB |
 | Estrarre pattern a fine sprint | Claude Code | Aggiornamento knowledge base |
@@ -193,6 +207,8 @@ sequenceDiagram
 
     U->>CC: Sviluppa feature RF-XX
     CC->>CC: skill: feature-workflow
+    CC->>U: Claude Code o Windsurf?
+    U->>CC: Scelta executor
 
     rect rgb(230, 245, 255)
     Note over CC: Fase 1 — Plan
@@ -209,9 +225,14 @@ sequenceDiagram
     CC->>CC: skill: feature-develop
     alt Claude Code diretto
         CC->>CC: Implementa task per task
-    else Brief per Windsurf
-        CC-->>WS: Brief autocontenuto
-        WS->>WS: Implementa
+    else Windsurf (via brief)
+        CC->>CC: Genera brief autocontenuto
+        CC->>U: Brief salvato in windsurf-briefs/
+        U->>WS: Passa brief a Windsurf
+        WS->>WS: Implementa + compila report
+        U->>CC: Report Windsurf
+        CC->>CC: skill: windsurf-feedback
+        CC->>CC: Processa feedback → KB
     end
     CC->>U: Sviluppo completo — confermi?
     U->>CC: Confermato (GATE 2)
@@ -224,12 +245,13 @@ sequenceDiagram
         CC->>CC: Scrive test + esegue suite
     and Review
         CC->>CC: skill: feature-review
-        CC->>CC: Check pattern, duplicazioni, qualità
+        CC->>CC: Check pattern, duplicazioni, qualita
     end
     end
 
     alt GATE 3 PASS
         CC->>CC: Aggiorna feature-log.md
+        CC->>CC: KB Enrichment (pattern, decisioni, problemi)
         CC-->>U: Feature completata
     else GATE 3 FAIL
         CC->>U: Fix list da test/review
@@ -276,6 +298,91 @@ sequenceDiagram
         CC->>CC: skill: estrazione-decisioni
     end
 ```
+
+---
+
+## Flusso Windsurf (ciclo completo)
+
+Quando l'utente sceglie Windsurf come executor, il ciclo e un loop chiuso:
+
+```mermaid
+sequenceDiagram
+    participant U as Utente
+    participant CC as Claude Code
+    participant WS as Windsurf
+    participant KB as SimoneAI KB
+
+    CC->>U: Claude Code o Windsurf?
+    U->>CC: Windsurf
+
+    rect rgb(230, 245, 255)
+    Note over CC: 1. Pianificazione
+    CC->>KB: Legge requisiti, pattern, architettura
+    CC->>CC: feature-plan
+    CC->>U: Piano approvato? (GATE 1)
+    end
+
+    rect rgb(230, 255, 230)
+    Note over CC,WS: 2. Brief + Sviluppo
+    CC->>CC: feature-develop (Windsurf)
+    CC->>CC: Genera brief autocontenuto
+    Note right of CC: Include: contesto, task,<br/>convenzioni, pattern,<br/>criteri + template report
+    CC->>U: Brief salvato in windsurf-briefs/
+    U->>WS: Copia brief
+    WS->>WS: Implementa feature
+    WS->>WS: Compila report feedback
+    U->>CC: Passa report a Claude Code
+    end
+
+    rect rgb(255, 230, 230)
+    Note over CC,KB: 3. Feedback → KB
+    CC->>CC: windsurf-feedback
+    CC->>KB: Difficolta ricorrenti → problemi-tecnici/
+    CC->>KB: Decisioni → decisioni.md
+    CC->>KB: Pattern → patterns/
+    CC->>U: Sviluppo completo? (GATE 2)
+    end
+
+    rect rgb(255, 245, 230)
+    Note over CC: 4. Test + Review
+    CC->>CC: feature-test + feature-review
+    CC->>U: GATE 3
+    end
+
+    rect rgb(240, 240, 255)
+    Note over CC: 5. Exit
+    CC->>KB: feature-log.md
+    CC->>U: Feature completata + KB arricchita
+    end
+```
+
+### Contenuto del brief Windsurf
+
+Il brief e **autocontenuto** (Windsurf non ha accesso alla KB):
+
+| Sezione | Contenuto |
+|---------|-----------|
+| Metadata | Progetto, requisito, data, repo, stack |
+| Obiettivo | Cosa, per chi, perche (2-3 frasi) |
+| Contesto tecnico | Architettura + snippet codice dalla codebase |
+| Task list | Tabella con ordine, dipendenze, file, tipo |
+| Convenzioni LAIF | Copiate integralmente da processi.md |
+| Pattern | Copiati integralmente da patterns/ |
+| Criteri accettazione | Checklist misurabile |
+| Template report | Da compilare a fine sviluppo |
+
+### Contenuto del report feedback
+
+Windsurf compila il report (template incluso nel brief):
+
+| Sezione | Destinazione nella KB |
+|---------|----------------------|
+| Difficolta ricorrenti | `knowledge/problemi-tecnici/` |
+| Decisioni prese | `projects/[nome]/decisioni.md` |
+| Pattern individuati | `patterns/` |
+| Deviazioni dal piano | `.feature-state.md` |
+| Domande aperte | Risolte con l'utente |
+| Suggerimenti | `IDEAS.md` |
 
 ---
 

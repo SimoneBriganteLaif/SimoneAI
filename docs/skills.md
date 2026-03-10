@@ -2,7 +2,7 @@
 
 ← [System.md](../System.md) · [workflow.md](workflow.md) · [struttura.md](struttura.md)
 
-**Ultimo aggiornamento**: 2026-03-09
+**Ultimo aggiornamento**: 2026-03-10
 
 ---
 
@@ -12,7 +12,7 @@
 - [Sistema di stato](#sistema-di-stato-delle-skill)
 - [Riepilogo](#riepilogo)
 - **Presales**: [init-project](#init-project) · [estrazione-requisiti](#estrazione-requisiti) · [genera-allegato-tecnico](#genera-allegato-tecnico) · [genera-mockup-brief](#genera-mockup-brief)
-- **Development**: [feature-workflow](#feature-workflow) · [feature-plan](#feature-plan) · [feature-develop](#feature-develop) · [feature-test](#feature-test) · [feature-review](#feature-review) · [estrazione-decisioni](#estrazione-decisioni) · [estrazione-pattern](#estrazione-pattern) · [setup-progetto-dev](#setup-progetto-dev) · [brainstorming-post-sviluppo](#brainstorming-post-sviluppo) · [AWS Diagnostics](#aws-diagnostics-pacchetto)
+- **Development**: [feature-workflow](#feature-workflow) · [feature-plan](#feature-plan) · [feature-develop](#feature-develop) · [feature-test](#feature-test) · [feature-review](#feature-review) · [windsurf-feedback](#windsurf-feedback) · [estrazione-decisioni](#estrazione-decisioni) · [estrazione-pattern](#estrazione-pattern) · [setup-progetto-dev](#setup-progetto-dev) · [brainstorming-post-sviluppo](#brainstorming-post-sviluppo) · [AWS Diagnostics](#aws-diagnostics-pacchetto)
 - **Maintenance**: [audit-periodico](#audit-periodico)
 - **Meta**: [gestione-kb](#gestione-kb) · [verifica-pre-commit](#verifica-pre-commit)
 - [Confronto skill manutenzione](#differenze-tra-skill-di-manutenzione)
@@ -46,8 +46,12 @@ flowchart LR
         BPS[brainstorming-post-sviluppo]
         AWS[aws-diagnostics]
         SPD -.->|verifica ambiente| FW
+        WF[windsurf-feedback]
         FW --> FPL --> FDV
+        FDV -->|Windsurf| WF
         FDV --> FTS & FRV
+        WF -.->|pattern| EP
+        WF -.->|decisioni| ED
         FW -.->|decisioni| ED
         FW -.->|pattern| EP
         FRV -.->|fine sessione| BPS
@@ -119,6 +123,7 @@ La promozione va registrata nel changelog e il campo `stato` aggiornato nel fron
 | `feature-develop` | Development | beta | — | Piano → implementazione (Claude Code o brief Windsurf) | .feature-state.md (Piano), processi.md | Codebase, .feature-state.md (Sviluppo) |
 | `feature-test` | Development | beta | — | Scrive test, esegue suite, verifica criteri e regressioni | .feature-state.md, requisiti.md, codebase | Nuovi test, .feature-state.md (Test) |
 | `feature-review` | Development | beta | — | Review codice: pattern LAIF, duplicazioni, qualità, KB | .feature-state.md, processi.md, patterns/ | .feature-state.md (Review) |
+| `windsurf-feedback` | Development | beta | si | Processa report feedback Windsurf → KB enrichment | windsurf-briefs/report, .feature-state.md | decisioni.md, patterns/, problemi-tecnici/ |
 | `estrazione-decisioni` | Development | stable | si | Documenta decisioni tecniche (ADR) | decisioni.md | decisioni.md, architettura.md |
 | `estrazione-pattern` | Development | stable | si | Fine sprint → pattern riutilizzabili | feature-log, decisioni.md | patterns/, knowledge/ |
 | `setup-progetto-dev` | Development | beta | si | Verifica ambiente dev locale | architettura.md, MEMORY.md, stack.md | nessuno (solo report) |
@@ -372,6 +377,39 @@ flowchart TD
     C4 --> CLASS{Issue critiche?}
     CLASS -->|Sì| FAIL([FAIL + fix list])
     CLASS -->|No| PASS([PASS + suggerimenti])
+```
+
+---
+
+### windsurf-feedback
+
+**Path**: `skills/development/windsurf-feedback/SKILL.md`
+**Trigger**: Dopo che Windsurf ha completato lo sviluppo e l'utente fornisce il report
+**Stato**: beta
+
+Processa il report strutturato di Windsurf. Estrae difficolta ricorrenti, decisioni, pattern e li smista nella KB.
+
+```mermaid
+flowchart TD
+    START([Report Windsurf]) --> PARSE[Parse sezioni report]
+    PARSE --> DIFF[Difficolta ricorrenti?]
+    PARSE --> DEC[Decisioni non banali?]
+    PARSE --> PAT[Pattern riutilizzabili?]
+    PARSE --> QA[Domande aperte?]
+
+    DIFF -->|Si| D_PROP[Proponi salvataggio\nproblemi-tecnici/]
+    DEC -->|Si| DEC_PROP[Proponi ADR\ndecisioni.md]
+    PAT -->|Si| PAT_CHECK{Esiste gia\nin patterns/?}
+    PAT_CHECK -->|No| PAT_PROP[Proponi estrazione\npatterns/]
+    PAT_CHECK -->|Si| PAT_UPD[Aggiorna esempi reali]
+    QA -->|Si| QA_USER[Mostra all'utente]
+
+    D_PROP --> UPDATE[Aggiorna .feature-state.md]
+    DEC_PROP --> UPDATE
+    PAT_PROP --> UPDATE
+    PAT_UPD --> UPDATE
+    QA_USER --> UPDATE
+    UPDATE --> DONE([Output riepilogo KB arricchita])
 ```
 
 ---
@@ -632,10 +670,13 @@ flowchart TD
         SPD[setup-progetto-dev] -.->|verifica ambiente| FW[feature-workflow]
         FW -->|orchestra| FPL[feature-plan]
         FPL -->|piano| FDV[feature-develop]
+        FDV -->|Windsurf report| WFB[windsurf-feedback]
         FDV -->|codice| FTS[feature-test]
         FDV -->|codice| FRV[feature-review]
-        FW -.->|decisioni emerse| ED[estrazione-decisioni]
-        FRV -.->|pattern individuati| EP[estrazione-pattern]
+        WFB -.->|decisioni| ED[estrazione-decisioni]
+        WFB -.->|pattern| EP[estrazione-pattern]
+        FW -.->|decisioni emerse| ED
+        FRV -.->|pattern individuati| EP
         EP -.->|fine sessione| BPS[brainstorming-post-sviluppo]
     end
 
@@ -671,6 +712,7 @@ flowchart TD
 | Estrarre pattern a fine sprint da un progetto | `brainstorming-post-sviluppo` | `estrazione-pattern` | brainstorming analizza la sessione corrente, non il progetto intero |
 | Analizzare cosa è emerso nella sessione di oggi | `estrazione-pattern` | `brainstorming-post-sviluppo` | estrazione-pattern opera su feature-log/decisioni, non sulla sessione |
 | Sviluppare una feature end-to-end | sub-skill singole (plan, develop, test, review) | `feature-workflow` | il workflow orchestra le fasi con gate di qualità |
+| Processare il report di Windsurf | skill manuali | `windsurf-feedback` | smista feedback nella KB automaticamente |
 | Solo pianificare senza sviluppare | `feature-workflow` | `feature-plan` standalone | il workflow forza il ciclo completo |
 | Fare audit di tutta la KB | `estrazione-pattern` | `audit-periodico` | estrazione-pattern opera su UN progetto, non sull'intera KB |
 | Registrare una modifica nel changelog | `audit-periodico` | `gestione-kb` (mod. 1) | audit è per review periodiche, non per singole registrazioni |

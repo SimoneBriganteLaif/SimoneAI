@@ -86,6 +86,18 @@ Alla fine di ogni sessione di sviluppo significativa (non per fix banali o solo 
 
 **Non è bloccante**: se l'utente chiude la sessione senza brainstorming, non insistere.
 
+### Regola 6 — Selezione executor prima dello sviluppo
+
+Prima di ogni task di sviluppo (non solo quelli orchestrati da feature-workflow):
+
+1. Chiedi all'utente: *"Vuoi sviluppare con Claude Code o Windsurf?"*
+2. Se **Claude Code**: procedi con lo sviluppo diretto
+3. Se **Windsurf**: genera il brief autocontenuto con `feature-develop` modalità Windsurf, salvalo in `projects/[nome]/windsurf-briefs/`
+4. Dopo il ritorno da Windsurf: processa il report con `windsurf-feedback`
+5. In ogni caso: **test e review restano responsabilità di Claude Code**
+
+**Non è bloccante per task banali**: per fix di una riga o modifiche ovvie, non chiedere.
+
 ---
 
 ## Come usare le skill
@@ -100,10 +112,18 @@ Per i workflow per fase (presales, development, maintenance, meta): vedi `docs/w
 
 ## Divisione strumenti
 
-- **Claude Code**: gestione KB, review codice, esecuzione test, aggiornamento KB post-sviluppo
-- **Windsurf**: scrittura codice, implementazione feature, debug, refactoring
+- **Claude Code**: gestione KB, pianificazione feature, generazione brief per Windsurf, review codice, esecuzione test, processamento feedback Windsurf, aggiornamento KB post-sviluppo
+- **Windsurf**: scrittura codice, implementazione feature, debug, refactoring, compilazione report feedback. Guidato dalla skill globale `claude-brief` (`~/.codeium/windsurf/skills/claude-brief/SKILL.md`)
 
 Claude Code opera con parsimonia (costi). Windsurf gestisce lo sviluppo intensivo.
+
+### Ciclo Windsurf (quando l'utente sceglie Windsurf come executor)
+
+1. Claude Code pianifica e genera un brief autocontenuto (`windsurf-briefs/`)
+2. L'utente passa il brief a Windsurf
+3. Windsurf sviluppa e compila il report di feedback (template incluso nel brief)
+4. L'utente passa il report a Claude Code
+5. Claude Code processa il feedback (`windsurf-feedback`), arricchisce la KB, ed esegue test + review
 
 ## Creare un nuovo progetto
 
