@@ -8,6 +8,7 @@ Aggiornato automaticamente dalla skill `skills/presales/init-project/`.
 |---------|---------|----------|-------|--------|------|-------|------|
 | [jubatus](jubatus/README.md) | Jubatus | Entertainment/Eventi | in-sviluppo | 2026-01-23 | — | FastAPI, Next.js, PostgreSQL, AWS | [GitHub](https://github.com/laif-group/jubatus.git) |
 | [lamonea](lamonea/README.md) | Lamonea S.R.L. | Healthcare/Medical Devices | in-sviluppo | 2026-02-20 | — | FastAPI, Next.js, PostgreSQL, AWS | [GitHub](https://github.com/laif-group/lamonea.git) |
+| [umbra](umbra/README.md) | Umbra S.p.a. | Distribuzione prodotti dentali | in-sviluppo | 2025-11-20 | — | FastAPI, Next.js 15, PostgreSQL 17, CatBoost ML, ETL, AWS | [Repo locale](/Users/simonebrigante/LAIF/repo/umbra-recommend/) |
 | albini-castelli | Albini & Castelli | — | manutenzione | — | — | FastAPI, Next.js, PostgreSQL, AWS | — |
 
 ---
@@ -27,8 +28,8 @@ Aggiornato automaticamente dalla skill `skills/presales/init-project/`.
 
 ## Statistiche
 
-- **Totale progetti**: 3
-- **In sviluppo**: 2
+- **Totale progetti**: 4
+- **In sviluppo**: 3
 - **Manutenzione**: 1
 - **Completati**: 0
-- **Ultimo aggiornamento**: 2026-03-09
+- **Ultimo aggiornamento**: 2026-03-10

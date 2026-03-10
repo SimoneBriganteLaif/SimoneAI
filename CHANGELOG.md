@@ -8,6 +8,32 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/).
 
 ## [Non rilasciato]
 
+### Contenuti
+
+#### Added
+
+**Progetto Umbra — init-project + estrazione-requisiti**
+- `projects/umbra/` — nuovo progetto inizializzato (Umbra S.p.a., distribuzione prodotti dentali)
+- `projects/umbra/README.md` — overview con cliente, team, stack, timeline, link
+- `projects/umbra/architettura.md` — stack rilevato da repo (FastAPI, Next.js 15, PostgreSQL 17, CatBoost ML, ETL, AWS)
+- `projects/umbra/aws-config.yaml` — configurazione risorse AWS dev/prod
+- `projects/umbra/stato-progetto.md` — stato attuale: modulo A in sviluppo, modulo B in analisi
+- `projects/umbra/requisiti.md` v1.0 — 10 RF + 3 RNF validati con l'utente (RF-07 regole deterministiche NO AI, RF-04 Nice to Have, RF-11 integrato in RF-06)
+- `projects/umbra/meeting/2025-12-01-meeting-kickoff.md` — meeting kickoff
+- `projects/umbra/meeting/2026-01-22-previsioni-settimanali-trasferimento-dati.md` — decisioni SFTP e frequenza
+- `projects/umbra/meeting/2026-02-09-promozioni-wow.md` — requisiti dettagliati WOW
+- `projects/umbra/meeting/2026-03-03-pianificazione-sistema-promozioni-wow.md` — mockup e pianificazione
+- `projects/umbra/decisioni.md` — template vuoto
+- `projects/umbra/feature-log.md` — template vuoto
+- `projects/umbra/manutenzione.md` — template vuoto
+- `projects/umbra/allegato-tecnico.md` — riferimento a contratto firmato
+- `projects/umbra/mockup-brief.md` — template vuoto
+
+#### Changed
+
+- `projects/INDEX.md` — aggiunto Umbra (4 progetti totali, 3 in sviluppo)
+- `.tags/index.md` — registrato tag `#progetto:umbra`
+
 ### Struttura
 
 #### Added

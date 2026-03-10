@@ -1,0 +1,35 @@
+# AWS Config per Umbra
+# Generato da: init-project (valori da values.yaml della repo)
+# Nomi risorse derivati dalle convenzioni CDK LAIF.
+
+environments:
+  dev:
+    aws_profile: "umbra-dev"
+    region: "eu-west-1"
+    account_id: "053612131633"
+    app_name: "umbra-recommend"
+    customer_name: "umbra"
+    resources:
+      ecs_cluster: "dev-umbra-recommend-cluster"
+      ecs_service: "dev-umbra-recommend-be-service"
+      ecs_task_family: "dev-umbra-recommend-be-task"
+      log_group: "dev-umbra-recommend-be-task-log-group"
+      rds_identifier: "dev-umbra-db"
+      s3_data_bucket: "dev-umbra-recommend-data"
+      s3_frontend_bucket: "dev-umbra-recommend-fe-frontend"
+      alb_name: "dev-umbra-recommend-be-alb"
+  prod:
+    aws_profile: "umbra-prod"
+    region: "eu-west-1"
+    account_id: "386318839910"
+    app_name: "umbra-recommend"
+    customer_name: "umbra"
+    resources:
+      ecs_cluster: "prod-umbra-recommend-cluster"
+      ecs_service: "prod-umbra-recommend-be-service"
+      ecs_task_family: "prod-umbra-recommend-be-task"
+      log_group: "prod-umbra-recommend-be-task-log-group"
+      rds_identifier: "prod-umbra-db"
+      s3_data_bucket: "prod-umbra-recommend-data"
+      s3_frontend_bucket: "prod-umbra-recommend-fe-frontend"
+      alb_name: "prod-umbra-recommend-be-alb"
