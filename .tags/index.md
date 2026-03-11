@@ -19,6 +19,7 @@ Tutti i tag usati nella knowledge base. Aggiornato dalla skill `maintenance/audi
 | `#progetto:jubatus` | projects/jubatus/README.md, projects/jubatus/requisiti.md, projects/jubatus/architettura.md, projects/jubatus/decisioni.md, projects/jubatus/feature-log.md, projects/jubatus/stato-progetto.md, projects/jubatus/permessi-aws.md, projects/jubatus/meeting/*.md |
 | `#progetto:lamonea` | projects/lamonea/README.md, projects/lamonea/requisiti.md, projects/lamonea/architettura.md, projects/lamonea/decisioni.md, projects/lamonea/feature-log.md, projects/lamonea/stato-progetto.md, projects/lamonea/allegato-tecnico.md, projects/lamonea/mockup-brief.md, projects/lamonea/manutenzione.md, projects/lamonea/aws-config.yaml, projects/lamonea/meeting/*.md |
 | `#progetto:umbra` | projects/umbra/README.md, projects/umbra/requisiti.md, projects/umbra/architettura.md, projects/umbra/decisioni.md, projects/umbra/feature-log.md, projects/umbra/stato-progetto.md, projects/umbra/allegato-tecnico.md, projects/umbra/mockup-brief.md, projects/umbra/manutenzione.md, projects/umbra/aws-config.yaml, projects/umbra/meeting/*.md, projects/umbra/windsurf-briefs/*.md |
+| `#progetto:wolico` | projects/wolico/README.md, projects/wolico/architettura.md, projects/wolico/stato-progetto.md, projects/wolico/decisioni.md, projects/wolico/feature-log.md, projects/wolico/requisiti.md, projects/wolico/manutenzione.md, knowledge/azienda/wolico-api.md, mcp-servers/wolico/ |
 
 ---
 
@@ -34,6 +35,7 @@ Tutti i tag usati nella knowledge base. Aggiornato dalla skill `maintenance/audi
 | `#industria:enterprise` | |
 | `#industria:software` | knowledge/azienda/ |
 | `#industria:entertainment` | projects/jubatus/, knowledge/industrie/entertainment.md |
+| `#industria:operations-interne` | projects/wolico/ |
 | *(aggiungi nuove industrie qui)* | |
 
 ---
@@ -75,7 +77,8 @@ Tutti i tag usati nella knowledge base. Aggiornato dalla skill `maintenance/audi
 | `#problema:xss` | patterns/html-sanitization-dompurify.md, knowledge/problemi-tecnici/xss-contenuto-esterno.md |
 | `#problema:sicurezza` | knowledge/problemi-tecnici/xss-contenuto-esterno.md |
 | `#problema:integrazione` | knowledge/problemi-tecnici/laif-ds-type-export.md |
-| `#knowledge:azienda` | knowledge/azienda/laif-ds-local-link.md |
+| `#knowledge:azienda` | knowledge/azienda/laif-ds-local-link.md, knowledge/azienda/wolico-api.md |
+| `#mcp:server` | mcp-servers/wolico/ |
 
 ---
 
@@ -105,4 +108,4 @@ Tutti i tag usati nella knowledge base. Aggiornato dalla skill `maintenance/audi
 
 ---
 
-*Ultimo aggiornamento: 2026-03-10*
+*Ultimo aggiornamento: 2026-03-11*

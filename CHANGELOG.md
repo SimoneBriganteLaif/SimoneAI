@@ -12,6 +12,39 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/).
 
 #### Added
 
+- `knowledge/azienda/wolico-api.md` — aggiunto frontmatter con tag standard
+
+### Struttura
+
+#### Added
+
+- `docs/struttura.md` — aggiornato con `mcp-servers/`, `knowledge/azienda/wolico-api.md`, skill native count 18
+- `.tags/index.md` — aggiunto tag `#mcp:server`, aggiornate voci `#progetto:wolico` e `#knowledge:azienda`
+
+---
+
+## [v1.8] — 2026-03-11
+
+### Contenuti
+
+#### Added
+
+**MCP server Wolico**
+- `mcp-servers/wolico/` — MCP server FastAPI/Python per accedere alle API Wolico da Claude Code: 25+ tool (CRM, HR, Economics, Ticketing, Monitoring, Operations, Administration)
+- `knowledge/azienda/wolico-api.md` — riferimento API Wolico: auth, pattern search, endpoint principali con esempi
+
+**Progetto Wolico — onboarding piattaforma interna**
+- `projects/wolico/` — nuovo progetto inizializzato (LAIF interno, piattaforma gestionale)
+- `projects/wolico/README.md` — overview con moduli attivi (CRM, Ticketing, HR, Economics, Operations, Administration, Monitoring, Odoo), stack, link repo e MCP server
+- `projects/wolico/architettura.md` — stack completo (FastAPI 0.131, Next.js 16, PostgreSQL, laif-ds, amCharts, OpenAI+pgvector), diagramma Mermaid moduli, 10 moduli backend documentati
+- `projects/wolico/stato-progetto.md` — mappa 10 moduli tutti operativi, riferimento MCP server (3 tool)
+- `projects/wolico/decisioni.md` — struttura ADR vuota
+- `projects/wolico/feature-log.md` — struttura vuota
+- `projects/wolico/requisiti.md` — struttura vuota, pronta per nuovi moduli
+- `projects/wolico/manutenzione.md` — URL produzione, accessi dev locale, procedure avvio
+- `projects/INDEX.md` — aggiunto Wolico (5 progetti totali, 4 in sviluppo)
+- `.tags/index.md` — registrato `#progetto:wolico`, nuovo tag `#industria:operations-interne`
+
 **Progetto Umbra — init-project + estrazione-requisiti**
 - `projects/umbra/` — nuovo progetto inizializzato (Umbra S.p.a., distribuzione prodotti dentali)
 - `projects/umbra/README.md` — overview con cliente, team, stack, timeline, link
@@ -59,6 +92,13 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/).
 ### Struttura
 
 #### Added
+
+**Skill nativa playwright-cli**
+- `.claude/skills/playwright-cli/` — trigger layer nativo per automazione browser: testing, form filling, screenshot, data extraction
+
+**MCP server Wolico**
+- `mcp-servers/` — nuova cartella top-level per MCP server locali
+- `mcp-servers/wolico/` — MCP server FastAPI/Python per Wolico (server.py, api.py, helpers.py, tools/, Dockerfile, deploy/)
 
 **Ciclo Windsurf — flusso di sviluppo Claude Code + Windsurf**
 - `skills/development/windsurf-feedback/` v1.0 beta — nuova skill: processa report feedback Windsurf, estrae difficolta/pattern/decisioni e arricchisce la KB
