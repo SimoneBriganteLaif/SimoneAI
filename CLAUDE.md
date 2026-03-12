@@ -38,6 +38,36 @@ Per dettagli completi: `docs/struttura.md`. Per tag: `.tags/index.md`.
 
 Claude Code deve seguire queste regole **in autonomia, senza aspettare che l'utente le chieda**.
 
+### Regola 0 — Proattività (3 finestre di interazione attiva)
+
+Claude non aspetta invocazioni esplicite. Agisce in tre finestre temporali precise.
+
+**Finestra 1 — Inizio task** (prima di iniziare qualsiasi lavoro su un progetto):
+1. Esegui `python3 skills/meta/contesto-progetto/match.py [nome-progetto]` e leggi i file suggeriti
+2. In un **unico messaggio** segnala (se rilevanti):
+   - Pattern applicabili dalla KB (`patterns/`)
+   - Decisioni simili prese in passato (`projects/[nome]/decisioni.md`)
+   - Problemi tecnici noti correlati (`knowledge/problemi-tecnici/`)
+   - La skill più adatta se ne esiste una per il task descritto
+3. Non inviare messaggi multipli — tutto in un blocco iniziale
+
+**Finestra 2 — Durante implementazione** (accumulo batch, no interrupt):
+1. Accumula osservazioni, dubbi, idee senza interrompere il flusso
+2. Quando hai ≥3 elementi accumulati → presentali in un unico batch
+3. Formato batch: *"Ho alcune osservazioni: [lista puntata]"*
+4. Non interrompere per ogni singola osservazione — aspetta di averne abbastanza
+
+**Finestra 3 — Fine task** (prima di chiudere la sessione):
+1. Proponi aggiornamento KB se hai:
+   - Risolto un problema che ha richiesto tempo/ricerca
+   - Preso una decisione architetturale
+   - Trovato un pattern riutilizzabile non ancora documentato
+   - Incontrato un comportamento inatteso (bug, quirk, edge case)
+2. Chiedi: *"Vuoi che aggiunga questo a patterns/ / knowledge/ / decisioni.md?"*
+3. L'utente decide — non creare mai asset KB senza approvazione esplicita
+
+---
+
 ### Regola 1 — Prima di ogni `git commit` (BLOCCANTE)
 
 Il commit **non può procedere** finché la verifica non passa:
@@ -97,6 +127,41 @@ Prima di ogni task di sviluppo (non solo quelli orchestrati da feature-workflow)
 5. In ogni caso: **test e review restano responsabilità di Claude Code**
 
 **Non è bloccante per task banali**: per fix di una riga o modifiche ovvie, non chiedere.
+
+### Politica di crescita KB
+
+> Claude **propone sempre** quando qualcosa merita di essere aggiunto alla KB.
+> L'utente decide. **Non creare mai nuovi asset KB senza approvazione esplicita.**
+
+Principio operativo: inizia semplice, arricchisci gradualmente.
+- Ogni problema risolto con tempo/ricerca → proponi `knowledge/problemi-tecnici/`
+- Ogni pattern riutilizzabile scoperto → proponi `patterns/`
+- Ogni decisione architetturale → proponi `projects/[nome]/decisioni.md`
+- Ogni idea di miglioramento al framework → proponi `IDEAS.md`
+
+---
+
+## Trigger proattivi — Pattern → Skill mapping
+
+Claude riconosce questi contesti e **suggerisce la skill pertinente** senza aspettare invocazione esplicita:
+
+| Contesto rilevato | Skill da suggerire |
+|---|---|
+| L'utente descrive requisiti da meeting notes o documenti cliente | `estrazione-requisiti` |
+| L'utente vuole iniziare una nuova feature end-to-end | `feature-workflow` |
+| Il task stimato è > 1h o complesso | Chiedere: *"Claude Code o Windsurf?"* (Regola 6) |
+| La sessione di sviluppo si sta concludendo | `brainstorming-post-sviluppo` (Regola 5) |
+| L'utente ha ricevuto un report da Windsurf | `windsurf-feedback` |
+| Si è presa una decisione tecnica non banale | `estrazione-decisioni` |
+| Fine sprint o mese | `audit-periodico` |
+| L'utente vuole un documento tecnico per il cliente | `genera-allegato-tecnico` |
+| Si sta avviando un nuovo progetto cliente | `init-project` |
+| Ambiente locale non funziona o primo avvio | `setup-progetto-dev` |
+| Problemi AWS (deploy, log, DB, performance) | `aws-triage` → skill specifica |
+| Fine fase o sprint, pattern da estrarre | `estrazione-pattern` |
+
+**Come suggerire**: in modo breve e non invasivo, es.:
+*"Noto che stai descrivendo requisiti da note — suggerisco di usare la skill `estrazione-requisiti`. Vuoi procedere così?"*
 
 ---
 

@@ -20,6 +20,7 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/).
 
 - `docs/struttura.md` — aggiornato con `mcp-servers/`, `knowledge/azienda/wolico-api.md`, skill native count 18
 - `.tags/index.md` — aggiunto tag `#mcp:server`, aggiornate voci `#progetto:wolico` e `#knowledge:azienda`
+- `CLAUDE.md` — aggiunta Regola 0 (Proattività: 3 finestre), Politica di crescita KB, Trigger proattivi (pattern → skill mapping). Sistema passa da reattivo a proattivo.
 
 ---
 
