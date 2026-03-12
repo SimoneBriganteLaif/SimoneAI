@@ -12,7 +12,7 @@
 - [Sistema di stato](#sistema-di-stato-delle-skill)
 - [Riepilogo](#riepilogo)
 - **Presales**: [init-project](#init-project) · [estrazione-requisiti](#estrazione-requisiti) · [genera-allegato-tecnico](#genera-allegato-tecnico) · [genera-mockup-brief](#genera-mockup-brief)
-- **Development**: [feature-workflow](#feature-workflow) · [feature-plan](#feature-plan) · [feature-develop](#feature-develop) · [feature-test](#feature-test) · [feature-review](#feature-review) · [windsurf-feedback](#windsurf-feedback) · [estrazione-decisioni](#estrazione-decisioni) · [estrazione-pattern](#estrazione-pattern) · [setup-progetto-dev](#setup-progetto-dev) · [brainstorming-post-sviluppo](#brainstorming-post-sviluppo) · [AWS Diagnostics](#aws-diagnostics-pacchetto)
+- **Development**: [feature-workflow](#feature-workflow) · [feature-plan](#feature-plan) · [feature-develop](#feature-develop) · [feature-test](#feature-test) · [feature-review](#feature-review) · [windsurf-feedback](#windsurf-feedback) · [estrazione-decisioni](#estrazione-decisioni) · [estrazione-pattern](#estrazione-pattern) · [setup-progetto-dev](#setup-progetto-dev) · [brainstorming-post-sviluppo](#brainstorming-post-sviluppo) · [crea-task-notion](#crea-task-notion) · [AWS Diagnostics](#aws-diagnostics-pacchetto)
 - **Maintenance**: [audit-periodico](#audit-periodico)
 - **Meta**: [gestione-kb](#gestione-kb) · [verifica-pre-commit](#verifica-pre-commit)
 - [Confronto skill manutenzione](#differenze-tra-skill-di-manutenzione)
@@ -55,6 +55,7 @@ flowchart LR
         FW -.->|decisioni| ED
         FW -.->|pattern| EP
         FRV -.->|fine sessione| BPS
+        CTN[crea-task-notion]
     end
 
     subgraph MAINT["Maintenance"]
@@ -128,6 +129,7 @@ La promozione va registrata nel changelog e il campo `stato` aggiornato nel fron
 | `estrazione-pattern` | Development | stable | si | Fine sprint → pattern riutilizzabili | feature-log, decisioni.md | patterns/, knowledge/ |
 | `setup-progetto-dev` | Development | beta | si | Verifica ambiente dev locale | architettura.md, MEMORY.md, stack.md | nessuno (solo report) |
 | `brainstorming-post-sviluppo` | Development | beta | si | Fine sessione → estrae miglioramenti | Lavoro svolto nella sessione | patterns/, skills/, IDEAS.md |
+| `crea-task-notion` | Development | beta | si | KB + Notion → task strutturati su Notion | projects/[nome]/, pagine Notion, Feature DB | Notion Task DB, Notion Feature DB |
 | `aws-triage` | Development | beta | si | Health check rapido tutti i servizi AWS | aws-config.yaml | nessuno (diagnosi) |
 | `aws-ecs-diagnose` | Development | beta | si | Deep-dive ECS (deployment, task, capacity, config) | aws-config.yaml | nessuno (diagnosi) |
 | `aws-logs-diagnose` | Development | beta | si | Query CloudWatch Logs Insights (6 template + custom) | aws-config.yaml | nessuno (diagnosi) |
@@ -512,6 +514,36 @@ flowchart TD
     CONFIRM -->|Parziale| SELECT[Seleziona quali sviluppare]
     SELECT --> EXEC
     EXEC --> DONE([Output riepilogo])
+```
+
+---
+
+### crea-task-notion
+
+**Path**: `skills/development/crea-task-notion/SKILL.md`
+**Trigger**: L'utente vuole creare task Notion per un progetto
+**Stato**: beta
+
+Genera task Notion strutturati usando KB del progetto e pagine Notion ad-hoc come contesto. Raggruppa i task sotto Feature esistenti o nuove. Tutto interattivo in chat prima di creare qualsiasi cosa su Notion.
+
+```mermaid
+flowchart TD
+    START([Invocazione]) --> Q1[Quale progetto?]
+    Q1 --> KB[Legge KB: README + requisiti + stato + feature-log]
+    KB --> FETCH[Fetch proattivo Notion: Progetti / Note / Riunioni Private]
+    FETCH --> Q2[Quali pagine includere come contesto?]
+    Q2 --> READ[Legge pagine selezionate via MCP]
+    READ --> Q3[Su cosa vuoi concentrarti?]
+    Q3 --> FEAT[Legge Feature DB + propone raggruppamento]
+    FEAT --> CONFIRM_FEAT{Raggruppamento ok?}
+    CONFIRM_FEAT -->|No| FEAT
+    CONFIRM_FEAT -->|Sì| PROP[Propone bozza task in chat]
+    PROP --> EDIT{Modifiche?}
+    EDIT -->|Sì| PROP
+    EDIT -->|ok| CONFIRM[Conferma finale: N task + M Feature]
+    CONFIRM -->|Sì| CREATE[Crea Feature nuove + Task su Notion]
+    CREATE --> DONE([Riepilogo completamento])
+    CONFIRM -->|No| PROP
 ```
 
 ---

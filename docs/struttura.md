@@ -83,6 +83,7 @@ SimoneAI/
 │   │   ├── estrazione-pattern/     ← Fine sprint → estrae pattern riutilizzabili.
 │   │   ├── setup-progetto-dev/     ← Verifica ambiente dev locale (Docker, servizi, auth).
 │   │   ├── brainstorming-post-sviluppo/ ← Analisi fine sessione → pattern, skill, idee.
+│   │   ├── crea-task-notion/      ← KB + Notion → task strutturati su Notion per Feature.
 │   │   ├── windsurf-feedback/     ← Processa report feedback Windsurf → KB.
 │   │   └── aws-diagnostics/       ← Skill diagnostiche AWS read-only.
 │   │       ├── README.md           ← Overview, flowchart selezione, naming convention.

@@ -21,6 +21,12 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/).
 - `docs/struttura.md` — aggiornato con `mcp-servers/`, `knowledge/azienda/wolico-api.md`, skill native count 18
 - `.tags/index.md` — aggiunto tag `#mcp:server`, aggiornate voci `#progetto:wolico` e `#knowledge:azienda`
 - `CLAUDE.md` — aggiunta Regola 0 (Proattività: 3 finestre), Politica di crescita KB, Trigger proattivi (pattern → skill mapping). Sistema passa da reattivo a proattivo.
+- `skills/development/crea-task-notion/SKILL.md` — nuova skill beta: genera task Notion strutturati da KB + pagine Notion, raggruppa per Feature, 7 step conversazionali, nulla creato su Notion senza conferma esplicita
+- `.claude/skills/crea-task-notion/SKILL.md` — trigger layer nativo per skill `crea-task-notion`
+- `CLAUDE.md` — aggiunta riga trigger proattivo per `crea-task-notion`
+- `docs/skills.md` — aggiunto entry `crea-task-notion` in tabella riepilogo, indice, flowchart Mermaid e sezione Development
+- `docs/struttura.md` — aggiunta voce `crea-task-notion/` nell'albero skills/development/
+- `IDEAS.md` — aggiunta IDEA-016: `knowledge/team/` per profili persone LAIF e assegnazioni task automatiche
 
 ---
 
