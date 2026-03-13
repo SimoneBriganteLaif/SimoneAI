@@ -28,3 +28,6 @@ projects/*/reports/
 *.swo
 *~
 *.code-workspace
+
+# Obsidian
+.obsidian/

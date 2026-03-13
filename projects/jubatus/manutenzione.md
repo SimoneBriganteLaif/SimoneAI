@@ -15,11 +15,11 @@ tags:
 
 > **Sicurezza**: non inserire credenziali qui. Usa un password manager.
 
-| Ambiente | URL | Accesso |
-|---------|-----|--------|
-| Produzione | | [dove trovare le credenziali] |
-| Staging | | |
-| Admin panel | | |
+| Ambiente    | URL | Accesso                       |
+| ----------- | --- | ----------------------------- |
+| Produzione  |     | [dove trovare le credenziali] |
+| Staging     |     |                               |
+| Admin panel |     |                               |
 
 **Repository**: [link]
 **CI/CD**: [come si deploya]

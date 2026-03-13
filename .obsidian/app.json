@@ -1,9 +1,0 @@
-{
-  "userIgnoreFilters": [
-    "core/",
-    ".claude/",
-    "memory/"
-  ],
-  "foldIndent": true,
-  "readableLineLength": false
-}

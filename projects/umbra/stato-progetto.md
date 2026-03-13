@@ -1,6 +1,6 @@
 ---
 progetto: "umbra"
-ultimo-aggiornamento: "2026-03-10"
+ultimo-aggiornamento: "2026-03-13"
 tags:
   - "#progetto:umbra"
   - "#fase:dev"
@@ -14,7 +14,7 @@ tags:
 
 ## Stato complessivo
 
-Il progetto ha due moduli. Il modulo A (schedulazione settimanale) e in sviluppo: SFTP configurato, file settimanali depositati, parsing e riaggregazione in corso. Il modulo B (promozioni WOW) ha completato il primo ciclo di sviluppo UI: Windsurf ha implementato sia l'estensione Gantt WEEK in laif-ds (13/13 task) sia il refactor UI WOW in 3 pagine (14/14 task). Le modifiche sono linkate localmente via `npm link` e pronte per review visuale. Validazione UI/UX pianificata per il 12 marzo.
+Il progetto ha due moduli. Il modulo A (schedulazione settimanale) e in sviluppo: SFTP configurato, file settimanali depositati, parsing e riaggregazione in corso. Il modulo B (promozioni WOW) ha superato la prima validazione UI/UX (13 marzo): il Gantt e le 3 pagine sono funzionanti, i bug principali corretti, la UX migliorata. In attesa dei dati reali da Umbra per procedere con l'integrazione backend.
 
 ---
 
@@ -27,7 +27,7 @@ Il progetto ha due moduli. Il modulo A (schedulazione settimanale) e in sviluppo
 | RF-03 | Formato output CSV | OK | — | Completato |
 | RF-04 | Gestione varianti prodotto | Non iniziato | Non iniziato | Non iniziato |
 | RF-05 | Modulo marketing WOW | Non iniziato | Scaffold UI (3 pagine) | In sviluppo |
-| RF-06 | Vista Gantt pianificazione | Non iniziato | Gantt WEEK + wrapper | In review |
+| RF-06 | Vista Gantt pianificazione | Non iniziato | Gantt WEEK + wrapper + bug fix UX | Completato (UI) |
 | RF-07 | Suggerimenti AI prioritizzati | Non iniziato | Non iniziato | In analisi |
 | RF-08 | Vincoli temporali per fornitore | Non iniziato | Non iniziato | In analisi |
 | RF-09 | Conversione sell-out -> sell-in | Non iniziato | Non iniziato | In analisi |
@@ -60,15 +60,12 @@ Adriano deve configurare l'accesso diretto dall'S400 alla cartella SFTP in DMZ. 
 
 ## Prossimi passi suggeriti
 
-### Priorita 1 — Review e test modulo WOW (settimana 11)
+### Priorita 1 — Integrazione dati reali modulo WOW
 
-1. **Sviluppo Windsurf completato** (10 marzo):
-   - Gantt WEEK extension in laif-ds: 13/13 task completati (report: `windsurf-briefs/2026-03-10T1524-gantt-week-extension-report.md`)
-   - UI refactor WOW in 3 pagine: 14/14 task completati (report: `windsurf-briefs/2026-03-10T1509-wow-ui-refactor-report.md`)
-2. **Integrazione locale**: laif-ds linkata via `npm link`, `WowGanttView.tsx` aggiornato a `GanttDimensions.WEEK`
-3. **Da fare**: review visuale, test navigazione 3 pagine, verificare rendering Gantt settimanale
-4. **Decisioni documentate**: 3 ADR in `decisioni.md` (isoWeek, layout main, tab budget)
-5. **Follow-up 12 marzo ore 10-11**: validare grafica e flusso con Alessandra
+In attesa dei dataset da Umbra (storicita WOW, budget fornitore/classe, listino CELIN). La UI e validata e funzionante con dati mock. Quando arrivano i dati:
+1. Collegare API backend al Gantt e alla tabella candidati
+2. Rimuovere i dati mock da `wowBudgetStore` e `wowScore.helper`
+3. Implementare algoritmo suggerimento WOW (RF-07)
 
 ### Priorita 2 — Completare modulo A (settimane 11-12)
 
