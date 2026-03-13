@@ -13,13 +13,21 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/).
 #### Added
 
 - `knowledge/azienda/wolico-api.md` — aggiunto frontmatter con tag standard
+- `projects/albini-castelli/` — nuovo progetto inizializzato: README, architettura, decisioni, feature-log, stato-progetto, requisiti, manutenzione, meeting, windsurf-briefs. Stack: FastAPI 0.128, Next.js 16, PostgreSQL, AWS. Cliente: Albini & Castelli, fase manutenzione (schede cantiere)
+- `patterns/async-integration-client-poller.md` — nuovo pattern: integrazione API async con job/UUID tramite TSClient stateless + TSPoller asyncio + Processor Registry + tabella `ts_sync_jobs`. Estratto da Lamonea (TeamSystem Lynfa Azienda)
+- `projects/lamonea/decisioni.md` — ADR-001: architettura pipeline dati TeamSystem a tre layer (STG raw → ETL → PRS star schema). Decisione: isolamento formato TS dal modello applicativo tramite schema `stg`
+
+#### Modified
+
+- `patterns/README.md` — aggiunto entry `async-integration-client-poller` nell'indice pattern
+- `projects/INDEX.md` — aggiunto albini-castelli (ora 5 progetti totali, 1 in manutenzione)
 
 ### Struttura
 
 #### Added
 
 - `docs/struttura.md` — aggiornato con `mcp-servers/`, `knowledge/azienda/wolico-api.md`, skill native count 18
-- `.tags/index.md` — aggiunto tag `#mcp:server`, aggiornate voci `#progetto:wolico` e `#knowledge:azienda`
+- `.tags/index.md` — aggiunto tag `#mcp:server`, aggiornate voci `#progetto:wolico` e `#knowledge:azienda`; aggiunto `#progetto:albini-castelli`
 - `CLAUDE.md` — aggiunta Regola 0 (Proattività: 3 finestre), Politica di crescita KB, Trigger proattivi (pattern → skill mapping). Sistema passa da reattivo a proattivo.
 - `skills/development/crea-task-notion/SKILL.md` — nuova skill beta: genera task Notion strutturati da KB + pagine Notion, raggruppa per Feature, 7 step conversazionali, nulla creato su Notion senza conferma esplicita
 - `.claude/skills/crea-task-notion/SKILL.md` — trigger layer nativo per skill `crea-task-notion`

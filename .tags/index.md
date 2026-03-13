@@ -20,6 +20,7 @@ Tutti i tag usati nella knowledge base. Aggiornato dalla skill `maintenance/audi
 | `#progetto:lamonea` | projects/lamonea/README.md, projects/lamonea/requisiti.md, projects/lamonea/architettura.md, projects/lamonea/decisioni.md, projects/lamonea/feature-log.md, projects/lamonea/stato-progetto.md, projects/lamonea/allegato-tecnico.md, projects/lamonea/mockup-brief.md, projects/lamonea/manutenzione.md, projects/lamonea/aws-config.yaml, projects/lamonea/meeting/*.md |
 | `#progetto:umbra` | projects/umbra/README.md, projects/umbra/requisiti.md, projects/umbra/architettura.md, projects/umbra/decisioni.md, projects/umbra/feature-log.md, projects/umbra/stato-progetto.md, projects/umbra/allegato-tecnico.md, projects/umbra/mockup-brief.md, projects/umbra/manutenzione.md, projects/umbra/aws-config.yaml, projects/umbra/meeting/*.md, projects/umbra/windsurf-briefs/*.md |
 | `#progetto:wolico` | projects/wolico/README.md, projects/wolico/architettura.md, projects/wolico/stato-progetto.md, projects/wolico/decisioni.md, projects/wolico/feature-log.md, projects/wolico/requisiti.md, projects/wolico/manutenzione.md, knowledge/azienda/wolico-api.md, mcp-servers/wolico/ |
+| `#progetto:albini-castelli` | projects/albini-castelli/README.md, projects/albini-castelli/requisiti.md, projects/albini-castelli/architettura.md, projects/albini-castelli/decisioni.md, projects/albini-castelli/feature-log.md, projects/albini-castelli/stato-progetto.md, projects/albini-castelli/manutenzione.md, projects/albini-castelli/meeting/*.md |
 
 ---
 
