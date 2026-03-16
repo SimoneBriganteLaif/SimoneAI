@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 01-02-PLAN.md
-last_updated: "2026-03-16T22:12:31.693Z"
-last_activity: 2026-03-16 — Completed 01-02 (FastAPI server, API routes, HTML shell)
+stopped_at: Completed 01-04-PLAN.md
+last_updated: "2026-03-16T22:21:33.250Z"
+last_activity: 2026-03-16 — Completed 01-04 (Integration: layout, toolbar, app.js)
 progress:
   total_phases: 2
   completed_phases: 0
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-03-16)
 ## Current Position
 
 Phase: 1 of 2 (Parser and Visual Canvas)
-Plan: 4 of 5 in current phase
+Plan: 5 of 5 in current phase
 Status: Executing
-Last activity: 2026-03-16 — Completed 01-02 (FastAPI server, API routes, HTML shell)
+Last activity: 2026-03-16 — Completed 01-04 (Integration: layout, toolbar, app.js)
 
-Progress: [████░░░░░░] 40%
+Progress: [████████░░] 80%
 
 ## Performance Metrics
 
@@ -53,6 +53,7 @@ Progress: [████░░░░░░] 40%
 | Phase 01 P03 | 3min | 2 tasks | 3 files |
 | Phase 01 P01 | 6min | 2 tasks | 8 files |
 | Phase 01 P02 | 7min | 2 tasks | 9 files |
+| Phase 01 P04 | 3min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -68,6 +69,8 @@ Recent decisions affecting current work:
 - [Phase 01]: Column type from mapped_column() first positional arg, Mapped[] annotation as fallback
 - [Phase 01-02]: from __future__ import annotations for Python 3.9 compat across all new files
 - [Phase 01-02]: httpx added as test dependency for FastAPI TestClient
+- [Phase 01-04]: Plain object {} for link dedup instead of Set (browser compat)
+- [Phase 01-04]: 1s debounce for auto-save, 200ms for search
 
 ### Pending Todos
 
@@ -80,6 +83,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-16T22:11:19Z
-Stopped at: Completed 01-02-PLAN.md
+Last session: 2026-03-16T22:21:00Z
+Stopped at: Completed 01-04-PLAN.md
 Resume file: None
