@@ -12,7 +12,7 @@ Requirements for initial release. Each maps to roadmap phases.
 - [x] **PARS-01**: User can load a SQLAlchemy 2.0 model.py file and see all tables extracted
 - [x] **PARS-02**: Parser extracts columns with all properties (type, nullable, unique, index, PK, FK, default)
 - [x] **PARS-03**: Parser extracts relationships with properties (target, back_populates, cascade, lazy, uselist)
-- [ ] **PARS-04**: App starts with `python server.py /path/to/model.py` and opens the browser
+- [x] **PARS-04**: App starts with `python server.py /path/to/model.py` and opens the browser
 
 ### Visualization
 
@@ -40,8 +40,8 @@ Requirements for initial release. Each maps to roadmap phases.
 ### Persistence
 
 - [ ] **PERS-01**: Saving writes changes back to model.py preserving comments, whitespace and formatting
-- [ ] **PERS-02**: Table positions and groups are saved in a sidecar .er.json file
-- [ ] **PERS-03**: Reopening a model.py with an existing .er.json restores positions and groups
+- [x] **PERS-02**: Table positions and groups are saved in a sidecar .er.json file
+- [x] **PERS-03**: Reopening a model.py with an existing .er.json restores positions and groups
 
 ### UX
 
@@ -90,7 +90,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PARS-01 | Phase 1 | Complete |
 | PARS-02 | Phase 1 | Complete |
 | PARS-03 | Phase 1 | Complete |
-| PARS-04 | Phase 1 | Pending |
+| PARS-04 | Phase 1 | Complete |
 | VIS-01 | Phase 1 | Complete |
 | VIS-02 | Phase 1 | Complete |
 | VIS-03 | Phase 1 | Complete |
@@ -106,8 +106,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | REL-02 | Phase 2 | Pending |
 | REL-03 | Phase 2 | Pending |
 | PERS-01 | Phase 2 | Pending |
-| PERS-02 | Phase 1 | Pending |
-| PERS-03 | Phase 1 | Pending |
+| PERS-02 | Phase 1 | Complete |
+| PERS-03 | Phase 1 | Complete |
 | UX-01 | Phase 2 | Pending |
 | UX-02 | Phase 2 | Pending |
 | UX-03 | Phase 1 | Pending |

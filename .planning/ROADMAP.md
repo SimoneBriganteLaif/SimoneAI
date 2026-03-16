@@ -36,7 +36,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 Plans:
 - [ ] 01-01-PLAN.md — Python IR dataclasses + libcst parser with TDD
-- [ ] 01-02-PLAN.md — FastAPI server, API routes, HTML shell, persistence tests
+- [x] 01-02-PLAN.md — FastAPI server, API routes, HTML shell, persistence tests
 - [ ] 01-03-PLAN.md — JointJS custom shapes (ERTable, ERLink) + canvas setup (pan/zoom/grid/interactions)
 - [ ] 01-04-PLAN.md — Integration: dagre auto-layout, toolbar, app.js wiring
 - [ ] 01-05-PLAN.md — Human visual/functional verification checkpoint
@@ -74,5 +74,5 @@ Phases execute in numeric order: 1 → 2
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Parser and Visual Canvas | 0/5 | Not started | - |
+| 1. Parser and Visual Canvas | 1/5 | In progress | - |
 | 2. Full Editing | 0/? | Not started | - |

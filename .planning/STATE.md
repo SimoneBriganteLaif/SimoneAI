@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 01-01-PLAN.md
+stopped_at: Completed 01-02-PLAN.md
 last_updated: "2026-03-16T22:12:31.693Z"
-last_activity: 2026-03-16 — Completed 01-03 (JointJS shapes + canvas)
+last_activity: 2026-03-16 — Completed 01-02 (FastAPI server, API routes, HTML shell)
 progress:
   total_phases: 2
   completed_phases: 0
   total_plans: 5
-  completed_plans: 3
-  percent: 20
+  completed_plans: 4
+  percent: 40
 ---
 
 # Project State
@@ -26,11 +26,11 @@ See: .planning/PROJECT.md (updated 2026-03-16)
 ## Current Position
 
 Phase: 1 of 2 (Parser and Visual Canvas)
-Plan: 3 of 5 in current phase
+Plan: 4 of 5 in current phase
 Status: Executing
-Last activity: 2026-03-16 — Completed 01-03 (JointJS shapes + canvas)
+Last activity: 2026-03-16 — Completed 01-02 (FastAPI server, API routes, HTML shell)
 
-Progress: [██░░░░░░░░] 20%
+Progress: [████░░░░░░] 40%
 
 ## Performance Metrics
 
@@ -52,6 +52,7 @@ Progress: [██░░░░░░░░] 20%
 *Updated after each plan completion*
 | Phase 01 P03 | 3min | 2 tasks | 3 files |
 | Phase 01 P01 | 6min | 2 tasks | 8 files |
+| Phase 01 P02 | 7min | 2 tasks | 9 files |
 
 ## Accumulated Context
 
@@ -65,6 +66,8 @@ Recent decisions affecting current work:
 - [Phase 01]: Used foreignObject with HTML inside JointJS SVG for table body rendering (simpler than pure SVG for dynamic content)
 - [Phase 01]: ORM detection by __tablename__ presence, not base class name
 - [Phase 01]: Column type from mapped_column() first positional arg, Mapped[] annotation as fallback
+- [Phase 01-02]: from __future__ import annotations for Python 3.9 compat across all new files
+- [Phase 01-02]: httpx added as test dependency for FastAPI TestClient
 
 ### Pending Todos
 
@@ -77,6 +80,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-16T22:12:22.666Z
-Stopped at: Completed 01-01-PLAN.md
+Last session: 2026-03-16T22:11:19Z
+Stopped at: Completed 01-02-PLAN.md
 Resume file: None
