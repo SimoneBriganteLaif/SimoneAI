@@ -8,10 +8,34 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/).
 
 ## [Non rilasciato]
 
+_Nessuna modifica pendente._
+
+---
+
+## [v1.13] — 2026-03-16
+
 ### Contenuti
 
 #### Added
 
+**Progetto Sebi Group — init presales**
+- `projects/sebi-group/` — nuovo progetto inizializzato (Sebi Group, spedizioniere internazionale, 51-200 dip.)
+- `projects/sebi-group/README.md` — overview: gestione email & quotazioni AI-powered, 4 obiettivi chiave
+- `projects/sebi-group/architettura.md`, `requisiti.md`, `stato-progetto.md`, `decisioni.md`, `feature-log.md`, `manutenzione.md`, `allegato-tecnico.md`, `mockup-brief.md` — struttura completa (fase presales)
+- `projects/sebi-group/meeting/` — 3 meeting notes (primo incontro 2025-12-18, kickoff 2026-02-17, prep on-site 2026-03-16)
+
+**CLI agent Wolico** (gitignored — contiene repo Git annidata)
+- `CLI/wolico/` — CLI agent harness per Wolico: client Python, session management OAuth2, test e2e, tooling Just, frontend locale, regole Windsurf, planning
+
+**Issues dashboard laif-template/ds/infra**
+- `issues/` — 57 issue strutturate da dashboard interna (laif-template ~38, laif-ds ~15, laif-infra 4, cross-stack 4) con INDEX.md e matrice priorità
+
+**Skill db-transfer**
+- `skills/development/db-transfer/SKILL.md` — nuova skill beta: trasferimento dati tra DB PostgreSQL con verifica schema preventiva, selezione tabelle interattiva, ordinamento automatico FK
+- `skills/development/db-transfer/compare_schemas.py` — script confronto schema source/destination
+- `skills/development/db-transfer/transfer_data.py` — script trasferimento dati con truncate + insert ordinato per FK
+
+**Contenuti precedenti (v1.9→v1.12)**
 - `knowledge/azienda/wolico-api.md` — aggiunto frontmatter con tag standard
 - `projects/albini-castelli/` — nuovo progetto inizializzato: README, architettura, decisioni, feature-log, stato-progetto, requisiti, manutenzione, meeting, windsurf-briefs. Stack: FastAPI 0.128, Next.js 16, PostgreSQL, AWS. Cliente: Albini & Castelli, fase manutenzione (schede cantiere)
 - `patterns/async-integration-client-poller.md` — nuovo pattern: integrazione API async con job/UUID tramite TSClient stateless + TSPoller asyncio + Processor Registry + tabella `ts_sync_jobs`. Estratto da Lamonea (TeamSystem Lynfa Azienda)
@@ -20,20 +44,34 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/).
 #### Modified
 
 - `patterns/README.md` — aggiunto entry `async-integration-client-poller` nell'indice pattern
-- `projects/INDEX.md` — aggiunto albini-castelli (ora 5 progetti totali, 1 in manutenzione)
+- `projects/INDEX.md` — aggiunto sebi-group e albini-castelli (ora 6 progetti totali: 1 presales, 4 in sviluppo, 1 manutenzione)
 
 ### Struttura
 
 #### Added
 
-- `docs/struttura.md` — aggiornato con `mcp-servers/`, `knowledge/azienda/wolico-api.md`, skill native count 18
-- `.tags/index.md` — aggiunto tag `#mcp:server`, aggiornate voci `#progetto:wolico` e `#knowledge:azienda`; aggiunto `#progetto:albini-castelli`
+**Skill db-transfer**
+- `skills/development/db-transfer/` — nuova skill beta con 2 script Python standalone (compare_schemas.py, transfer_data.py)
+- `.claude/skills/db-transfer/SKILL.md` — trigger layer nativo per skill `db-transfer`
+- `CLAUDE.md` — aggiunta riga trigger proattivo per `db-transfer`
+- `docs/skills.md` — aggiunto entry `db-transfer` in indice, tabella riepilogo, flowchart Mermaid e sezione Development con diagramma
+
+**CLI/** (gitignored — repo Git annidate)
+- `CLI/` — nuova cartella top-level per CLI agent harness (strumenti operativi da terminale)
+- `CLI/wolico/` — primo agent harness: client Wolico con session, test, tooling
+
+**issues/**
+- `issues/` — nuova cartella top-level per tracking issue interne cross-stack
+
+**Contenuti precedenti (v1.9→v1.12)**
+- `docs/struttura.md` — aggiornato con `mcp-servers/`, `knowledge/azienda/wolico-api.md`, skill native count 18→20
+- `.tags/index.md` — aggiunto tag `#mcp:server`, aggiornate voci `#progetto:wolico` e `#knowledge:azienda`; aggiunto `#progetto:albini-castelli`, `#progetto:sebi-group`
 - `CLAUDE.md` — aggiunta Regola 0 (Proattività: 3 finestre), Politica di crescita KB, Trigger proattivi (pattern → skill mapping). Sistema passa da reattivo a proattivo.
 - `skills/development/crea-task-notion/SKILL.md` — nuova skill beta: genera task Notion strutturati da KB + pagine Notion, raggruppa per Feature, 7 step conversazionali, nulla creato su Notion senza conferma esplicita
 - `.claude/skills/crea-task-notion/SKILL.md` — trigger layer nativo per skill `crea-task-notion`
 - `CLAUDE.md` — aggiunta riga trigger proattivo per `crea-task-notion`
 - `docs/skills.md` — aggiunto entry `crea-task-notion` in tabella riepilogo, indice, flowchart Mermaid e sezione Development
-- `docs/struttura.md` — aggiunta voce `crea-task-notion/` nell'albero skills/development/
+- `docs/struttura.md` — aggiunta voce `crea-task-notion/` e `db-transfer/` nell'albero skills/development/
 - `IDEAS.md` — aggiunta IDEA-016: `knowledge/team/` per profili persone LAIF e assegnazioni task automatiche
 
 ---

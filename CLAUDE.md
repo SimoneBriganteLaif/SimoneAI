@@ -160,6 +160,7 @@ Claude riconosce questi contesti e **suggerisce la skill pertinente** senza aspe
 | Problemi AWS (deploy, log, DB, performance) | `aws-triage` → skill specifica |
 | Fine fase o sprint, pattern da estrarre | `estrazione-pattern` |
 | L'utente vuole creare task Notion per un progetto | `crea-task-notion` |
+| L'utente vuole copiare/sincronizzare dati tra database | `db-transfer` |
 
 **Come suggerire**: in modo breve e non invasivo, es.:
 *"Noto che stai descrivendo requisiti da note — suggerisco di usare la skill `estrazione-requisiti`. Vuoi procedere così?"*

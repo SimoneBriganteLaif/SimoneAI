@@ -2,7 +2,7 @@
 
 ← [System.md](../System.md) · [skills.md](skills.md) · [workflow.md](workflow.md)
 
-**Ultimo aggiornamento**: 2026-03-11
+**Ultimo aggiornamento**: 2026-03-16
 
 ---
 
@@ -85,6 +85,7 @@ SimoneAI/
 │   │   ├── brainstorming-post-sviluppo/ ← Analisi fine sessione → pattern, skill, idee.
 │   │   ├── crea-task-notion/      ← KB + Notion → task strutturati su Notion per Feature.
 │   │   ├── windsurf-feedback/     ← Processa report feedback Windsurf → KB.
+│   │   ├── db-transfer/          ← Trasferimento dati tra DB PostgreSQL con verifica schema.
 │   │   └── aws-diagnostics/       ← Skill diagnostiche AWS read-only.
 │   │       ├── README.md           ← Overview, flowchart selezione, naming convention.
 │   │       ├── _shared/            ← Libreria Python + doc condivisi.
@@ -130,6 +131,13 @@ SimoneAI/
 │   └── wolico/                     ← MCP server Wolico: 25+ tool (CRM, HR, Economics,
 │                                     Ticketing, Monitoring, Operations, Administration).
 │
+├── CLI/                            ← CLI agent harness per operazioni da terminale.
+│   └── wolico/                     ← Agent Wolico: client Python, session OAuth2, test e2e.
+│
+├── issues/                         ← Tracking issue interne cross-stack
+│   │                                 (laif-template, laif-ds, laif-infra).
+│   └── INDEX.md                    ← Dashboard con matrice priorità e statistiche.
+│
 ├── core/                           ← Repository core LAIF clonate come riferimento.
 │   │                                 NON modificare direttamente.
 │   │                                 I riassunti sono in knowledge/azienda/.
@@ -147,7 +155,7 @@ SimoneAI/
     │   │                             Ogni skill = directory con SKILL.md dentro.
     │   │                             Wrapper sottili che puntano alle skill KB
     │   │                             per auto-discovery e tracking nell'UI.
-    │   └── [skill-name]/SKILL.md   ← 18 directory (gestione-kb, init-project, playwright-cli, ...)
+    │   └── [skill-name]/SKILL.md   ← 21 directory (gestione-kb, init-project, db-transfer, ...)
     ├── hooks/                      ← Script automazione (hook PostToolUse).
     │   └── skill-logger.sh         ← Logga invocazioni skill native in skill-usage.log.
     ├── settings.json               ← Configurazione hook Claude Code.

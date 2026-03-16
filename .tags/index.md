@@ -21,6 +21,7 @@ Tutti i tag usati nella knowledge base. Aggiornato dalla skill `maintenance/audi
 | `#progetto:umbra` | projects/umbra/README.md, projects/umbra/requisiti.md, projects/umbra/architettura.md, projects/umbra/decisioni.md, projects/umbra/feature-log.md, projects/umbra/stato-progetto.md, projects/umbra/allegato-tecnico.md, projects/umbra/mockup-brief.md, projects/umbra/manutenzione.md, projects/umbra/aws-config.yaml, projects/umbra/meeting/*.md, projects/umbra/windsurf-briefs/*.md |
 | `#progetto:wolico` | projects/wolico/README.md, projects/wolico/architettura.md, projects/wolico/stato-progetto.md, projects/wolico/decisioni.md, projects/wolico/feature-log.md, projects/wolico/requisiti.md, projects/wolico/manutenzione.md, knowledge/azienda/wolico-api.md, mcp-servers/wolico/ |
 | `#progetto:albini-castelli` | projects/albini-castelli/README.md, projects/albini-castelli/requisiti.md, projects/albini-castelli/architettura.md, projects/albini-castelli/decisioni.md, projects/albini-castelli/feature-log.md, projects/albini-castelli/stato-progetto.md, projects/albini-castelli/manutenzione.md, projects/albini-castelli/meeting/*.md |
+| `#progetto:sebi-group` | projects/sebi-group/README.md, projects/sebi-group/requisiti.md, projects/sebi-group/architettura.md, projects/sebi-group/decisioni.md, projects/sebi-group/feature-log.md, projects/sebi-group/stato-progetto.md, projects/sebi-group/meeting/*.md |
 
 ---
 
@@ -37,6 +38,7 @@ Tutti i tag usati nella knowledge base. Aggiornato dalla skill `maintenance/audi
 | `#industria:software` | knowledge/azienda/ |
 | `#industria:entertainment` | projects/jubatus/, knowledge/industrie/entertainment.md |
 | `#industria:operations-interne` | projects/wolico/ |
+| `#industria:logistica` | projects/sebi-group/ |
 | *(aggiungi nuove industrie qui)* | |
 
 ---
@@ -109,4 +111,4 @@ Tutti i tag usati nella knowledge base. Aggiornato dalla skill `maintenance/audi
 
 ---
 
-*Ultimo aggiornamento: 2026-03-11*
+*Ultimo aggiornamento: 2026-03-16*

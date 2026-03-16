@@ -35,6 +35,8 @@ Le skill sono istruzioni operative per Claude Code. Ogni skill è una **cartella
 | `development/aws-diagnostics/aws-logs-diagnose/` | beta | si | Errori nei log, query CloudWatch | aws-config.yaml | — (diagnosi) |
 | `development/aws-diagnostics/aws-rds-diagnose/` | beta | si | Problemi database RDS | aws-config.yaml | — (diagnosi) |
 | `development/aws-diagnostics/aws-s3-diagnose/` | beta | si | Inventario bucket S3 | aws-config.yaml | — (diagnosi) |
+| `development/crea-task-notion/` | beta | si | Creare task Notion per progetto | KB progetto, pagine Notion | Task su Notion |
+| `development/db-transfer/` | beta | si | Copiare/sincronizzare dati tra DB | aws-config.yaml, .env | — (opera sui DB) |
 
 ### Maintenance
 

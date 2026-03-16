@@ -7,6 +7,9 @@ memory/
 !.claude/hooks/
 !.claude/settings.json
 
+# CLI agent harness (contengono repo Git annidate)
+CLI/
+
 # Repository core clonate (sono repo Git annidate)
 core/laif-template/
 core/ds/

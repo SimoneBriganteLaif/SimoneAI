@@ -12,7 +12,7 @@
 - [Sistema di stato](#sistema-di-stato-delle-skill)
 - [Riepilogo](#riepilogo)
 - **Presales**: [init-project](#init-project) · [estrazione-requisiti](#estrazione-requisiti) · [genera-allegato-tecnico](#genera-allegato-tecnico) · [genera-mockup-brief](#genera-mockup-brief)
-- **Development**: [feature-workflow](#feature-workflow) · [feature-plan](#feature-plan) · [feature-develop](#feature-develop) · [feature-test](#feature-test) · [feature-review](#feature-review) · [windsurf-feedback](#windsurf-feedback) · [estrazione-decisioni](#estrazione-decisioni) · [estrazione-pattern](#estrazione-pattern) · [setup-progetto-dev](#setup-progetto-dev) · [brainstorming-post-sviluppo](#brainstorming-post-sviluppo) · [crea-task-notion](#crea-task-notion) · [AWS Diagnostics](#aws-diagnostics-pacchetto)
+- **Development**: [feature-workflow](#feature-workflow) · [feature-plan](#feature-plan) · [feature-develop](#feature-develop) · [feature-test](#feature-test) · [feature-review](#feature-review) · [windsurf-feedback](#windsurf-feedback) · [estrazione-decisioni](#estrazione-decisioni) · [estrazione-pattern](#estrazione-pattern) · [setup-progetto-dev](#setup-progetto-dev) · [brainstorming-post-sviluppo](#brainstorming-post-sviluppo) · [crea-task-notion](#crea-task-notion) · [db-transfer](#db-transfer) · [AWS Diagnostics](#aws-diagnostics-pacchetto)
 - **Maintenance**: [audit-periodico](#audit-periodico)
 - **Meta**: [gestione-kb](#gestione-kb) · [verifica-pre-commit](#verifica-pre-commit)
 - [Confronto skill manutenzione](#differenze-tra-skill-di-manutenzione)
@@ -56,6 +56,7 @@ flowchart LR
         FW -.->|pattern| EP
         FRV -.->|fine sessione| BPS
         CTN[crea-task-notion]
+        DBT[db-transfer]
     end
 
     subgraph MAINT["Maintenance"]
@@ -136,6 +137,7 @@ La promozione va registrata nel changelog e il campo `stato` aggiornato nel fron
 | `aws-rds-diagnose` | Development | beta | si | Stato RDS, connessioni, log PostgreSQL, parametri | aws-config.yaml | nessuno (diagnosi) |
 | `aws-s3-diagnose` | Development | beta | si | Inventario bucket S3, dimensioni, upload recenti | aws-config.yaml | nessuno (diagnosi) |
 | `aws-health-report` | Development | beta | si | Report HTML interattivo salute infrastruttura AWS | aws-config.yaml | reports/aws-report-*.html |
+| `db-transfer` | Development | beta | si | Trasferimento dati tra DB PostgreSQL con verifica schema | aws-config.yaml, .env | nessuno (opera sui DB) |
 | `audit-periodico` | Maintenance | beta | si | Audit mensile intera KB | Tutta la KB | Report + aggiornamenti distribuiti |
 | `gestione-kb` | Meta | beta | si | Gestione meta-file del sistema | Meta-file, struttura cartelle | changelog, IDEAS.md, docs/ |
 | `verifica-pre-commit` | Meta | stable | — | Verifica ibrida coerenza KB pre-commit (script Python + check semantici) | Tutti i meta-file + struttura reale | nessuno (solo report) |
@@ -544,6 +546,35 @@ flowchart TD
     CONFIRM -->|Sì| CREATE[Crea Feature nuove + Task su Notion]
     CREATE --> DONE([Riepilogo completamento])
     CONFIRM -->|No| PROP
+```
+
+---
+
+### db-transfer
+
+**Path**: `skills/development/db-transfer/SKILL.md`
+**Trigger**: L'utente vuole copiare/sincronizzare dati tra database PostgreSQL
+**Stato**: beta
+
+Trasferimento dati tra database PostgreSQL con verifica schema preventiva, selezione tabelle interattiva e ordinamento automatico per foreign key. Supporta AWS Secrets Manager, URL diretti e file .env. Include script standalone (`transfer_data.py` + `compare_schemas.py`).
+
+```mermaid
+flowchart TD
+    START([Invocazione]) --> Q1[Source e Destination?]
+    Q1 --> RESOLVE[Risolvi credenziali: ARN / URL / .env]
+    RESOLVE --> COMPARE[compare_schemas.py — confronto schema]
+    COMPARE --> DIFF{Discrepanze?}
+    DIFF -->|Sì| WARN[Mostra diff, chiedi conferma]
+    DIFF -->|No| OK[Schema allineati]
+    WARN --> Q2
+    OK --> Q2[Mostra tabelle con row count + size]
+    Q2 --> SELECT[Selezione tabelle con wildcard]
+    SELECT --> PLAN[Mostra piano: ordine FK, truncate, stima]
+    PLAN --> CONFIRM{Conferma?}
+    CONFIRM -->|No| SELECT
+    CONFIRM -->|Sì| EXEC[transfer_data.py — esecuzione]
+    EXEC --> VERIFY[Verifica post-trasferimento: row count]
+    VERIFY --> DONE([Riepilogo])
 ```
 
 ---
