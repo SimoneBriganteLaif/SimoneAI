@@ -1,6 +1,7 @@
 /* style.css - ER Editor styles */
+/* Based on UI-SPEC values */
 
-/* === Canvas and Layout === */
+/* === Reset === */
 
 * {
     margin: 0;
@@ -16,10 +17,174 @@ body {
     width: 100vw;
 }
 
-#canvas {
+/* === Toolbar === */
+
+#toolbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 48px;
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    z-index: 100;
+}
+
+.toolbar-spacer {
+    flex: 1;
+}
+
+.toolbar-group {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.toolbar-separator {
+    width: 1px;
+    height: 24px;
+    background: #e5e7eb;
+    margin: 0 16px;
+}
+
+.toolbar-btn {
+    height: 32px;
+    padding: 0 12px;
+    background: transparent;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font: 13px/1.2 system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: #374151;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.toolbar-btn:hover {
+    background: #f3f4f6;
+}
+
+.toolbar-btn:active {
+    background: #e5e7eb;
+}
+
+.toolbar-btn[disabled] {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* === Search === */
+
+.search-wrapper {
+    position: relative;
+}
+
+.search-icon {
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    color: #9ca3af;
+    pointer-events: none;
+}
+
+#search-input {
+    width: 240px;
+    height: 32px;
+    padding: 0 8px 0 32px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font: 13px system-ui, -apple-system, "Segoe UI", sans-serif;
+    outline: none;
+}
+
+#search-input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+#search-input::placeholder {
+    color: #9ca3af;
+}
+
+#search-no-results {
+    font: 12px system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: #6b7280;
+    padding: 4px 0 0 32px;
+    display: none;
+}
+
+/* === Zoom Level === */
+
+#zoom-level {
+    width: 48px;
+    text-align: center;
+    font: 12px "JetBrains Mono", "Fira Code", "SF Mono", "Consolas", monospace;
+    color: #6b7280;
+}
+
+/* === Canvas === */
+
+#canvas-container {
+    position: fixed;
+    top: 48px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+#paper {
     width: 100%;
-    height: calc(100vh - 48px);
-    margin-top: 48px;
+    height: 100%;
+}
+
+/* === State Overlays === */
+
+.state-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+}
+
+.state-overlay h2 {
+    font: 20px/1.2 system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-weight: 600;
+    color: #374151;
+    margin: 0 0 8px;
+}
+
+.state-overlay p {
+    font: 14px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: #6b7280;
+    max-width: 400px;
+    text-align: center;
+    margin: 0;
+}
+
+/* === Spinner === */
+
+.spinner {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #d1d5db;
+    border-top-color: #6b7280;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    margin-bottom: 12px;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }
 
 /* === JointJS Element Transitions === */
@@ -110,173 +275,4 @@ body {
     align-items: center;
     color: #6b7280;
     font-style: italic;
-}
-
-/* === Toolbar === */
-
-#toolbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 48px;
-    background: #ffffff;
-    border-bottom: 1px solid #e5e7eb;
-    padding: 0 24px;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    z-index: 100;
-}
-
-#toolbar .toolbar-group {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
-
-#toolbar .toolbar-separator {
-    width: 1px;
-    height: 24px;
-    background: #e5e7eb;
-    margin: 0 8px;
-}
-
-#toolbar .toolbar-spacer {
-    flex: 1;
-}
-
-#toolbar button {
-    height: 32px;
-    padding: 0 12px;
-    background: transparent;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-    font-size: 13px;
-    font-weight: 400;
-    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-    color: #374151;
-    cursor: pointer;
-    white-space: nowrap;
-}
-
-#toolbar button:hover {
-    background: #f3f4f6;
-}
-
-#toolbar button:active {
-    background: #e5e7eb;
-}
-
-#toolbar button:disabled {
-    opacity: 0.5;
-    pointer-events: none;
-}
-
-#toolbar #search-input {
-    width: 240px;
-    height: 32px;
-    padding: 0 12px 0 32px;
-    font-size: 13px;
-    font-weight: 400;
-    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-    outline: none;
-}
-
-#toolbar #search-input:focus {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
-}
-
-#toolbar #search-input::placeholder {
-    color: #9ca3af;
-}
-
-#toolbar .search-wrapper {
-    position: relative;
-}
-
-#toolbar .search-icon {
-    position: absolute;
-    left: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 16px;
-    height: 16px;
-    color: #9ca3af;
-    pointer-events: none;
-}
-
-#toolbar #zoom-level {
-    width: 48px;
-    text-align: center;
-    font-size: 12px;
-    font-weight: 400;
-    font-family: "JetBrains Mono", "Fira Code", "SF Mono", "Consolas", monospace;
-    color: #6b7280;
-}
-
-/* === Loading State === */
-
-#loading {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-#loading .spinner {
-    width: 24px;
-    height: 24px;
-    border: 2px solid #d1d5db;
-    border-top-color: #9ca3af;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-}
-
-#loading .loading-text {
-    margin-top: 12px;
-    font-size: 14px;
-    font-weight: 400;
-    color: #6b7280;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-/* === Empty State === */
-
-#empty-state {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    max-width: 400px;
-}
-
-#empty-state h2 {
-    font-size: 20px;
-    font-weight: 600;
-    color: #374151;
-    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-    margin-bottom: 8px;
-}
-
-#empty-state p {
-    font-size: 14px;
-    font-weight: 400;
-    color: #6b7280;
-    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
 }
