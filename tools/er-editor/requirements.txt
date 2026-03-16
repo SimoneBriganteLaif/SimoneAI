@@ -2,3 +2,4 @@ fastapi
 uvicorn
 libcst
 pytest
+httpx
