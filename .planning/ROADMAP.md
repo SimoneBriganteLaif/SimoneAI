@@ -54,7 +54,7 @@ Plans:
   6. User can undo and redo any editing operation with Ctrl+Z / Ctrl+Shift+Z
   7. User can create named, colored groups and drag tables into and out of them to organize the diagram
   8. A real-time code preview panel shows the current model.py output, updating as the user makes changes
-**Plans**: TBD
+**Plans:** 8 plans
 
 **Parallelization opportunities:**
 - Table CRUD (EDIT-01..07) and relationship CRUD (REL-01..03) share the IR but have independent UI -- build in parallel
@@ -64,8 +64,14 @@ Plans:
 - Round-trip writer (PERS-01) is a pure Python concern, independent from all frontend work
 
 Plans:
-- [ ] 02-01: TBD
-- [ ] 02-02: TBD
+- [ ] 02-01-PLAN.md — Round-trip writer (TDD): libcst CSTTransformer + save/preview API endpoints
+- [ ] 02-02-PLAN.md — Undo/redo system + editor.js infrastructure + toolbar extensions + index.html
+- [ ] 02-03-PLAN.md — Code preview panel (preview.js with highlight.js syntax highlighting)
+- [ ] 02-04-PLAN.md — Visual groups (JointJS embedding, draw-to-create, color palette, persistence)
+- [ ] 02-05-PLAN.md — Table CRUD + shapes.js remap (chevron, + icon) + app.js full wiring
+- [ ] 02-06-PLAN.md — Column CRUD (add, rename, delete, property popup with type selector)
+- [ ] 02-07-PLAN.md — Relationship CRUD (drag-to-create, creation/edit popup, compound undo)
+- [ ] 02-08-PLAN.md — Human visual/functional verification checkpoint
 
 ## Progress
 
@@ -75,4 +81,4 @@ Phases execute in numeric order: 1 → 2
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Parser and Visual Canvas | 1/5 | In progress | - |
-| 2. Full Editing | 0/? | Not started | - |
+| 2. Full Editing | 0/8 | Not started | - |
