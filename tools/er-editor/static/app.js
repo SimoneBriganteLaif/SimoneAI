@@ -152,9 +152,8 @@
                     target.getAttribute('joint-selector') === 'addColHit' ||
                     target.getAttribute('joint-selector') === 'addColPath'
                 )) {
-                    // Will be implemented in 02-06 (column CRUD)
-                    if (window.ERColumns && ERColumns.addColumn) {
-                        ERColumns.addColumn(elementView.model);
+                    if (EREditor && EREditor.addColumn) {
+                        EREditor.addColumn(elementView.model);
                     }
                     evt.stopPropagation();
                     return;
@@ -240,25 +239,31 @@
         var oldTableName = tableData.table_name;
         var view = el.findView(paper);
 
-        // Find the header text SVG element
-        var textEl = view.el.querySelector('text[joint-selector="headerText"]');
-        if (!textEl) return;
+        // Find the header rect to position over it
+        var headerRect = view.el.querySelector('rect[joint-selector="headerRect"]');
+        if (!headerRect) return;
 
-        // Get position for input overlay
-        var bbox = textEl.getBBox();
-        var ctm = textEl.getScreenCTM();
+        var hRect = headerRect.getBoundingClientRect();
         var input = document.createElement('input');
         input.type = 'text';
         input.className = 'er-inline-edit';
         input.value = oldClassName;
         input.style.position = 'fixed';
-        input.style.left = (ctm.e - bbox.width / 2) + 'px';
-        input.style.top = (ctm.f - 8) + 'px';
-        input.style.width = Math.max(120, bbox.width + 20) + 'px';
+        input.style.left = (hRect.left + 28) + 'px';
+        input.style.top = hRect.top + 'px';
+        input.style.width = (hRect.width - 56) + 'px';
+        input.style.height = hRect.height + 'px';
         input.style.textAlign = 'center';
         input.style.zIndex = '300';
         input.style.background = '#374151';
         input.style.color = '#ffffff';
+        input.style.fontSize = '13px';
+        input.style.fontWeight = '600';
+        input.style.fontFamily = '"JetBrains Mono", "Fira Code", "SF Mono", "Consolas", monospace';
+        input.style.border = 'none';
+        input.style.outline = '2px solid #3b82f6';
+        input.style.borderRadius = '4px 4px 0 0';
+        input.style.padding = '0 4px';
         document.body.appendChild(input);
         input.select();
 

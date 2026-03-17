@@ -101,6 +101,8 @@
         var panStart = {};
 
         _paper.on('blank:pointerdown', function(evt) {
+            // Don't pan when drawing a group
+            if (typeof ERGroups !== 'undefined' && ERGroups.isDrawing()) return;
             panning = true;
             panStart = {
                 x: evt.clientX,

@@ -256,21 +256,32 @@ var EREditor = (function() {
         var view = element.findView(paper);
         if (!view) return;
 
-        var foreignObj = view.el.querySelector('foreignObject');
-        if (!foreignObj) return;
+        // Position the banner as a fixed overlay near the element
+        var elRect = view.el.getBoundingClientRect();
 
-        var bodyDiv = foreignObj.querySelector('.er-body');
-        if (!bodyDiv) return;
-
-        // Create banner
         var banner = document.createElement('div');
         banner.className = 'er-confirm-banner';
-        banner.innerHTML = '<span>' + _escapeHtml(message) + '</span>' +
+        banner.style.position = 'fixed';
+        banner.style.left = elRect.left + 'px';
+        banner.style.top = (elRect.top - 44) + 'px';
+        banner.style.zIndex = '250';
+        banner.style.borderRadius = '6px';
+        banner.style.boxShadow = '0 2px 8px rgba(0,0,0,0.15)';
+        banner.style.maxWidth = Math.max(280, elRect.width) + 'px';
+        banner.innerHTML = '<span style="flex:1;">' + _escapeHtml(message) + '</span>' +
             '<button class="er-confirm-yes">Confirm</button>' +
             '<button class="er-confirm-no">Cancel</button>';
 
-        // Insert at top of body
-        bodyDiv.insertBefore(banner, bodyDiv.firstChild);
+        document.body.appendChild(banner);
+
+        // Clamp to viewport
+        var bannerRect = banner.getBoundingClientRect();
+        if (bannerRect.top < 52) {
+            banner.style.top = (elRect.bottom + 4) + 'px';
+        }
+        if (bannerRect.right > window.innerWidth - 8) {
+            banner.style.left = (window.innerWidth - bannerRect.width - 8) + 'px';
+        }
 
         var resolved = false;
 
@@ -403,8 +414,8 @@ var EREditor = (function() {
 
     /**
      * Setup drag-to-create relationship interaction.
-     * Detects mousedown on table border (outer 8px), draws a dashed line,
-     * highlights valid target tables, and opens creation popup on drop.
+     * Hold Shift and drag from a table to draw a relationship line.
+     * Highlights valid target tables, opens creation popup on drop.
      */
     function setupRelationshipDrag() {
         var paper = ERCanvas.getPaper();
@@ -414,31 +425,17 @@ var EREditor = (function() {
         var _sourceElement = null;
         var _highlightedTarget = null;
 
-        // Detect mousedown on table border area (outer 8px)
+        // Shift+mousedown on table starts relationship drag
         paper.on('element:pointerdown', function(elementView, evt) {
+            if (!evt.shiftKey) return;
             var el = elementView.model;
             if (el.get('type') !== 'er.Table') return;
 
-            // Check if click is on the border area (outer 8px of element)
-            var elRect = elementView.el.getBoundingClientRect();
-            var margin = 8;
-            var x = evt.clientX;
-            var y = evt.clientY;
+            // Prevent JointJS element move
+            evt.stopPropagation();
+            evt.preventDefault();
 
-            var onBorder = (
-                x < elRect.left + margin || x > elRect.right - margin ||
-                y < elRect.top + margin || y > elRect.bottom - margin
-            );
-
-            // Only start drag if on border AND not on a sub-element (chevron, + icon, etc.)
-            var target = evt.target;
-            var isSubElement = target.getAttribute && (
-                target.getAttribute('joint-selector') === 'chevronHit' ||
-                target.getAttribute('joint-selector') === 'addColHit' ||
-                target.closest('.er-body')
-            );
-
-            if (onBorder && !isSubElement) {
+            {
                 _dragging = true;
                 _sourceElement = el;
 

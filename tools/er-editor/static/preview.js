@@ -24,9 +24,6 @@ var ERPreview = (function() {
         // Close button
         _panel.querySelector('.preview-close').addEventListener('click', close);
 
-        // Toolbar toggle button
-        _previewBtn.addEventListener('click', toggle);
-
         // Reopen tab
         _previewTab.addEventListener('click', open);
 

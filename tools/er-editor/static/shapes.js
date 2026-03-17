@@ -198,7 +198,7 @@
                         ry: 4
                     },
                     headerText: {
-                        x: 'calc(0.5*w + 8)',
+                        x: 'calc(0.5*w)',
                         y: DIMS.headerH / 2,
                         textAnchor: 'middle',
                         textVerticalAnchor: 'middle',
