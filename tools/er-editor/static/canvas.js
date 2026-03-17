@@ -32,6 +32,10 @@
             },
             background: { color: '#f9fafb' },
             interactive: { elementMove: true },
+            embeddingMode: true,
+            validateEmbedding: function(childView, parentView) {
+                return parentView.model.get('type') === 'er.Group';
+            },
             snapLinks: false,
             linkPinning: false,
             defaultConnector: { name: 'rounded', args: { radius: 5 } },
@@ -360,6 +364,7 @@
         getViewport: getViewport,
         getGraph: function() { return _graph; },
         getPaper: function() { return _paper; },
+        getSelectedElement: function() { return _selectedElement; },
         GRID_SIZE: GRID_SIZE
     };
 })();

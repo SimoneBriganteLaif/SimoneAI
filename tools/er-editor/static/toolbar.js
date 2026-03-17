@@ -62,10 +62,117 @@
             }, 200);  // 200ms debounce per UI-SPEC
         });
 
+        // --- Phase 2: + Table ---
+        document.getElementById('btn-add-table').addEventListener('click', function() {
+            addTable();
+        });
+
+        // --- Phase 2: + Group ---
+        document.getElementById('btn-add-group').addEventListener('click', function() {
+            ERGroups.startDraw();
+        });
+
+        // --- Phase 2: Save ---
+        document.getElementById('btn-save').addEventListener('click', function() {
+            EREditor.save();
+        });
+
+        // --- Phase 2: Undo/Redo ---
+        var undoBtn = document.getElementById('btn-undo');
+        var redoBtn = document.getElementById('btn-redo');
+        undoBtn.addEventListener('click', function() { ERUndo.undo(); });
+        redoBtn.addEventListener('click', function() { ERUndo.redo(); });
+
+        // Update undo/redo button state on stack change
+        ERUndo.onChange(function() {
+            undoBtn.disabled = !ERUndo.canUndo();
+            redoBtn.disabled = !ERUndo.canRedo();
+        });
+
+        // --- Phase 2: Code Preview toggle ---
+        document.getElementById('btn-preview').addEventListener('click', function() {
+            ERPreview.toggle();
+        });
+
         // Enable toolbar buttons (they start disabled during loading)
         document.querySelectorAll('.toolbar-btn').forEach(function(btn) {
             btn.removeAttribute('disabled');
         });
+        // Re-disable undo/redo if stacks empty
+        undoBtn.disabled = !ERUndo.canUndo();
+        redoBtn.disabled = !ERUndo.canRedo();
+    }
+
+    function toSnakeCasePlural(name) {
+        // CamelCase -> snake_case: split on uppercase boundaries
+        var snake = name.replace(/([a-z0-9])([A-Z])/g, '$1_$2')
+                        .replace(/([A-Z])([A-Z][a-z])/g, '$1_$2')
+                        .toLowerCase();
+        // Simple pluralize: add 's', handle 'y' -> 'ies', 's' -> 'ses'
+        if (snake.endsWith('y') && !snake.endsWith('ay') && !snake.endsWith('ey') && !snake.endsWith('oy') && !snake.endsWith('uy')) {
+            return snake.slice(0, -1) + 'ies';
+        }
+        if (snake.endsWith('s') || snake.endsWith('x') || snake.endsWith('z') || snake.endsWith('ch') || snake.endsWith('sh')) {
+            return snake + 'es';
+        }
+        return snake + 's';
+    }
+
+    function addTable() {
+        var paper = ERCanvas.getPaper();
+        var graph = ERCanvas.getGraph();
+
+        // Default table at center of viewport
+        var paperSize = paper.getComputedSize();
+        var scale = paper.scale().sx;
+        var translate = paper.translate();
+        var centerX = (paperSize.width / 2 - translate.tx) / scale;
+        var centerY = (paperSize.height / 2 - translate.ty) / scale;
+
+        // Generate unique name
+        var baseName = 'NewTable';
+        var counter = 1;
+        var className = baseName;
+        while (_elements[className]) {
+            className = baseName + counter;
+            counter++;
+        }
+
+        var tableName = toSnakeCasePlural(className);
+
+        var tableData = {
+            class_name: className,
+            table_name: tableName,
+            schema: null,
+            columns: [
+                { name: 'id', type: 'Integer', nullable: false, primary_key: true, foreign_key: null, unique: false, index: false, default: null, server_default: null }
+            ],
+            relationships: []
+        };
+
+        var el = ERShapes.createTable(tableData, { x: centerX - 120, y: centerY - 50 }, false);
+
+        // Wrap in undo command
+        var cmd = {
+            execute: function() {
+                graph.addCell(el);
+                _elements[className] = el;
+                EREditor.getSchema().tables.push(tableData);
+                EREditor.markDirty();
+                ERPreview.scheduleRefresh();
+            },
+            undo: function() {
+                graph.removeCells([el]);
+                delete _elements[className];
+                var tables = EREditor.getSchema().tables;
+                var idx = tables.findIndex(function(t) { return t.class_name === className; });
+                if (idx >= 0) tables.splice(idx, 1);
+                EREditor.markDirty();
+                ERPreview.scheduleRefresh();
+            }
+        };
+        ERUndo.execute(cmd);
+        if (_onLayoutChange) _onLayoutChange();
     }
 
     function handleSearch(query) {
@@ -125,6 +232,8 @@
     }
 
     window.ERToolbar = {
-        init: init
+        init: init,
+        toSnakeCasePlural: toSnakeCasePlural,
+        addTable: addTable
     };
 })();

@@ -6,6 +6,10 @@
     // State
     var _elements = {};     // className -> JointJS element
     var _linkMap = {};      // "ParentClass->ChildClass" -> JointJS link
+
+    // Expose for editor.js relationship CRUD
+    window._elements = _elements;
+    window._linkMap = _linkMap;
     var _saveTimeout = null;
     var SAVE_DEBOUNCE = 1000;
 
@@ -127,12 +131,74 @@
                 scheduleSave();
             });
 
-            // 12. Double-click to toggle collapse
-            paper.on('element:pointerdblclick', function(elementView) {
+            // 12. Chevron click to toggle collapse + addCol icon click + preview wiring
+            paper.on('element:pointerclick', function(elementView, evt) {
+                var target = evt.target;
+                // Check if click was on chevron hit area
+                if (target.getAttribute && (
+                    target.getAttribute('joint-selector') === 'chevronHit' ||
+                    target.getAttribute('joint-selector') === 'chevronPath' ||
+                    (target.parentNode && target.parentNode.getAttribute && target.parentNode.getAttribute('joint-selector') === 'chevronIcon')
+                )) {
+                    var el = elementView.model;
+                    var currentCollapsed = el.get('collapsed') || false;
+                    ERShapes.updateTable(el, paper, !currentCollapsed);
+                    scheduleSave();
+                    evt.stopPropagation();
+                    return;
+                }
+                // Check if click was on addCol icon
+                if (target.getAttribute && (
+                    target.getAttribute('joint-selector') === 'addColHit' ||
+                    target.getAttribute('joint-selector') === 'addColPath'
+                )) {
+                    // Will be implemented in 02-06 (column CRUD)
+                    if (window.ERColumns && ERColumns.addColumn) {
+                        ERColumns.addColumn(elementView.model);
+                    }
+                    evt.stopPropagation();
+                    return;
+                }
+                // Wire selection to preview
+                var tableData = elementView.model.get('tableData');
+                if (tableData && tableData.class_name) {
+                    ERPreview.setSelectedTable(tableData.class_name);
+                }
+            });
+
+            // 13. Double-click for inline table rename
+            paper.on('element:pointerdblclick', function(elementView, evt) {
                 var el = elementView.model;
-                var currentCollapsed = el.get('collapsed') || false;
-                ERShapes.updateTable(el, paper, !currentCollapsed);
-                scheduleSave();
+                if (el.get('type') === 'er.Group') return;
+                startInlineRename(el, paper);
+            });
+
+            // 14. Blank click clears preview selection
+            paper.on('blank:pointerclick', function() {
+                ERPreview.clearSelectedTable();
+            });
+
+            // 15. Group right-click handler
+            paper.on('element:contextmenu', function(elementView, evt) {
+                if (elementView.model.get('type') === 'er.Group') {
+                    evt.preventDefault();
+                    ERGroups.showContextMenu(elementView.model, evt.clientX, evt.clientY);
+                }
+            });
+
+            // 16. Initialize Phase 2 modules
+            EREditor.init(schema);
+            ERGroups.init(_elements, scheduleSave);
+            ERPreview.init();
+
+            // 17. Load groups from layout
+            if (layout.groups && layout.groups.length > 0) {
+                ERGroups.loadGroups(layout.groups, _elements);
+            }
+
+            // 18. Register delete handler
+            document.addEventListener('er:delete-selected', function() {
+                deleteSelectedTable();
             });
 
         } catch (err) {
@@ -168,6 +234,126 @@
         });
     }
 
+    function startInlineRename(el, paper) {
+        var tableData = el.get('tableData');
+        var oldClassName = tableData.class_name;
+        var oldTableName = tableData.table_name;
+        var view = el.findView(paper);
+
+        // Find the header text SVG element
+        var textEl = view.el.querySelector('text[joint-selector="headerText"]');
+        if (!textEl) return;
+
+        // Get position for input overlay
+        var bbox = textEl.getBBox();
+        var ctm = textEl.getScreenCTM();
+        var input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'er-inline-edit';
+        input.value = oldClassName;
+        input.style.position = 'fixed';
+        input.style.left = (ctm.e - bbox.width / 2) + 'px';
+        input.style.top = (ctm.f - 8) + 'px';
+        input.style.width = Math.max(120, bbox.width + 20) + 'px';
+        input.style.textAlign = 'center';
+        input.style.zIndex = '300';
+        input.style.background = '#374151';
+        input.style.color = '#ffffff';
+        document.body.appendChild(input);
+        input.select();
+
+        var committed = false;
+
+        function commit() {
+            if (committed) return;
+            committed = true;
+            var newClassName = input.value.trim();
+            if (!newClassName || newClassName === oldClassName) {
+                input.remove();
+                return;
+            }
+            // Auto-generate tablename
+            var newTableName = ERToolbar.toSnakeCasePlural(newClassName);
+
+            var cmd = {
+                execute: function() {
+                    tableData.class_name = newClassName;
+                    tableData.table_name = newTableName;
+                    // Update elements map
+                    delete _elements[oldClassName];
+                    _elements[newClassName] = el;
+                    el.set('tableData', tableData);
+                    // Update header text
+                    var headerLabel = tableData.schema
+                        ? newClassName + ' (' + tableData.schema + '.' + newTableName + ')'
+                        : newClassName + ' (' + newTableName + ')';
+                    el.attr('headerText/text', headerLabel);
+                    EREditor.markDirty();
+                    ERPreview.scheduleRefresh();
+                },
+                undo: function() {
+                    tableData.class_name = oldClassName;
+                    tableData.table_name = oldTableName;
+                    delete _elements[newClassName];
+                    _elements[oldClassName] = el;
+                    el.set('tableData', tableData);
+                    var headerLabel = tableData.schema
+                        ? oldClassName + ' (' + tableData.schema + '.' + oldTableName + ')'
+                        : oldClassName + ' (' + oldTableName + ')';
+                    el.attr('headerText/text', headerLabel);
+                    EREditor.markDirty();
+                    ERPreview.scheduleRefresh();
+                }
+            };
+            ERUndo.execute(cmd);
+            input.remove();
+        }
+
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') { e.preventDefault(); commit(); }
+            if (e.key === 'Escape') { e.preventDefault(); input.remove(); committed = true; }
+        });
+        input.addEventListener('blur', commit);
+    }
+
+    function deleteSelectedTable() {
+        var selected = ERCanvas.getSelectedElement();
+        if (!selected || selected.get('type') !== 'er.Table') return;
+
+        var tableData = selected.get('tableData');
+        var className = tableData.class_name;
+        var msg = 'Delete table "' + className + '"? This removes the class and all its columns and relationships.';
+
+        EREditor.showConfirmation(selected, msg, function() {
+            var el = selected;
+            var pos = el.position();
+
+            var cmd = {
+                execute: function() {
+                    ERCanvas.getGraph().removeCells([el]);
+                    delete _elements[className];
+                    EREditor.trackDeletion(className);
+                    var tables = EREditor.getSchema().tables;
+                    var idx = tables.findIndex(function(t) { return t.class_name === className; });
+                    if (idx >= 0) tables.splice(idx, 1);
+                    EREditor.markDirty();
+                    ERPreview.scheduleRefresh();
+                },
+                undo: function() {
+                    ERCanvas.getGraph().addCell(el);
+                    el.position(pos.x, pos.y);
+                    _elements[className] = el;
+                    EREditor.untrackDeletion(className);
+                    EREditor.getSchema().tables.push(tableData);
+                    EREditor.markDirty();
+                    ERPreview.scheduleRefresh();
+                }
+            };
+            ERUndo.execute(cmd);
+            ERCanvas.deselectAll();
+        });
+    }
+
     function scheduleSave() {
         clearTimeout(_saveTimeout);
         _saveTimeout = setTimeout(saveLayout, SAVE_DEBOUNCE);
@@ -198,6 +384,7 @@
         });
 
         var viewport = ERCanvas.getViewport();
+        var groups = (typeof ERGroups !== 'undefined' && ERGroups.getGroupsData) ? ERGroups.getGroupsData() : [];
 
         try {
             await fetch('/api/layout', {
@@ -207,7 +394,8 @@
                     positions: positions,
                     collapsed: collapsed,
                     viewport: viewport,
-                    vertices: vertices
+                    vertices: vertices,
+                    groups: groups
                 })
             });
         } catch (err) {
