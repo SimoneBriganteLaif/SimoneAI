@@ -23,9 +23,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Editing
 
-- [ ] **EDIT-01**: User can add a new table with name and tablename
-- [ ] **EDIT-02**: User can rename an existing table (class name + tablename)
-- [ ] **EDIT-03**: User can delete a table (with confirmation)
+- [x] **EDIT-01**: User can add a new table with name and tablename
+- [x] **EDIT-02**: User can rename an existing table (class name + tablename)
+- [x] **EDIT-03**: User can delete a table (with confirmation)
 - [ ] **EDIT-04**: User can add a column to a table with type selection
 - [ ] **EDIT-05**: User can rename a column
 - [ ] **EDIT-06**: User can delete a column (with confirmation)
@@ -95,9 +95,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | VIS-02 | Phase 1 | Complete |
 | VIS-03 | Phase 1 | Complete |
 | VIS-04 | Phase 1 | Complete |
-| EDIT-01 | Phase 2 | Pending |
-| EDIT-02 | Phase 2 | Pending |
-| EDIT-03 | Phase 2 | Pending |
+| EDIT-01 | Phase 2 | Complete |
+| EDIT-02 | Phase 2 | Complete |
+| EDIT-03 | Phase 2 | Complete |
 | EDIT-04 | Phase 2 | Pending |
 | EDIT-05 | Phase 2 | Pending |
 | EDIT-06 | Phase 2 | Pending |
