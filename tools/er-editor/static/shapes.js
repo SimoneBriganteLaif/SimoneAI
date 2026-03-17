@@ -80,13 +80,13 @@
         return html;
     }
 
-    function buildRelHTML(rel) {
+    function buildRelRow(rel) {
         var targetDisplay = rel.uselist ? escapeHtml(rel.target) + '[]' : escapeHtml(rel.target);
-        return '<div class="er-rel-row">' +
-            '<span class="er-rel-arrow">&harr;</span> ' +
-            '<span class="er-rel-name">' + escapeHtml(rel.name) + '</span>' +
-            ' <span class="er-rel-target">&rarr; ' + targetDisplay + '</span>' +
-            '</div>';
+        return '<tr class="er-rel-row">' +
+            '<td class="er-rel-icon">&harr;</td>' +
+            '<td class="er-rel-name">' + escapeHtml(rel.name) + '</td>' +
+            '<td class="er-rel-target" colspan="2">&rarr; ' + targetDisplay + '</td>' +
+            '</tr>';
     }
 
     function computeTableSize(tableData, collapsed) {
@@ -109,8 +109,10 @@
         var tableContentW = 24 + 12 + maxNameW + 8 + maxTypeW + 80; // icon + pad + name + gap + type + badges
         var headerW = headerLabel.length * 8;
         rels.forEach(function(r) {
-            var relText = '<-> ' + r.name + ' -> ' + r.target + (r.uselist ? '[]' : '');
-            tableContentW = Math.max(tableContentW, relText.length * DIMS.charW + 16);
+            // Rel row: icon(22) + name + "→ Target[]" in same grid
+            var relNameW = r.name.length * DIMS.charW;
+            var relTargetW = (r.target.length + (r.uselist ? 4 : 2)) * DIMS.charW; // "→ Target[]"
+            tableContentW = Math.max(tableContentW, 22 + 8 + relNameW + 8 + relTargetW + 8);
         });
         var width = Math.min(DIMS.maxW, Math.max(DIMS.minW, Math.max(tableContentW, headerW + 16)));
 
@@ -133,22 +135,24 @@
 
     function buildBodyHTML(visibleCols, hiddenCount, rels, collapsed) {
         var html = '<div class="er-body" style="padding: ' + DIMS.bodyPadV + 'px 0;">';
-        // Columns table
+        // Single unified table for columns + collapsed indicator + divider + relationships
         html += '<table class="er-col-table"><tbody>';
+        // Column rows
         visibleCols.forEach(function(c) {
             html += buildColumnRow(c);
         });
+        // Collapsed indicator row
         if (collapsed && hiddenCount > 0) {
-            html += '<tr><td colspan="4" class="er-collapsed-indicator">\u25B6 ' + hiddenCount + ' more columns</td></tr>';
+            html += '<tr class="er-collapsed-row"><td class="er-col-icon"></td><td colspan="3" class="er-collapsed-indicator">\u25B6 ' + hiddenCount + ' more columns</td></tr>';
         }
-        html += '</tbody></table>';
-        // Relationships
+        // Divider + relationship rows
         if (rels.length > 0) {
-            html += '<div class="er-divider"></div>';
+            html += '<tr class="er-divider-row"><td colspan="4"><div class="er-divider"></div></td></tr>';
             rels.forEach(function(r) {
-                html += buildRelHTML(r);
+                html += buildRelRow(r);
             });
         }
+        html += '</tbody></table>';
         html += '</div>';
         return html;
     }

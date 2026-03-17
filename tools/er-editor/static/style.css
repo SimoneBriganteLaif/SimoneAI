@@ -252,39 +252,49 @@ body {
     white-space: nowrap;
 }
 
+.er-divider-row td {
+    padding: 0;
+}
+
 .er-divider {
     height: 1px;
     background: #e5e7eb;
-    margin: 4px 0;
+    margin: 4px 8px;
 }
 
-.er-rel-row {
-    display: flex;
-    align-items: center;
+.er-rel-row td {
     height: 22px;
-    gap: 4px;
+    vertical-align: middle;
+    white-space: nowrap;
+    padding: 0 4px;
 }
 
-.er-rel-arrow {
+.er-rel-icon {
+    width: 22px;
+    text-align: center;
+    padding-left: 8px;
     color: #6b7280;
+    font-size: 11px;
 }
 
 .er-rel-name {
     font-weight: 400;
-    white-space: nowrap;
 }
 
 .er-rel-target {
     color: #6b7280;
-    white-space: nowrap;
+}
+
+.er-collapsed-row td {
+    height: 22px;
+    vertical-align: middle;
 }
 
 .er-collapsed-indicator {
-    height: 22px;
-    display: flex;
-    align-items: center;
     color: #6b7280;
     font-style: italic;
+    font-size: 11px;
+    white-space: nowrap;
 }
 
 /* === Link Tools (vertex/segment handles) === */
