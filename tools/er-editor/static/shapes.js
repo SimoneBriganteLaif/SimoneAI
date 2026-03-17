@@ -26,8 +26,8 @@
         bodyPadV: 8,
         bodyPadH: 16,
         dividerMargin: 4,
-        minW: 220,
-        maxW: 320,
+        minW: 240,
+        maxW: 500,
         charW: 7.2
     };
 
@@ -50,22 +50,22 @@
         return div.innerHTML;
     }
 
-    function buildColumnHTML(col) {
-        var html = '<div class="er-col-row">';
-        // Icons area (32px wide)
-        html += '<span class="er-col-icons">';
+    function buildColumnRow(col) {
+        var html = '<tr class="er-col-row">';
+        // Icon cell
+        html += '<td class="er-col-icon">';
         if (col.primary_key) {
             html += PK_ICON;
-        }
-        if (col.foreign_key) {
+        } else if (col.foreign_key) {
             html += FK_ICON;
         }
-        html += '</span>';
-        // Name
-        html += '<span class="er-col-name">' + escapeHtml(col.name) + '</span>';
-        // Type
-        html += '<span class="er-col-type">' + escapeHtml(col.type) + '</span>';
-        // Badges
+        html += '</td>';
+        // Name cell
+        html += '<td class="er-col-name">' + escapeHtml(col.name) + '</td>';
+        // Type cell
+        html += '<td class="er-col-type">' + escapeHtml(col.type) + '</td>';
+        // Badges cell
+        html += '<td class="er-col-badges">';
         if (col.nullable === false) {
             html += '<span class="er-badge">NN</span>';
         }
@@ -75,7 +75,8 @@
         if (col.index) {
             html += '<span class="er-badge">IDX</span>';
         }
-        html += '</div>';
+        html += '</td>';
+        html += '</tr>';
         return html;
     }
 
@@ -95,23 +96,23 @@
         var hiddenCount = tableData.columns.length - visibleCols.length;
         var rels = tableData.relationships || [];
 
-        // Width calculation
+        // Width calculation: icon(24) + name + type + badges(80) + padding
         var headerLabel = tableData.schema
             ? tableData.class_name + ' (' + tableData.schema + '.' + tableData.table_name + ')'
             : tableData.class_name + ' (' + tableData.table_name + ')';
-        var maxTextW = headerLabel.length * 8; // header is 13px, slightly wider
+        var maxNameW = 0;
+        var maxTypeW = 0;
         visibleCols.forEach(function(c) {
-            var colText = c.name + '  ' + c.type;
-            if (c.nullable === false) colText += ' NN';
-            if (c.unique) colText += ' UQ';
-            if (c.index) colText += ' IDX';
-            maxTextW = Math.max(maxTextW, 32 + colText.length * DIMS.charW);
+            maxNameW = Math.max(maxNameW, c.name.length * DIMS.charW);
+            maxTypeW = Math.max(maxTypeW, c.type.length * DIMS.charW);
         });
+        var tableContentW = 24 + 12 + maxNameW + 8 + maxTypeW + 80; // icon + pad + name + gap + type + badges
+        var headerW = headerLabel.length * 8;
         rels.forEach(function(r) {
             var relText = '<-> ' + r.name + ' -> ' + r.target + (r.uselist ? '[]' : '');
-            maxTextW = Math.max(maxTextW, relText.length * DIMS.charW);
+            tableContentW = Math.max(tableContentW, relText.length * DIMS.charW + 16);
         });
-        var width = Math.min(DIMS.maxW, Math.max(DIMS.minW, maxTextW + DIMS.bodyPadH * 2));
+        var width = Math.min(DIMS.maxW, Math.max(DIMS.minW, Math.max(tableContentW, headerW + 16)));
 
         // Height calculation
         var colsH = visibleCols.length * DIMS.rowH;
@@ -131,13 +132,17 @@
     }
 
     function buildBodyHTML(visibleCols, hiddenCount, rels, collapsed) {
-        var html = '<div class="er-body" style="padding: ' + DIMS.bodyPadV + 'px ' + DIMS.bodyPadH + 'px;">';
+        var html = '<div class="er-body" style="padding: ' + DIMS.bodyPadV + 'px 0;">';
+        // Columns table
+        html += '<table class="er-col-table"><tbody>';
         visibleCols.forEach(function(c) {
-            html += buildColumnHTML(c);
+            html += buildColumnRow(c);
         });
         if (collapsed && hiddenCount > 0) {
-            html += '<div class="er-collapsed-indicator">\u25B6 ' + hiddenCount + ' more columns</div>';
+            html += '<tr><td colspan="4" class="er-collapsed-indicator">\u25B6 ' + hiddenCount + ' more columns</td></tr>';
         }
+        html += '</tbody></table>';
+        // Relationships
         if (rels.length > 0) {
             html += '<div class="er-divider"></div>';
             rels.forEach(function(r) {
@@ -257,35 +262,40 @@
          * @param {string} targetCardinality - "1", "N", or "M"
          * @returns {joint.shapes.standard.Link} JointJS link instance
          */
-        createLink: function(sourceId, targetId, sourceCardinality, targetCardinality) {
-            var link = new joint.shapes.standard.Link({
+        createLink: function(sourceId, targetId, sourceCardinality, targetCardinality, savedVertices) {
+            var config = {
                 source: { id: sourceId },
                 target: { id: targetId },
                 router: {
                     name: 'manhattan',
                     args: {
-                        padding: 20,
-                        perpendicular: true,
-                        step: 10
+                        padding: 30,
+                        step: 10,
+                        maximumLoops: 5000
                     }
                 },
                 connector: {
                     name: 'rounded',
-                    args: { radius: 5 }
+                    args: { radius: 8 }
                 },
                 attrs: {
                     line: {
                         stroke: COLORS.relLine,
-                        strokeWidth: 1.5
+                        strokeWidth: 1.5,
+                        targetMarker: {
+                            type: 'path',
+                            d: 'M 10 -5 0 0 10 5 z',
+                            fill: COLORS.relLine
+                        }
                     }
                 },
                 labels: [
                     {
-                        position: 0.1,
+                        position: { distance: 24, offset: -14, args: { absoluteDistance: true } },
                         attrs: {
                             text: {
                                 text: sourceCardinality || '1',
-                                fontSize: 12,
+                                fontSize: 11,
                                 fontWeight: 600,
                                 fontFamily: '"JetBrains Mono", monospace',
                                 fill: COLORS.cardinalityText
@@ -294,11 +304,11 @@
                         }
                     },
                     {
-                        position: 0.9,
+                        position: { distance: -24, offset: -14, args: { absoluteDistance: true } },
                         attrs: {
                             text: {
                                 text: targetCardinality || 'N',
-                                fontSize: 12,
+                                fontSize: 11,
                                 fontWeight: 600,
                                 fontFamily: '"JetBrains Mono", monospace',
                                 fill: COLORS.cardinalityText
@@ -307,8 +317,14 @@
                         }
                     }
                 ]
-            });
+            };
 
+            // Restore saved vertices (manual routing by user)
+            if (savedVertices && savedVertices.length > 0) {
+                config.vertices = savedVertices;
+            }
+
+            var link = new joint.shapes.standard.Link(config);
             return link;
         }
     };

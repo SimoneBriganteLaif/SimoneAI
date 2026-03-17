@@ -5,8 +5,9 @@
 
     // State
     var _elements = {};     // className -> JointJS element
+    var _linkMap = {};      // "ParentClass->ChildClass" -> JointJS link
     var _saveTimeout = null;
-    var SAVE_DEBOUNCE = 1000; // 1 second debounce for auto-save
+    var SAVE_DEBOUNCE = 1000;
 
     async function main() {
         try {
@@ -19,10 +20,8 @@
             }
             var schema = await schemaRes.json();
 
-            // Set browser tab title
             document.title = 'ER Editor - ' + (schema.file || 'model.py');
 
-            // Check empty state
             if (!schema.tables || schema.tables.length === 0) {
                 hideLoading();
                 showEmpty();
@@ -31,7 +30,7 @@
 
             // 2. Fetch saved layout
             var layoutRes = await fetch('/api/layout');
-            var layout = layoutRes.ok ? await layoutRes.json() : { positions: {}, collapsed: {}, viewport: {} };
+            var layout = layoutRes.ok ? await layoutRes.json() : { positions: {}, collapsed: {}, viewport: {}, vertices: {} };
 
             // 3. Initialize canvas
             var paperEl = document.getElementById('paper');
@@ -54,28 +53,28 @@
             });
 
             // 5. Build relationship links
-            // Build FK map: for each table, find columns with foreign_key pointing to another table
             var tableByTableName = {};
             schema.tables.forEach(function(t) {
                 var fullName = t.schema ? t.schema + '.' + t.table_name : t.table_name;
                 tableByTableName[fullName] = t.class_name;
-                // Also register without schema for simpler FK references
                 tableByTableName[t.table_name] = t.class_name;
             });
 
-            var linksCreated = {}; // track "srcClass->tgtClass" to avoid duplicates
+            var linksCreated = {};
+            // Build a map from element ID to class name for reverse lookup
+            var idToClass = {};
+            Object.keys(_elements).forEach(function(className) {
+                idToClass[_elements[className].id] = className;
+            });
 
             schema.tables.forEach(function(tableData) {
                 tableData.columns.forEach(function(col) {
                     if (col.foreign_key) {
-                        // FK format: "schema.table.column" or "table.column"
                         var parts = col.foreign_key.split('.');
                         var refTableKey;
                         if (parts.length === 3) {
-                            // schema.table.column
                             refTableKey = parts[0] + '.' + parts[1];
                         } else if (parts.length === 2) {
-                            // table.column
                             refTableKey = parts[0];
                         }
                         var refClassName = tableByTableName[refTableKey];
@@ -83,13 +82,15 @@
                             var linkKey = refClassName + '->' + tableData.class_name;
                             var reverseLinkKey = tableData.class_name + '->' + refClassName;
                             if (!linksCreated[linkKey] && !linksCreated[reverseLinkKey]) {
-                                // Determine cardinality:
-                                // The FK side is "N" (many), the referenced side is "1"
-                                var sourceId = _elements[refClassName].id;  // Referenced (parent) = "1"
-                                var targetId = _elements[tableData.class_name].id;  // FK holder (child) = "N"
+                                var sourceId = _elements[refClassName].id;
+                                var targetId = _elements[tableData.class_name].id;
 
-                                var link = ERShapes.createLink(sourceId, targetId, '1', 'N');
+                                // Restore saved vertices if any
+                                var savedVerts = (layout.vertices && layout.vertices[linkKey]) || null;
+
+                                var link = ERShapes.createLink(sourceId, targetId, '1', 'N', savedVerts);
                                 graph.addCell(link);
+                                _linkMap[linkKey] = link;
                                 linksCreated[linkKey] = true;
                             }
                         }
@@ -99,7 +100,6 @@
 
             // 6. Apply layout
             if (!hasPositions) {
-                // No saved positions: run auto-layout
                 ERLayout.autoLayout(graph);
             }
 
@@ -116,12 +116,18 @@
             // 9. Initialize toolbar
             ERToolbar.init(_elements, scheduleSave);
 
-            // 10. Set up auto-save on position changes
+            // 10. Link tools on hover — allow dragging vertices
+            setupLinkTools(paper);
+
+            // 11. Auto-save on changes
             graph.on('change:position', function() {
                 scheduleSave();
             });
+            graph.on('change:vertices', function() {
+                scheduleSave();
+            });
 
-            // 11. Set up double-click to toggle collapse
+            // 12. Double-click to toggle collapse
             paper.on('element:pointerdblclick', function(elementView) {
                 var el = elementView.model;
                 var currentCollapsed = el.get('collapsed') || false;
@@ -131,8 +137,35 @@
 
         } catch (err) {
             console.error('ER Editor init error:', err);
-            showError('Cannot reach the server. Make sure server.py is running.');
+            if (err instanceof TypeError && err.message.includes('fetch')) {
+                showError('Cannot reach the server. Make sure server.py is running.');
+            } else {
+                showError('Initialization error: ' + err.message);
+            }
         }
+    }
+
+    /**
+     * Show link editing tools (vertex handles) on hover.
+     * Users can click to add vertices and drag them for manual routing.
+     */
+    function setupLinkTools(paper) {
+        paper.on('link:mouseenter', function(linkView) {
+            if (linkView._hasTools) return;
+            var tools = new joint.dia.ToolsView({
+                tools: [
+                    new joint.linkTools.Vertices(),
+                    new joint.linkTools.Segments()
+                ]
+            });
+            linkView.addTools(tools);
+            linkView._hasTools = true;
+        });
+
+        paper.on('link:mouseleave', function(linkView) {
+            linkView.removeTools();
+            linkView._hasTools = false;
+        });
     }
 
     function scheduleSave() {
@@ -152,13 +185,30 @@
                 collapsed[className] = true;
             }
         });
+
+        // Save link vertices
+        var vertices = {};
+        Object.entries(_linkMap).forEach(function(entry) {
+            var key = entry[0];
+            var link = entry[1];
+            var verts = link.vertices();
+            if (verts && verts.length > 0) {
+                vertices[key] = verts;
+            }
+        });
+
         var viewport = ERCanvas.getViewport();
 
         try {
             await fetch('/api/layout', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ positions: positions, collapsed: collapsed, viewport: viewport })
+                body: JSON.stringify({
+                    positions: positions,
+                    collapsed: collapsed,
+                    viewport: viewport,
+                    vertices: vertices
+                })
             });
         } catch (err) {
             console.warn('Failed to save layout:', err);
@@ -183,7 +233,6 @@
         if (msgEl) msgEl.textContent = message;
     }
 
-    // Start on DOM ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', main);
     } else {

@@ -36,6 +36,8 @@
             linkPinning: false,
             defaultConnector: { name: 'rounded', args: { radius: 5 } },
             defaultRouter: { name: 'manhattan', args: { padding: 20 } },
+            defaultAnchor: { name: 'center' },
+            defaultConnectionPoint: { name: 'bbox' },
             async: true
         });
 

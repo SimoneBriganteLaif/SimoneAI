@@ -204,41 +204,51 @@ body {
     overflow: hidden;
 }
 
-.er-col-row {
-    display: flex;
-    align-items: center;
-    height: 22px;
-    gap: 4px;
+.er-col-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
 }
 
-.er-col-icons {
-    width: 32px;
-    display: flex;
-    gap: 2px;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: flex-end;
+.er-col-row td {
+    height: 22px;
+    vertical-align: middle;
+    white-space: nowrap;
+    padding: 0 4px;
+}
+
+.er-col-row:hover {
+    background: #f3f4f6;
+}
+
+.er-col-icon {
+    width: 22px;
+    text-align: center;
+    padding-left: 8px;
 }
 
 .er-col-name {
-    font-weight: 400;
-    white-space: nowrap;
+    font-weight: 500;
 }
 
 .er-col-type {
     color: #6b7280;
-    white-space: nowrap;
-    margin-left: 8px;
+    font-weight: 400;
+}
+
+.er-col-badges {
+    text-align: right;
+    padding-right: 8px;
 }
 
 .er-badge {
     background: #f3f4f6;
     color: #6b7280;
-    font-size: 12px;
+    font-size: 10px;
     font-weight: 600;
-    padding: 2px 4px;
+    padding: 1px 4px;
     border-radius: 2px;
-    margin-left: 4px;
+    margin-left: 2px;
     white-space: nowrap;
 }
 
@@ -275,4 +285,23 @@ body {
     align-items: center;
     color: #6b7280;
     font-style: italic;
+}
+
+/* === Link Tools (vertex/segment handles) === */
+
+.joint-link .joint-marker-vertex {
+    r: 5;
+    fill: #3b82f6;
+    stroke: white;
+    stroke-width: 1.5;
+    cursor: move;
+}
+
+.joint-link .joint-marker-segment {
+    fill: #3b82f6;
+    opacity: 0;
+}
+
+.joint-link .joint-marker-segment:hover {
+    opacity: 0.4;
 }

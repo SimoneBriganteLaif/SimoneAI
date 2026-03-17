@@ -49,6 +49,7 @@ class LayoutData(BaseModel):
     positions: dict = {}
     collapsed: dict = {}
     viewport: dict = {}
+    vertices: dict = {}
 
 
 @router.get("/layout")
