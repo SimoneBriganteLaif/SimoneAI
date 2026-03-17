@@ -50,6 +50,7 @@ class LayoutData(BaseModel):
     collapsed: dict = {}
     viewport: dict = {}
     vertices: dict = {}
+    groups: list[dict] = []
 
 
 @router.get("/layout")

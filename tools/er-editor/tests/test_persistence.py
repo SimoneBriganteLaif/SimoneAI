@@ -139,3 +139,70 @@ def test_save_overwrites(client, model_in_tmp):
     assert data["positions"]["Mailbox"]["y"] == 888
     assert data["collapsed"]["Mailbox"] is True
     assert data["viewport"]["zoom"] == 2.5
+
+
+def test_save_groups(client, model_in_tmp):
+    """POST /api/layout with groups saves them in .er.json."""
+    payload = {
+        "positions": {"Mailbox": {"x": 100, "y": 50}},
+        "collapsed": {},
+        "viewport": {"zoom": 1.0, "panX": 0, "panY": 0},
+        "groups": [
+            {
+                "id": "group-1",
+                "name": "Auth",
+                "color": "Blue",
+                "bounds": {"x": 50, "y": 30, "width": 400, "height": 300},
+                "members": ["Mailbox"]
+            }
+        ]
+    }
+    response = client.post("/api/layout", json=payload)
+    assert response.status_code == 200
+
+    sidecar = model_in_tmp.with_suffix(".er.json")
+    data = json.loads(sidecar.read_text())
+    assert "groups" in data
+    assert len(data["groups"]) == 1
+    assert data["groups"][0]["name"] == "Auth"
+    assert data["groups"][0]["color"] == "Blue"
+    assert data["groups"][0]["members"] == ["Mailbox"]
+
+
+def test_load_groups(client, model_in_tmp):
+    """GET /api/layout returns groups from .er.json."""
+    sidecar = model_in_tmp.with_suffix(".er.json")
+    layout_data = {
+        "version": 1,
+        "positions": {},
+        "collapsed": {},
+        "viewport": {"zoom": 1.0, "panX": 0, "panY": 0},
+        "groups": [
+            {"id": "g1", "name": "Email", "color": "Green",
+             "bounds": {"x": 0, "y": 0, "width": 500, "height": 400},
+             "members": ["EmailTicket", "EmailMessage"]}
+        ]
+    }
+    sidecar.write_text(json.dumps(layout_data))
+
+    response = client.get("/api/layout")
+    assert response.status_code == 200
+    data = response.json()
+    assert len(data["groups"]) == 1
+    assert data["groups"][0]["name"] == "Email"
+    assert data["groups"][0]["color"] == "Green"
+
+
+def test_save_layout_no_groups(client, model_in_tmp):
+    """POST /api/layout without groups field still works (backward compat)."""
+    payload = {
+        "positions": {"Mailbox": {"x": 100, "y": 50}},
+        "collapsed": {},
+        "viewport": {"zoom": 1.0, "panX": 0, "panY": 0},
+    }
+    response = client.post("/api/layout", json=payload)
+    assert response.status_code == 200
+
+    sidecar = model_in_tmp.with_suffix(".er.json")
+    data = json.loads(sidecar.read_text())
+    assert data.get("groups", []) == []
