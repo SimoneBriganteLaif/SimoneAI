@@ -33,9 +33,9 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Relationships
 
-- [ ] **REL-01**: User can create a relationship between two tables (generates FK column + relationship on both sides)
-- [ ] **REL-02**: User can modify relationship properties (back_populates, cascade, lazy)
-- [ ] **REL-03**: User can delete a relationship (removes FK + relationship from both sides)
+- [x] **REL-01**: User can create a relationship between two tables (generates FK column + relationship on both sides)
+- [x] **REL-02**: User can modify relationship properties (back_populates, cascade, lazy)
+- [x] **REL-03**: User can delete a relationship (removes FK + relationship from both sides)
 
 ### Persistence
 
@@ -102,9 +102,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | EDIT-05 | Phase 2 | Pending |
 | EDIT-06 | Phase 2 | Pending |
 | EDIT-07 | Phase 2 | Pending |
-| REL-01 | Phase 2 | Pending |
-| REL-02 | Phase 2 | Pending |
-| REL-03 | Phase 2 | Pending |
+| REL-01 | Phase 2 | Complete |
+| REL-02 | Phase 2 | Complete |
+| REL-03 | Phase 2 | Complete |
 | PERS-01 | Phase 2 | Pending |
 | PERS-02 | Phase 1 | Complete |
 | PERS-03 | Phase 1 | Complete |
