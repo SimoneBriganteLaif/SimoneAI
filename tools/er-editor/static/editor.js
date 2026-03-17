@@ -30,6 +30,7 @@ var EREditor = (function() {
         // Setup relationship drag-to-create and click handlers
         setupRelationshipDrag();
         _setupRelationshipClickHandlers();
+        _setupColumnHandlers();
     }
 
     /** @returns {{ tables: Array }} Current schema (mutable reference) */
@@ -1214,6 +1215,479 @@ var EREditor = (function() {
         }, true);
     }
 
+    // --- Column CRUD ---
+
+    /**
+     * Add a new column to a table element with default values.
+     * Immediately starts inline editing of the column name.
+     * @param {joint.dia.Element} element - The table element
+     */
+    function addColumn(element) {
+        var paper = ERCanvas.getPaper();
+        var tableData = element.get('tableData');
+        var collapsed = element.get('collapsed') || false;
+
+        // Generate unique column name
+        var baseName = 'new_column';
+        var counter = 1;
+        var colName = baseName;
+        var existingNames = tableData.columns.map(function(c) { return c.name; });
+        while (existingNames.indexOf(colName) >= 0) {
+            colName = baseName + '_' + counter;
+            counter++;
+        }
+
+        var newCol = {
+            name: colName,
+            type: 'String',
+            nullable: true,
+            primary_key: false,
+            foreign_key: null,
+            unique: false,
+            index: false,
+            default: null,
+            server_default: null,
+            enum_values: null
+        };
+
+        var cmd = {
+            execute: function() {
+                tableData.columns.push(newCol);
+                element.set('tableData', tableData);
+                ERShapes.updateTable(element, paper, collapsed);
+                markDirty();
+                ERPreview.scheduleRefresh();
+            },
+            undo: function() {
+                var idx = tableData.columns.indexOf(newCol);
+                if (idx >= 0) tableData.columns.splice(idx, 1);
+                element.set('tableData', tableData);
+                ERShapes.updateTable(element, paper, collapsed);
+                markDirty();
+                ERPreview.scheduleRefresh();
+            }
+        };
+        ERUndo.execute(cmd);
+
+        // Start inline edit on the new column name after a tick
+        setTimeout(function() {
+            startColumnNameEdit(element, colName);
+        }, 50);
+    }
+
+    /**
+     * Find the JointJS element corresponding to a DOM node inside a .joint-element.
+     * @param {HTMLElement} jointEl - The .joint-element DOM node
+     * @returns {joint.dia.Element|null}
+     */
+    function _findElementByDom(jointEl) {
+        var graph = ERCanvas.getGraph();
+        var paper = ERCanvas.getPaper();
+        var elements = graph.getElements();
+        for (var i = 0; i < elements.length; i++) {
+            var elView = elements[i].findView(paper);
+            if (elView && elView.el === jointEl) {
+                return elements[i];
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Show a property popup for editing a column's properties.
+     * @param {joint.dia.Element} element - The table element
+     * @param {string} colName - Column name to edit
+     * @param {HTMLElement} anchorRow - The row element to anchor the popup near
+     */
+    function showColumnPopup(element, colName, anchorRow) {
+        var tableData = element.get('tableData');
+        var col = null;
+        for (var i = 0; i < tableData.columns.length; i++) {
+            if (tableData.columns[i].name === colName) {
+                col = tableData.columns[i];
+                break;
+            }
+        }
+        if (!col) return;
+
+        var TYPES = ['Integer', 'String(N)', 'Text', 'Boolean', 'Float', 'DateTime', 'Date', 'UUID', 'JSON', 'Numeric(p,s)', 'Enum', 'Custom...'];
+
+        var currentTypeCategory = detectTypeCategory(col.type);
+
+        var html = '<h3>Edit Column</h3>';
+
+        // Name field
+        html += '<div class="er-popup-field">';
+        html += '<label>Name</label>';
+        html += '<input type="text" id="popup-col-name" value="' + _escapeAttr(col.name) + '" />';
+        html += '</div>';
+
+        // Type dropdown
+        html += '<div class="er-popup-field">';
+        html += '<label>Type</label>';
+        html += '<select id="popup-col-type">';
+        TYPES.forEach(function(t) {
+            var selected = (t === currentTypeCategory) ? ' selected' : '';
+            html += '<option value="' + t + '"' + selected + '>' + t + '</option>';
+        });
+        html += '</select>';
+        html += '</div>';
+
+        // Type detail fields (shown conditionally)
+        html += '<div id="popup-type-detail"></div>';
+
+        // Checkboxes
+        html += '<div class="er-popup-field er-popup-checkbox">';
+        html += '<input type="checkbox" id="popup-col-nullable"' + (col.nullable ? ' checked' : '') + ' />';
+        html += '<label for="popup-col-nullable">Nullable</label>';
+        html += '</div>';
+
+        html += '<div class="er-popup-field er-popup-checkbox">';
+        html += '<input type="checkbox" id="popup-col-unique"' + (col.unique ? ' checked' : '') + ' />';
+        html += '<label for="popup-col-unique">Unique</label>';
+        html += '</div>';
+
+        html += '<div class="er-popup-field er-popup-checkbox">';
+        html += '<input type="checkbox" id="popup-col-index"' + (col.index ? ' checked' : '') + ' />';
+        html += '<label for="popup-col-index">Index</label>';
+        html += '</div>';
+
+        html += '<div class="er-popup-field er-popup-checkbox">';
+        html += '<input type="checkbox" id="popup-col-pk"' + (col.primary_key ? ' checked' : '') + ' />';
+        html += '<label for="popup-col-pk">Primary Key</label>';
+        html += '</div>';
+
+        // Default
+        html += '<div class="er-popup-field">';
+        html += '<label>Default</label>';
+        html += '<input type="text" id="popup-col-default" value="' + _escapeAttr(col.default || '') + '" placeholder="None" />';
+        html += '</div>';
+
+        // Actions: Apply + Delete
+        html += '<div class="er-popup-actions">';
+        html += '<button class="er-popup-btn er-popup-btn--secondary" id="popup-col-delete" style="margin-right:auto;color:#ef4444;">Delete</button>';
+        html += '<button class="er-popup-btn er-popup-btn--secondary" id="popup-col-cancel">Cancel</button>';
+        html += '<button class="er-popup-btn er-popup-btn--primary" id="popup-col-apply">Apply</button>';
+        html += '</div>';
+
+        showPopup(anchorRow, html, null);
+
+        // Wire type detail updates
+        var typeSelect = document.getElementById('popup-col-type');
+        updateTypeDetail(col, currentTypeCategory);
+        typeSelect.addEventListener('change', function() {
+            updateTypeDetail(col, typeSelect.value);
+        });
+
+        // Wire Apply button
+        document.getElementById('popup-col-apply').addEventListener('click', function() {
+            applyColumnChanges(element, col);
+        });
+
+        // Wire Cancel button
+        document.getElementById('popup-col-cancel').addEventListener('click', function() {
+            closePopup();
+        });
+
+        // Wire Delete button
+        document.getElementById('popup-col-delete').addEventListener('click', function() {
+            closePopup();
+            deleteColumn(element, col);
+        });
+    }
+
+    /**
+     * Detect which type category a column type belongs to.
+     * @param {string} type - Column type string
+     * @returns {string} Type category matching the TYPES dropdown
+     */
+    function detectTypeCategory(type) {
+        if (/^String\(\d+\)$/.test(type) || type === 'String') return 'String(N)';
+        if (/^Numeric\(/.test(type)) return 'Numeric(p,s)';
+        if (/^Enum/.test(type) || type === 'Enum') return 'Enum';
+        var presets = ['Integer', 'Text', 'Boolean', 'Float', 'DateTime', 'Date', 'UUID', 'JSON'];
+        if (presets.indexOf(type) >= 0) return type;
+        return 'Custom...';
+    }
+
+    /**
+     * Update the type detail fields in the popup based on the selected type category.
+     * @param {Object} col - Column data object
+     * @param {string} category - Type category
+     */
+    function updateTypeDetail(col, category) {
+        var detail = document.getElementById('popup-type-detail');
+        var currentType = col.type;
+        detail.innerHTML = '';
+        if (category === 'String(N)') {
+            var match = currentType.match(/String\((\d+)\)/);
+            var len = match ? match[1] : '255';
+            detail.innerHTML = '<div class="er-popup-field"><label>Length</label><input type="number" id="popup-type-length" value="' + len + '" min="1" /></div>';
+        } else if (category === 'Numeric(p,s)') {
+            var m = currentType.match(/Numeric\((\d+),\s*(\d+)\)/);
+            var p = m ? m[1] : '10';
+            var s = m ? m[2] : '2';
+            detail.innerHTML = '<div class="er-popup-field"><label>Precision</label><input type="number" id="popup-type-precision" value="' + p + '" min="1" /></div>' +
+                '<div class="er-popup-field"><label>Scale</label><input type="number" id="popup-type-scale" value="' + s + '" min="0" /></div>';
+        } else if (category === 'Enum') {
+            var existingValues = (col.enum_values && col.enum_values.length > 0) ? col.enum_values.join(', ') : '';
+            detail.innerHTML = '<div class="er-popup-field"><label>Enum Values (comma-separated)</label><textarea id="popup-type-enum" placeholder="e.g. pending, active, closed">' + _escapeAttr(existingValues) + '</textarea></div>';
+        } else if (category === 'Custom...') {
+            detail.innerHTML = '<div class="er-popup-field"><label>Type expression</label><input type="text" id="popup-type-custom" value="' + _escapeAttr(currentType) + '" /></div>';
+        }
+    }
+
+    /**
+     * Build the type string from the current popup type selection.
+     * @param {string} category - Type category
+     * @returns {string} SQLAlchemy type string
+     */
+    function buildTypeString(category) {
+        if (category === 'String(N)') {
+            var len = document.getElementById('popup-type-length');
+            return 'String(' + (len ? len.value : '255') + ')';
+        }
+        if (category === 'Numeric(p,s)') {
+            var p = document.getElementById('popup-type-precision');
+            var s = document.getElementById('popup-type-scale');
+            return 'Numeric(' + (p ? p.value : '10') + ', ' + (s ? s.value : '2') + ')';
+        }
+        if (category === 'Enum') {
+            return 'Enum';
+        }
+        if (category === 'Custom...') {
+            var custom = document.getElementById('popup-type-custom');
+            return custom ? custom.value : 'String';
+        }
+        return category;
+    }
+
+    /**
+     * Read enum values from the popup textarea.
+     * @returns {string[]|null} Array of enum values, or null if empty
+     */
+    function readEnumValues() {
+        var textarea = document.getElementById('popup-type-enum');
+        if (!textarea || !textarea.value.trim()) return null;
+        return textarea.value.split(',').map(function(v) { return v.trim(); }).filter(function(v) { return v.length > 0; });
+    }
+
+    /**
+     * Apply column property changes from the popup form with undo support.
+     * @param {joint.dia.Element} element - The table element
+     * @param {Object} col - Column data object (mutated in place)
+     */
+    function applyColumnChanges(element, col) {
+        var paper = ERCanvas.getPaper();
+        var collapsed = element.get('collapsed') || false;
+        var tableData = element.get('tableData');
+
+        // Read form values
+        var newName = document.getElementById('popup-col-name').value.trim();
+        var typeCategory = document.getElementById('popup-col-type').value;
+        var newType = buildTypeString(typeCategory);
+        var newNullable = document.getElementById('popup-col-nullable').checked;
+        var newUnique = document.getElementById('popup-col-unique').checked;
+        var newIndex = document.getElementById('popup-col-index').checked;
+        var newPK = document.getElementById('popup-col-pk').checked;
+        var newDefault = document.getElementById('popup-col-default').value.trim() || null;
+        var newEnumValues = (typeCategory === 'Enum') ? readEnumValues() : null;
+
+        // Save old values
+        var old = {
+            name: col.name, type: col.type, nullable: col.nullable,
+            unique: col.unique, index: col.index, primary_key: col.primary_key,
+            default: col.default, enum_values: col.enum_values
+        };
+
+        var cmd = {
+            execute: function() {
+                col.name = newName;
+                col.type = newType;
+                col.nullable = newPK ? false : newNullable;
+                col.unique = newUnique;
+                col.index = newIndex;
+                col.primary_key = newPK;
+                col.default = newDefault;
+                col.enum_values = newEnumValues;
+                element.set('tableData', tableData);
+                ERShapes.updateTable(element, paper, collapsed);
+                markDirty();
+                ERPreview.scheduleRefresh();
+            },
+            undo: function() {
+                col.name = old.name;
+                col.type = old.type;
+                col.nullable = old.nullable;
+                col.unique = old.unique;
+                col.index = old.index;
+                col.primary_key = old.primary_key;
+                col.default = old.default;
+                col.enum_values = old.enum_values;
+                element.set('tableData', tableData);
+                ERShapes.updateTable(element, paper, collapsed);
+                markDirty();
+                ERPreview.scheduleRefresh();
+            }
+        };
+        ERUndo.execute(cmd);
+        closePopup();
+    }
+
+    /**
+     * Delete a column with inline confirmation and undo support.
+     * @param {joint.dia.Element} element - The table element
+     * @param {Object} col - Column data object to delete
+     */
+    function deleteColumn(element, col) {
+        var paper = ERCanvas.getPaper();
+        var collapsed = element.get('collapsed') || false;
+        var tableData = element.get('tableData');
+        var colName = col.name;
+        var colIndex = tableData.columns.indexOf(col);
+        var msg = 'Delete column "' + colName + '"?';
+
+        showConfirmation(element, msg, function() {
+            var cmd = {
+                execute: function() {
+                    var idx = tableData.columns.indexOf(col);
+                    if (idx >= 0) tableData.columns.splice(idx, 1);
+                    element.set('tableData', tableData);
+                    ERShapes.updateTable(element, paper, collapsed);
+                    markDirty();
+                    ERPreview.scheduleRefresh();
+                },
+                undo: function() {
+                    tableData.columns.splice(colIndex, 0, col);
+                    element.set('tableData', tableData);
+                    ERShapes.updateTable(element, paper, collapsed);
+                    markDirty();
+                    ERPreview.scheduleRefresh();
+                }
+            };
+            ERUndo.execute(cmd);
+        });
+    }
+
+    /**
+     * Start inline editing of a column name via overlay input.
+     * @param {joint.dia.Element} element - The table element
+     * @param {string} colName - Current column name to edit
+     */
+    function startColumnNameEdit(element, colName) {
+        var paper = ERCanvas.getPaper();
+        var view = element.findView(paper);
+        if (!view) return;
+
+        var row = view.el.querySelector('.er-col-row[data-col-name="' + colName + '"] .er-col-name');
+        if (!row) return;
+
+        var tableData = element.get('tableData');
+        var col = null;
+        for (var i = 0; i < tableData.columns.length; i++) {
+            if (tableData.columns[i].name === colName) {
+                col = tableData.columns[i];
+                break;
+            }
+        }
+        if (!col) return;
+
+        var rect = row.getBoundingClientRect();
+        var input = document.createElement('input');
+        input.type = 'text';
+        input.value = colName;
+        input.style.position = 'fixed';
+        input.style.left = rect.left + 'px';
+        input.style.top = rect.top + 'px';
+        input.style.width = Math.max(80, rect.width + 10) + 'px';
+        input.style.height = rect.height + 'px';
+        input.style.font = '500 12px "JetBrains Mono", monospace';
+        input.style.border = 'none';
+        input.style.borderBottom = '2px solid #3b82f6';
+        input.style.background = '#ffffff';
+        input.style.outline = 'none';
+        input.style.zIndex = '300';
+        input.style.padding = '0 4px';
+        document.body.appendChild(input);
+        input.select();
+
+        var collapsed = element.get('collapsed') || false;
+        var oldName = col.name;
+
+        function commit() {
+            var newName = input.value.trim();
+            if (!newName || newName === oldName) { input.remove(); return; }
+
+            var cmd = {
+                execute: function() {
+                    col.name = newName;
+                    element.set('tableData', tableData);
+                    ERShapes.updateTable(element, paper, collapsed);
+                    markDirty();
+                    ERPreview.scheduleRefresh();
+                },
+                undo: function() {
+                    col.name = oldName;
+                    element.set('tableData', tableData);
+                    ERShapes.updateTable(element, paper, collapsed);
+                    markDirty();
+                    ERPreview.scheduleRefresh();
+                }
+            };
+            ERUndo.execute(cmd);
+            input.remove();
+        }
+
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') { e.preventDefault(); commit(); }
+            if (e.key === 'Escape') { e.preventDefault(); input.remove(); }
+        });
+        input.addEventListener('blur', commit);
+    }
+
+    /**
+     * Set up column click and double-click event listeners.
+     * Called once during init().
+     */
+    function _setupColumnHandlers() {
+        // Click on column row opens property popup
+        document.addEventListener('click', function(evt) {
+            var row = evt.target.closest('.er-col-row[data-col-name]');
+            if (!row) return;
+
+            // Skip if the click is on a relationship row (er-rel-row)
+            if (evt.target.closest('.er-rel-row')) return;
+
+            var jointEl = row.closest('.joint-element');
+            if (!jointEl) return;
+
+            var colName = row.getAttribute('data-col-name');
+            if (!colName) return;
+
+            var element = _findElementByDom(jointEl);
+            if (!element) return;
+
+            showColumnPopup(element, colName, row);
+            evt.stopPropagation();
+        }, true);
+
+        // Double-click on column name starts inline edit
+        document.addEventListener('dblclick', function(evt) {
+            var nameCell = evt.target.closest('.er-col-name');
+            if (!nameCell) return;
+            var row = nameCell.closest('.er-col-row[data-col-name]');
+            if (!row) return;
+            var colName = row.getAttribute('data-col-name');
+
+            var jointEl = row.closest('.joint-element');
+            if (!jointEl) return;
+
+            var element = _findElementByDom(jointEl);
+            if (element) startColumnNameEdit(element, colName);
+            evt.stopPropagation();
+        }, true);
+    }
+
     // --- Public API ---
 
     return {
@@ -1230,6 +1704,8 @@ var EREditor = (function() {
         closePopup: closePopup,
         getActivePopup: getActivePopup,
         showConfirmation: showConfirmation,
-        setupRelationshipDrag: setupRelationshipDrag
+        setupRelationshipDrag: setupRelationshipDrag,
+        addColumn: addColumn,
+        startColumnNameEdit: startColumnNameEdit
     };
 })();
