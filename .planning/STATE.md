@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 01-04-PLAN.md
-last_updated: "2026-03-17T14:28:03.429Z"
+stopped_at: Completed 02-04-PLAN.md
+last_updated: "2026-03-17T22:46:13.118Z"
 last_activity: "2026-03-16 — Completed 01-04 (Integration: layout, toolbar, app.js)"
 progress:
   total_phases: 2
   completed_phases: 1
-  total_plans: 5
-  completed_plans: 5
+  total_plans: 13
+  completed_plans: 7
   percent: 80
 ---
 
@@ -54,6 +54,7 @@ Progress: [████████░░] 80%
 | Phase 01 P01 | 6min | 2 tasks | 8 files |
 | Phase 01 P02 | 7min | 2 tasks | 9 files |
 | Phase 01 P04 | 3min | 2 tasks | 3 files |
+| Phase 02 P04 | 3min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -71,6 +72,7 @@ Recent decisions affecting current work:
 - [Phase 01-02]: httpx added as test dependency for FastAPI TestClient
 - [Phase 01-04]: Plain object {} for link dedup instead of Set (browser compat)
 - [Phase 01-04]: 1s debounce for auto-save, 200ms for search
+- [Phase 02]: Groups as JointJS Elements with z:-1, using embed/unembed for parent-child drag
 
 ### Pending Todos
 
@@ -83,6 +85,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-16T22:21:00Z
-Stopped at: Completed 01-04-PLAN.md
+Last session: 2026-03-17T22:46:13.116Z
+Stopped at: Completed 02-04-PLAN.md
 Resume file: None

@@ -45,7 +45,7 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### UX
 
-- [ ] **UX-01**: User can create named, colored groups and drag tables into/out of them
+- [x] **UX-01**: User can create named, colored groups and drag tables into/out of them
 - [ ] **UX-02**: Undo/redo for all editing operations (Ctrl+Z / Ctrl+Shift+Z)
 - [x] **UX-03**: Auto-layout algorithm places tables when no .er.json exists
 - [ ] **UX-04**: Real-time Python code preview panel showing the current model.py output
@@ -108,7 +108,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PERS-01 | Phase 2 | Pending |
 | PERS-02 | Phase 1 | Complete |
 | PERS-03 | Phase 1 | Complete |
-| UX-01 | Phase 2 | Pending |
+| UX-01 | Phase 2 | Complete |
 | UX-02 | Phase 2 | Pending |
 | UX-03 | Phase 1 | Complete |
 | UX-04 | Phase 2 | Pending |
