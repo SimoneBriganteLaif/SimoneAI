@@ -51,7 +51,7 @@
     }
 
     function buildColumnRow(col) {
-        var html = '<tr class="er-col-row">';
+        var html = '<tr class="er-col-row" data-col-name="' + escapeHtml(col.name) + '">';
         // Icon cell
         html += '<td class="er-col-icon">';
         if (col.primary_key) {
@@ -82,7 +82,7 @@
 
     function buildRelRow(rel) {
         var targetDisplay = rel.uselist ? escapeHtml(rel.target) + '[]' : escapeHtml(rel.target);
-        return '<tr class="er-rel-row">' +
+        return '<tr class="er-rel-row" data-rel-name="' + escapeHtml(rel.name) + '">' +
             '<td class="er-rel-icon">&harr;</td>' +
             '<td class="er-rel-name">' + escapeHtml(rel.name) + '</td>' +
             '<td class="er-rel-target" colspan="2">&rarr; ' + targetDisplay + '</td>' +
@@ -198,7 +198,7 @@
                         ry: 4
                     },
                     headerText: {
-                        x: 'calc(0.5*w)',
+                        x: 'calc(0.5*w + 8)',
                         y: DIMS.headerH / 2,
                         textAnchor: 'middle',
                         textVerticalAnchor: 'middle',
@@ -207,6 +207,40 @@
                         fontWeight: 600,
                         fontFamily: '"JetBrains Mono", "Fira Code", "SF Mono", "Consolas", monospace',
                         text: headerLabel
+                    },
+                    chevronHit: {
+                        x: 'calc(w - 28)',
+                        y: 6,
+                        width: 20,
+                        height: 20,
+                        fill: 'transparent',
+                        cursor: 'pointer'
+                    },
+                    chevronPath: {
+                        d: collapsed ? 'M 0 0 L 5 5 L 0 10' : 'M 0 0 L 5 5 L 10 0',
+                        transform: 'translate(calc(w - 23), 13)',
+                        fill: 'none',
+                        stroke: '#9ca3af',
+                        strokeWidth: 1.5,
+                        strokeLinecap: 'round',
+                        cursor: 'pointer'
+                    },
+                    addColHit: {
+                        x: 4,
+                        y: 4,
+                        width: 24,
+                        height: 24,
+                        fill: 'transparent',
+                        cursor: 'pointer'
+                    },
+                    addColPath: {
+                        d: 'M 6 0 L 6 12 M 0 6 L 12 6',
+                        transform: 'translate(10, 10)',
+                        fill: 'none',
+                        stroke: '#9ca3af',
+                        strokeWidth: 1.5,
+                        strokeLinecap: 'round',
+                        cursor: 'pointer'
                     },
                     bodyRect: {
                         width: 'calc(w)',
@@ -227,6 +261,14 @@
                 markup: [
                     { tagName: 'rect', selector: 'headerRect' },
                     { tagName: 'text', selector: 'headerText' },
+                    { tagName: 'g', selector: 'chevronIcon', children: [
+                        { tagName: 'rect', selector: 'chevronHit' },
+                        { tagName: 'path', selector: 'chevronPath' }
+                    ]},
+                    { tagName: 'g', selector: 'addColIcon', children: [
+                        { tagName: 'rect', selector: 'addColHit' },
+                        { tagName: 'path', selector: 'addColPath' }
+                    ]},
                     { tagName: 'rect', selector: 'bodyRect' },
                     { tagName: 'foreignObject', selector: 'bodyContent', attributes: { overflow: 'hidden' } }
                 ],
@@ -255,6 +297,8 @@
             element.attr('bodyContent/html', bodyHTML);
             element.attr('bodyContent/height', 'calc(h - ' + DIMS.headerH + ')');
             element.attr('bodyRect/height', 'calc(h - ' + DIMS.headerH + ')');
+            // Toggle chevron direction
+            element.attr('chevronPath/d', collapsed ? 'M 0 0 L 5 5 L 0 10' : 'M 0 0 L 5 5 L 10 0');
         },
 
         /**
