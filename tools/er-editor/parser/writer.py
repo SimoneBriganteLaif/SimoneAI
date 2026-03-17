@@ -33,6 +33,13 @@ _TYPE_MAP = {
 
 def _type_to_annotation(col: ColumnIR) -> str:
     """Convert ColumnIR to Mapped[] annotation string."""
+    # Handle Enum types: use the enum class name as the annotation type
+    if col.type.startswith("Enum(") and col.type.endswith(")"):
+        enum_class = col.type[5:-1]  # Extract class name from "Enum(ClassName)"
+        if col.nullable:
+            return f"Mapped[{enum_class} | None]"
+        return f"Mapped[{enum_class}]"
+
     # Extract base type name (e.g. "String(50)" -> "String")
     base = col.type.split("(")[0] if col.type else "str"
     py_type = _TYPE_MAP.get(base, "str")
@@ -47,6 +54,36 @@ def _type_to_annotation(col: ColumnIR) -> str:
 # ---------------------------------------------------------------------------
 # Source builders (for new classes/columns/relationships)
 # ---------------------------------------------------------------------------
+
+def _build_enum_class(enum_name: str, values: list[str]) -> str:
+    """Generate a Python Enum class from enum member values.
+
+    Example output:
+        class TicketPriority(enum.Enum):
+            LOW = "low"
+            MEDIUM = "medium"
+            HIGH = "high"
+    """
+    lines = [f"class {enum_name}(enum.Enum):"]
+    for val in values:
+        member = val.strip().upper().replace(" ", "_").replace("-", "_")
+        lines.append(f'    {member} = "{val.strip()}"')
+    return "\n".join(lines)
+
+
+def _resolve_enum_column(col: ColumnIR, class_name: str) -> tuple[str, str | None]:
+    """Resolve an Enum column: return (type_string, enum_class_name).
+
+    If the column is an Enum type with enum_values, derives the enum class name
+    and returns the Enum(ClassName) type string. Otherwise returns (col.type, None).
+    """
+    if col.type == "Enum" and col.enum_values:
+        # Derive enum class name: {ClassName}{ColumnNameCapitalized}
+        col_capitalized = col.name.replace("_", " ").title().replace(" ", "")
+        enum_class = f"{class_name}{col_capitalized}"
+        return f"Enum({enum_class})", enum_class
+    return col.type, None
+
 
 def _build_column_source(col: ColumnIR, indent: str = "    ") -> str:
     """Generate a single column line like: name: Mapped[str] = mapped_column(String(50), ...)"""
@@ -103,7 +140,30 @@ def _build_relationship_source(rel: RelationshipIR, indent: str = "    ") -> str
 
 
 def _build_class_source(table: TableIR) -> str:
-    """Generate a complete class source string for a new table."""
+    """Generate a complete class source string for a new table.
+
+    If any columns are Enum type with enum_values, generates
+    the Enum class definitions before the table class.
+    """
+    enum_blocks: list[str] = []
+    resolved_types: dict[str, str] = {}  # col.name -> resolved type
+
+    # Resolve Enum columns first
+    for col in table.columns:
+        resolved_type, enum_class = _resolve_enum_column(col, table.class_name)
+        if enum_class:
+            enum_blocks.append(_build_enum_class(enum_class, col.enum_values))
+            resolved_types[col.name] = resolved_type
+
+    parts: list[str] = []
+
+    # Enum class definitions (before the table class)
+    for block in enum_blocks:
+        parts.append(block)
+        parts.append("")
+        parts.append("")
+
+    # Table class
     lines: list[str] = []
     lines.append(f"class {table.class_name}(Base):")
     lines.append(f'    __tablename__ = "{table.table_name}"')
@@ -115,7 +175,14 @@ def _build_class_source(table: TableIR) -> str:
         lines.append("")
 
     for col in table.columns:
-        lines.append(_build_column_source(col))
+        if col.name in resolved_types:
+            # Use resolved Enum type
+            original_type = col.type
+            col.type = resolved_types[col.name]
+            lines.append(_build_column_source(col))
+            col.type = original_type  # Restore
+        else:
+            lines.append(_build_column_source(col))
 
     if table.columns and table.relationships:
         lines.append("")
@@ -123,7 +190,8 @@ def _build_class_source(table: TableIR) -> str:
     for rel in table.relationships:
         lines.append(_build_relationship_source(rel))
 
-    return "\n".join(lines)
+    parts.append("\n".join(lines))
+    return "\n".join(parts)
 
 
 # ---------------------------------------------------------------------------
@@ -151,6 +219,8 @@ class ModelWriter(cst.CSTTransformer):
         self._original_class_names: set[str] = set()
         # Track which original class name maps to which new class name (for renames)
         self._rename_map: dict[str, str] = {}  # original_name -> new_name
+        # Track Enum class definitions to insert (from new Enum columns on existing tables)
+        self._pending_enum_classes: list[tuple[str, str]] = []  # (before_class, enum_source)
         self._build_rename_map(tables, original_tables)
 
     def _build_rename_map(
@@ -318,7 +388,17 @@ class ModelWriter(cst.CSTTransformer):
         added_cols = new_col_names - orig_col_names
         for col_name in added_cols:
             col = new_cols[col_name]
-            col_src = _build_column_source(col, indent="")
+            # Resolve Enum columns: generate Enum class and update type
+            resolved_type, enum_class = _resolve_enum_column(col, table.class_name)
+            if enum_class:
+                enum_src = _build_enum_class(enum_class, col.enum_values)
+                self._pending_enum_classes.append((table.class_name, enum_src))
+                original_type = col.type
+                col.type = resolved_type
+                col_src = _build_column_source(col, indent="")
+                col.type = original_type  # Restore
+            else:
+                col_src = _build_column_source(col, indent="")
             col_stmt = cst.parse_statement(col_src + "\n")
             new_stmts.append(col_stmt)
             changed = True
@@ -436,6 +516,7 @@ class ModelWriter(cst.CSTTransformer):
             or new.index != orig.index
             or new.default != orig.default
             or new.server_default != orig.server_default
+            or new.enum_values != orig.enum_values
         )
 
     def _relationship_changed(self, new: RelationshipIR, orig: RelationshipIR) -> bool:
@@ -485,10 +566,27 @@ class ModelWriter(cst.CSTTransformer):
                     continue
                 new_classes.append(table)
 
-        if not new_classes:
+        if not new_classes and not self._pending_enum_classes:
             return updated_node
 
         new_body = list(updated_node.body)
+
+        # Insert pending Enum class definitions (from Enum columns added to existing tables)
+        # Insert them before the class that uses them
+        for before_class, enum_src in self._pending_enum_classes:
+            parsed = cst.parse_module(enum_src + "\n")
+            for stmt in parsed.body:
+                stmt_with_lines = stmt.with_changes(
+                    leading_lines=[cst.EmptyLine(), cst.EmptyLine()]
+                )
+                # Find the index of the class that uses this Enum and insert before it
+                insert_idx = len(new_body)
+                for i, existing in enumerate(new_body):
+                    if isinstance(existing, cst.ClassDef) and existing.name.value == before_class:
+                        insert_idx = i
+                        break
+                new_body.insert(insert_idx, stmt_with_lines)
+
         for table in new_classes:
             class_src = _build_class_source(table)
             # Parse as a module to get the class statement
@@ -554,13 +652,23 @@ def generate_preview(tables: list[TableIR], imports: str = "") -> str:
     Returns:
         Valid Python source code.
     """
+    # Check if any table has Enum columns requiring import enum
+    has_enum = any(
+        col.type == "Enum" and col.enum_values
+        for table in tables
+        for col in table.columns
+    )
+
     lines: list[str] = []
 
     if imports:
         lines.append(imports)
     else:
         # Default imports
-        lines.append("from sqlalchemy import Column, Integer, String, ForeignKey, Boolean, Text, DateTime, Float")
+        if has_enum:
+            lines.append("import enum")
+            lines.append("")
+        lines.append("from sqlalchemy import Column, Enum, Integer, String, ForeignKey, Boolean, Text, DateTime, Float")
         lines.append("from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship")
         lines.append("")
         lines.append("")

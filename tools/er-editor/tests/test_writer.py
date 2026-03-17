@@ -159,3 +159,35 @@ def test_generate_preview(sample_tables):
     assert "class EmailMessage(Base):" in code
     # Should be syntactically valid Python
     compile(code, "<preview>", "exec")
+
+
+def test_add_enum_column(sample_source, sample_tables):
+    """Adding an Enum column generates a Python Enum class."""
+    ticket_table = next(t for t in sample_tables if t.class_name == "EmailTicket")
+    ticket_table.columns.append(ColumnIR(
+        name="priority",
+        type="Enum",
+        nullable=False,
+        enum_values=["low", "medium", "high"]
+    ))
+    result = apply_changes(sample_source, sample_tables, deleted_classes=set())
+    assert "class EmailTicketPriority(enum.Enum):" in result
+    assert 'LOW = "low"' in result
+    assert 'MEDIUM = "medium"' in result
+    assert 'HIGH = "high"' in result
+    assert "Enum(EmailTicketPriority)" in result
+
+
+def test_preview_with_enum():
+    """Preview generates Enum classes for enum columns."""
+    tables = [TableIR(
+        class_name="Order", table_name="orders",
+        columns=[
+            ColumnIR(name="id", type="Integer", primary_key=True, nullable=False),
+            ColumnIR(name="status", type="Enum", nullable=False, enum_values=["pending", "shipped", "delivered"])
+        ]
+    )]
+    code = generate_preview(tables)
+    assert "class OrderStatus(enum.Enum):" in code
+    assert "import enum" in code
+    assert "Enum(OrderStatus)" in code

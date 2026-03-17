@@ -14,6 +14,7 @@ class ColumnIR:
     index: bool = False
     default: str | None = None  # Python default value as string
     server_default: str | None = None  # SQL server_default as string
+    enum_values: list[str] | None = None  # For Enum columns: list of enum member values
 
 
 @dataclass
