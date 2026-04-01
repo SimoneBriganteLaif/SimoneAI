@@ -1,5 +1,7 @@
 """Confronta gli schema di due database PostgreSQL e produce un report delle differenze."""
 
+from __future__ import annotations
+
 import json
 import os
 import sys

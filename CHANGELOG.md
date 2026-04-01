@@ -12,6 +12,88 @@ _Nessuna modifica pendente._
 
 ---
 
+## [v1.14] — 2026-04-01
+
+### Contenuti
+
+#### Added
+
+**Progetto Sebi Group — avanzamento presales**
+- `projects/sebi-group/meeting/2026-03-16-on-site.md` — note meeting on-site (processi import/export, volumi, pain point, integrazioni)
+- `projects/sebi-group/stima-modulare.md` — stima modulare v2.0: €39k core (Setup + M1-M3) + €16k opzionali (M4-M5) = €55k totale
+- `projects/sebi-group/evolutive-backlog.md` — backlog post-v1 con 9 evolutive (AI feedback loop, auto-email, WebCargo, mobile)
+- `projects/sebi-group/mockup-flows-spec.md` — specifiche UI/UX dettagliate per 6 schermate, glossario logistica, Enterprise Classic style
+
+**Progetto Jubatus — pianificazione infrastruttura**
+- `projects/jubatus/comunicazioni/2026-03-20-email-post-call.md` — email recap call infrastruttura (deploy su account AWS cliente)
+- `projects/jubatus/meeting/2026-03-20-infra.md` — note meeting infrastruttura (decisioni VPC, ALB condiviso, CDK)
+- `projects/jubatus/piani/2026-03-20-setup-infra.md` — piano azione infrastruttura in 6 fasi (info gathering → CDK → repo → permessi → SES → sessione operativa)
+
+**Progetto LAIF Issue — nuovo progetto interno**
+- `projects/laif-issue/` — nuovo progetto: gestione issue stack interno LAIF via Notion
+- `projects/laif-issue/README.md` — overview: DB Issues + Release su Notion, dashboard, skill
+- `projects/laif-issue/processo-issue.md` — ciclo di vita issue (7 stati), scoring RICE, release management settimanale, 9 filoni
+- `projects/laif-issue/flusso-riunione.md` — struttura riunione settimanale (50 min, 6 punti)
+- `projects/laif-issue/dashboard-spec.md` — specifica riorganizzazione dashboard Notion (Main + Stack Overview)
+- `projects/laif-issue/stato-progetto.md` — stato attuale progetto
+- `projects/laif-issue/decisioni.md` — 3 ADR: processo progressivo, dashboard separata, skill generalista V1
+
+**LAIF Repo Analysis — censimento completo ecosistema**
+- `LAIF-repo-analysis/` — analisi di tutti i 40 repository LAIF in produzione (48 file)
+- `LAIF-repo-analysis/INDEX.md` — indice generale: 40 repo, 39 su laif-template, ~750 tabelle custom, ~45 integrazioni
+- `LAIF-repo-analysis/repos/` — 40 analisi individuali (un file per repo)
+- `LAIF-repo-analysis/cross-analysis/` — 6 analisi trasversali: feature matrix, integration catalog, pattern matrix, template drift, team map, raccomandazioni
+- `LAIF-repo-analysis/laif-template-baseline.md` — baseline template v5.7.0 (struttura, 3 schema, tabelle template)
+
+**Tool Graph API — nuovo client Microsoft 365**
+- `tools/graph-api/graph_client.py` — CLI per Microsoft Graph API: Device Code Flow, caching MSAL, 17 scope (Mail, Calendar, Chat, Contacts, Files), comandi GET/POST/PATCH/DELETE
+
+#### Modified
+
+**Progetto Sebi Group**
+- `projects/sebi-group/README.md` — espansione major: metriche (400-700 email/giorno, 20k quotazioni/anno, 18% conversione), moduli M1-M6, milestone, note tecniche
+- `projects/sebi-group/requisiti.md` — v1.0 completa: 17 RF + 5 RNF, integrazioni (M365, Osma, WebCargo), 8 domande aperte
+- `projects/sebi-group/allegato-tecnico.md` — v1.0 completa: 6 moduli funzionali, esclusioni, responsabilità cliente, garanzia 30gg
+- `projects/sebi-group/mockup-brief.md` — v1.0 completa: 6 schermate, Enterprise Classic, utenti 35-38 anni, interfaccia italiana
+- `projects/sebi-group/stato-progetto.md` — aggiornamento: deliverable completati, 3 blocker critici, prossimi passi
+
+**Tool ER Editor**
+- `tools/er-editor/api/routes.py` — aggiunti endpoint POST /api/schema (save con preservazione commenti) e POST /api/preview (anteprima codice)
+- `tools/er-editor/tests/test_server.py` — 3 nuovi test: save schema, preview endpoint, preservazione commenti
+- `tools/er-editor/tests/fixtures/sample_model.er.json` — nuova fixture sidecar layout per test
+
+**Skill db-transfer**
+- `skills/development/db-transfer/compare_schemas.py` — aggiunto `from __future__ import annotations`
+- `skills/development/db-transfer/transfer_data.py` — idem
+
+**Metadata**
+- `projects/INDEX.md` — aggiunto progetto laif-issue (ora 7 progetti: 1 presales, 5 in sviluppo, 1 manutenzione)
+
+### Struttura
+
+#### Added
+
+- `skills/development/gestione-issue/SKILL.md` — nuova skill beta: gestione interattiva issue stack interno LAIF via Notion MCP (triage, preparazione riunione, pianificazione release, health check backlog)
+- `.claude/skills/gestione-issue/SKILL.md` — trigger layer nativo per skill `gestione-issue`
+- `tools/graph-api/` — nuova cartella: client CLI Microsoft Graph API
+- `LAIF-repo-analysis/` — nuova cartella top-level: censimento 40 repo LAIF + analisi trasversali
+- `projects/jubatus/comunicazioni/` — nuova directory per comunicazioni email
+- `projects/jubatus/piani/` — nuova directory per piani d'azione
+
+#### Modified
+
+- `.tags/index.md` — aggiunto tag `#progetto:laif-issue`, aggiunta `#industria:operations-interne` a laif-issue
+- `.gitignore` — cambiato `.obsidian/` in `.obsidian/.planning/`; aggiunto `tools/graph-api/.token_cache.json`
+- `docs/struttura.md` — aggiornato albero con `tools/`, `LAIF-repo-analysis/`, `gestione-issue/`; rimosso `skill-logger.sh`; aggiornato conteggio skill native
+- `docs/skills.md` — aggiunto entry `gestione-issue` (indice, Mermaid, tabella, sezione dettagliata)
+
+#### Removed
+
+- `.claude/hooks/skill-logger.sh` — rimosso hook logger uso skill
+- `.planning/` — rimossa intera directory (~35 file di pianificazione ER editor, progetto passato oltre fase planning)
+
+---
+
 ## [v1.13] — 2026-03-16
 
 ### Contenuti

@@ -2,7 +2,7 @@
 
 ← [System.md](../System.md) · [workflow.md](workflow.md) · [struttura.md](struttura.md)
 
-**Ultimo aggiornamento**: 2026-03-10
+**Ultimo aggiornamento**: 2026-04-01
 
 ---
 
@@ -12,7 +12,7 @@
 - [Sistema di stato](#sistema-di-stato-delle-skill)
 - [Riepilogo](#riepilogo)
 - **Presales**: [init-project](#init-project) · [estrazione-requisiti](#estrazione-requisiti) · [genera-allegato-tecnico](#genera-allegato-tecnico) · [genera-mockup-brief](#genera-mockup-brief)
-- **Development**: [feature-workflow](#feature-workflow) · [feature-plan](#feature-plan) · [feature-develop](#feature-develop) · [feature-test](#feature-test) · [feature-review](#feature-review) · [windsurf-feedback](#windsurf-feedback) · [estrazione-decisioni](#estrazione-decisioni) · [estrazione-pattern](#estrazione-pattern) · [setup-progetto-dev](#setup-progetto-dev) · [brainstorming-post-sviluppo](#brainstorming-post-sviluppo) · [crea-task-notion](#crea-task-notion) · [db-transfer](#db-transfer) · [AWS Diagnostics](#aws-diagnostics-pacchetto)
+- **Development**: [feature-workflow](#feature-workflow) · [feature-plan](#feature-plan) · [feature-develop](#feature-develop) · [feature-test](#feature-test) · [feature-review](#feature-review) · [windsurf-feedback](#windsurf-feedback) · [estrazione-decisioni](#estrazione-decisioni) · [estrazione-pattern](#estrazione-pattern) · [setup-progetto-dev](#setup-progetto-dev) · [brainstorming-post-sviluppo](#brainstorming-post-sviluppo) · [crea-task-notion](#crea-task-notion) · [db-transfer](#db-transfer) · [gestione-issue](#gestione-issue) · [AWS Diagnostics](#aws-diagnostics-pacchetto)
 - **Maintenance**: [audit-periodico](#audit-periodico)
 - **Meta**: [gestione-kb](#gestione-kb) · [verifica-pre-commit](#verifica-pre-commit)
 - [Confronto skill manutenzione](#differenze-tra-skill-di-manutenzione)
@@ -57,6 +57,7 @@ flowchart LR
         FRV -.->|fine sessione| BPS
         CTN[crea-task-notion]
         DBT[db-transfer]
+        GI[gestione-issue]
     end
 
     subgraph MAINT["Maintenance"]
@@ -138,6 +139,7 @@ La promozione va registrata nel changelog e il campo `stato` aggiornato nel fron
 | `aws-s3-diagnose` | Development | beta | si | Inventario bucket S3, dimensioni, upload recenti | aws-config.yaml | nessuno (diagnosi) |
 | `aws-health-report` | Development | beta | si | Report HTML interattivo salute infrastruttura AWS | aws-config.yaml | reports/aws-report-*.html |
 | `db-transfer` | Development | beta | si | Trasferimento dati tra DB PostgreSQL con verifica schema | aws-config.yaml, .env | nessuno (opera sui DB) |
+| `gestione-issue` | Development | beta | si | Gestione interattiva issue via Notion MCP (triage, riunione, release, health check) | projects/laif-issue/, Notion DB | Notion DB (dopo conferma) |
 | `audit-periodico` | Maintenance | beta | si | Audit mensile intera KB | Tutta la KB | Report + aggiornamenti distribuiti |
 | `gestione-kb` | Meta | beta | si | Gestione meta-file del sistema | Meta-file, struttura cartelle | changelog, IDEAS.md, docs/ |
 | `verifica-pre-commit` | Meta | stable | — | Verifica ibrida coerenza KB pre-commit (script Python + check semantici) | Tutti i meta-file + struttura reale | nessuno (solo report) |
@@ -575,6 +577,37 @@ flowchart TD
     CONFIRM -->|Sì| EXEC[transfer_data.py — esecuzione]
     EXEC --> VERIFY[Verifica post-trasferimento: row count]
     VERIFY --> DONE([Riepilogo])
+```
+
+---
+
+### gestione-issue
+
+**Path**: `skills/development/gestione-issue/SKILL.md`
+**Trigger**: Riunione stack interno, triage issue, pianificazione release, health check backlog
+**Stato**: beta
+
+Gestione interattiva delle issue dello stack interno LAIF via Notion MCP. Legge DB Issues e Release, guida l'utente in triage, preparazione riunione, pianificazione release e health check backlog. Scrive su Notion solo dopo approvazione esplicita.
+
+```mermaid
+flowchart TD
+    START([Invocazione]) --> CTX[Carica contesto laif-issue/]
+    CTX --> FETCH[Fetch DB Issues + Release da Notion]
+    FETCH --> MENU[Cosa vuoi fare?]
+    MENU -->|1| MEET[Preparare riunione — genera agenda]
+    MENU -->|2| TRIAGE[Triage issue nuove — revisiona una alla volta]
+    MENU -->|3| RELEASE[Pianificare release — assegna issue]
+    MENU -->|4| HEALTH[Health check — issue stale, RICE mancante]
+    MENU -->|5| STATUS[Stato release specifica]
+    MENU -->|6| OTHER[Altro]
+    MEET --> CONFIRM{Conferma scritture?}
+    TRIAGE --> CONFIRM
+    RELEASE --> CONFIRM
+    HEALTH --> CONFIRM
+    CONFIRM -->|Sì| WRITE[Scrivi su Notion]
+    CONFIRM -->|No| MENU
+    WRITE --> DONE([Riepilogo + Vuoi fare altro?])
+    DONE --> MENU
 ```
 
 ---

@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "positions": {
+    "Mailbox": {
+      "x": 80,
+      "y": 40
+    },
+    "EmailTicket": {
+      "x": 240,
+      "y": 360
+    },
+    "EmailMessage": {
+      "x": 80,
+      "y": 800
+    },
+    "TestTabella": {
+      "x": 780,
+      "y": 20
+    },
+    "NewTable": {
+      "x": 840,
+      "y": 440
+    },
+    "TestTabella2": {
+      "x": 780,
+      "y": 220
+    }
+  },
+  "collapsed": {},
+  "viewport": {
+    "zoom": 3.8000000000000025,
+    "panX": -2624.000000000002,
+    "panY": 167.9999999999999
+  },
+  "vertices": {},
+  "groups": []
+}

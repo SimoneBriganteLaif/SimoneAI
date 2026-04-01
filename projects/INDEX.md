@@ -12,6 +12,7 @@ Aggiornato automaticamente dalla skill `skills/presales/init-project/`.
 | [wolico](wolico/README.md) | LAIF (interno) | Operations interne | in-sviluppo | — | — | FastAPI, Next.js 16, PostgreSQL, AWS, Odoo | [Repo locale](/Users/simonebrigante/LAIF/repo/wolico/) |
 | [albini-castelli](albini-castelli/README.md) | Albini & Castelli | Edilizia / Costruzioni | manutenzione | — | — | FastAPI 0.128, Next.js 16, PostgreSQL, AWS | [Repo locale](/Users/simonebrigante/LAIF/repo/albini-castelli/) |
 | [sebi-group](sebi-group/README.md) | Sebi Group | Logistica / Spedizioni internazionali | presales | 2026-02-17 | — | TBD | — |
+| [laif-issue](laif-issue/README.md) | LAIF (interno) | Internal tooling | in-sviluppo | 2026-03-18 | — | Notion, GitHub | — |
 
 ---
 
@@ -30,9 +31,9 @@ Aggiornato automaticamente dalla skill `skills/presales/init-project/`.
 
 ## Statistiche
 
-- **Totale progetti**: 6
+- **Totale progetti**: 7
 - **Presales**: 1
-- **In sviluppo**: 4
+- **In sviluppo**: 5
 - **Manutenzione**: 1
 - **Completati**: 0
-- **Ultimo aggiornamento**: 2026-03-14
+- **Ultimo aggiornamento**: 2026-04-01

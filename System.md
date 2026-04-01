@@ -1,6 +1,6 @@
 # Sistema Knowledge Base — LAIF
 
-**Versione**: 1.13
+**Versione**: 1.14
 **Creato**: 2026-03-08
 **Team**: ~20 sviluppatori
 

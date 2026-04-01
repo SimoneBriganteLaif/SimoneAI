@@ -20,9 +20,10 @@ CONTENUTI_PREFIXES = ("projects/", "patterns/", "knowledge/")
 CONTENUTI_EXCLUDE = ("projects/_template/", "projects/_archivio/", "projects/INDEX.md")
 
 
-def count_entries_in_non_rilasciato(filepath: str, section_header: str = None) -> int:
-    """Conta le entry (righe che iniziano con '- ') nella sezione [Non rilasciato].
+def count_entries_in_section(filepath: str, version_header: str, section_header: str = None) -> int:
+    """Conta le entry (righe che iniziano con '- ') in una sezione del changelog.
 
+    version_header: es. "[Non rilasciato]" o "[v1.14]"
     Se section_header è specificato (es. "### Struttura"), conta solo dentro quella sotto-sezione.
     """
     if not os.path.isfile(filepath):
@@ -31,8 +32,9 @@ def count_entries_in_non_rilasciato(filepath: str, section_header: str = None) -
     with open(filepath, encoding="utf-8") as f:
         content = f.read()
 
-    # Trova la sezione [Non rilasciato]
-    match = re.search(r'^## \[Non rilasciato\]\s*\n(.*?)(?=^## \[|\Z)', content, re.MULTILINE | re.DOTALL)
+    # Trova la sezione richiesta
+    pattern = r'^## ' + re.escape(version_header) + r'\s*(?:—\s*\S+)?\s*\n(.*?)(?=^## \[|\Z)'
+    match = re.search(pattern, content, re.MULTILINE | re.DOTALL)
     if not match:
         return 0
 
@@ -40,13 +42,25 @@ def count_entries_in_non_rilasciato(filepath: str, section_header: str = None) -
 
     if section_header:
         # Trova la sotto-sezione specifica
-        pattern = re.escape(section_header) + r'\s*\n(.*?)(?=^### |\Z)'
-        sub_match = re.search(pattern, section, re.MULTILINE | re.DOTALL)
+        sub_pattern = re.escape(section_header) + r'\s*\n(.*?)(?=^### |\Z)'
+        sub_match = re.search(sub_pattern, section, re.MULTILINE | re.DOTALL)
         if not sub_match:
             return 0
         section = sub_match.group(1)
 
     return len(re.findall(r'^- ', section, re.MULTILINE))
+
+
+def find_latest_version_header(filepath: str) -> Optional[str]:
+    """Trova l'header della prima sezione versionata (es. '[v1.14]')."""
+    if not os.path.isfile(filepath):
+        return None
+
+    with open(filepath, encoding="utf-8") as f:
+        content = f.read()
+
+    match = re.search(r'^## (\[v\d+\.\d+\])', content, re.MULTILINE)
+    return match.group(1) if match else None
 
 
 def classify_file(filepath: str) -> Optional[str]:
@@ -76,8 +90,19 @@ def main():
 
     changelog_path = os.path.join(KB_ROOT, "CHANGELOG.md")
 
-    struttura_entries = count_entries_in_non_rilasciato(changelog_path, "### Struttura")
-    contenuti_entries = count_entries_in_non_rilasciato(changelog_path, "### Contenuti")
+    # Controlla prima [Non rilasciato], poi la versione più recente
+    struttura_entries = count_entries_in_section(changelog_path, "[Non rilasciato]", "### Struttura")
+    contenuti_entries = count_entries_in_section(changelog_path, "[Non rilasciato]", "### Contenuti")
+
+    # Se [Non rilasciato] è vuoto, controlla la versione più recente
+    # (le entry possono essere scritte direttamente nella sezione versionata)
+    if struttura_entries == 0 or contenuti_entries == 0:
+        latest = find_latest_version_header(changelog_path)
+        if latest:
+            if struttura_entries == 0:
+                struttura_entries = count_entries_in_section(changelog_path, latest, "### Struttura")
+            if contenuti_entries == 0:
+                contenuti_entries = count_entries_in_section(changelog_path, latest, "### Contenuti")
 
     has_struttura = False
     has_contenuti = False

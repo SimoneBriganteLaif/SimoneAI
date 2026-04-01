@@ -5,6 +5,8 @@ Versione generalizzata (nessuna dipendenza da progetto specifico).
 Supporta: ARN AWS Secrets Manager, URL diretti, file .env.
 """
 
+from __future__ import annotations
+
 import json
 import os
 import subprocess

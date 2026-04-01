@@ -2,7 +2,7 @@
 
 ← [System.md](../System.md) · [skills.md](skills.md) · [workflow.md](workflow.md)
 
-**Ultimo aggiornamento**: 2026-03-16
+**Ultimo aggiornamento**: 2026-04-01
 
 ---
 
@@ -86,6 +86,7 @@ SimoneAI/
 │   │   ├── crea-task-notion/      ← KB + Notion → task strutturati su Notion per Feature.
 │   │   ├── windsurf-feedback/     ← Processa report feedback Windsurf → KB.
 │   │   ├── db-transfer/          ← Trasferimento dati tra DB PostgreSQL con verifica schema.
+│   │   ├── gestione-issue/       ← Gestione issue stack interno via Notion MCP.
 │   │   └── aws-diagnostics/       ← Skill diagnostiche AWS read-only.
 │   │       ├── README.md           ← Overview, flowchart selezione, naming convention.
 │   │       ├── _shared/            ← Libreria Python + doc condivisi.
@@ -138,6 +139,16 @@ SimoneAI/
 │   │                                 (laif-template, laif-ds, laif-infra).
 │   └── INDEX.md                    ← Dashboard con matrice priorità e statistiche.
 │
+├── tools/                          ← Strumenti standalone sviluppati per la KB.
+│   ├── er-editor/                  ← Editor visuale schema ER (Flask, API, test).
+│   └── graph-api/                  ← Client CLI Microsoft Graph API (Device Code Flow, MSAL).
+│
+├── LAIF-repo-analysis/             ← Censimento completo 40 repo LAIF in produzione.
+│   ├── INDEX.md                    ← Indice generale analisi.
+│   ├── repos/                      ← 40 analisi individuali (una per repo).
+│   ├── cross-analysis/             ← Analisi trasversali: feature matrix, template drift, ecc.
+│   └── laif-template-baseline.md   ← Documento baseline template v5.7.0.
+│
 ├── core/                           ← Repository core LAIF clonate come riferimento.
 │   │                                 NON modificare direttamente.
 │   │                                 I riassunti sono in knowledge/azienda/.
@@ -155,9 +166,8 @@ SimoneAI/
     │   │                             Ogni skill = directory con SKILL.md dentro.
     │   │                             Wrapper sottili che puntano alle skill KB
     │   │                             per auto-discovery e tracking nell'UI.
-    │   └── [skill-name]/SKILL.md   ← 21 directory (gestione-kb, init-project, db-transfer, ...)
-    ├── hooks/                      ← Script automazione (hook PostToolUse).
-    │   └── skill-logger.sh         ← Logga invocazioni skill native in skill-usage.log.
+    │   └── [skill-name]/SKILL.md   ← 22 directory (gestione-kb, init-project, gestione-issue, db-transfer, ...)
+    ├── hooks/                      ← Script automazione (attualmente vuota).
     ├── settings.json               ← Configurazione hook Claude Code.
     └── skill-usage.log             ← Log uso skill (gitignored, cresce runtime).
 ```

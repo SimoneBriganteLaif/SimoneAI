@@ -33,4 +33,7 @@ projects/*/reports/
 *.code-workspace
 
 # Obsidian
-.obsidian/
+.obsidian/.planning/
+
+# Token cache sensibili
+tools/graph-api/.token_cache.json
