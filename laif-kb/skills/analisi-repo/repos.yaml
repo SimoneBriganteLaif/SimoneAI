@@ -1,0 +1,47 @@
+workspace: /tmp/laif-repos
+default_branch: master
+github_org: laif-group
+
+repos:
+  - name: advaisor
+  - name: albini-castelli
+  - name: andriani-sequencing
+  - name: argo
+  - name: arianna
+  - name: bandi-platform
+  - name: bonfiglioli-riduttori
+  - name: brain
+  - name: cae-genai
+  - name: coci
+  - name: competitive-retail
+  - name: creama
+  - name: credit-assistant
+  - name: crif
+  - name: experior
+  - name: far-automation
+  - name: formart-marche
+  - name: fortlan-dibi
+  - name: helia
+  - name: ids-georadar
+  - name: jubatus
+  - name: lamonea
+  - name: manfredi
+  - name: nespak
+  - name: nessy
+  - name: phoenix-assistant
+  - name: preventivatore
+  - name: prima-power
+  - name: ref-man
+  - name: sabart-demfor
+  - name: scheduler-roloplast
+  - name: searchbridge
+  - name: sebi-group
+  - name: sireco
+  - name: sky-agent
+  - name: studio-perri
+  - name: supplynk
+  - name: umbra-recommend
+  - name: wolico
+  # Per escludere: skip: true
+  # Per override branch: branch: develop
+  # retropricing escluso (non usa laif-template, è Strapi)

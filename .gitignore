@@ -37,3 +37,12 @@ projects/*/reports/
 
 # Token cache sensibili
 tools/graph-api/.token_cache.json
+
+# Analisi marginalità — dati business reali e credenziali
+tools/analisi-marginalita/.env
+tools/analisi-marginalita/data/
+
+# Output binari e analisi specifiche (skill analisi-repo)
+laif-kb/skills/analisi-repo/output/*.xlsx
+laif-kb/skills/analisi-repo/output/*.db
+laif-kb/skills/analisi-repo/output/*.json

@@ -2,7 +2,7 @@
 
 ← [System.md](../System.md) · [skills.md](skills.md) · [workflow.md](workflow.md)
 
-**Ultimo aggiornamento**: 2026-04-01
+**Ultimo aggiornamento**: 2026-04-08
 
 ---
 
@@ -132,16 +132,14 @@ SimoneAI/
 │   └── wolico/                     ← MCP server Wolico: 25+ tool (CRM, HR, Economics,
 │                                     Ticketing, Monitoring, Operations, Administration).
 │
-├── CLI/                            ← CLI agent harness per operazioni da terminale.
-│   └── wolico/                     ← Agent Wolico: client Python, session OAuth2, test e2e.
-│
 ├── issues/                         ← Tracking issue interne cross-stack
 │   │                                 (laif-template, laif-ds, laif-infra).
 │   └── INDEX.md                    ← Dashboard con matrice priorità e statistiche.
 │
 ├── tools/                          ← Strumenti standalone sviluppati per la KB.
 │   ├── er-editor/                  ← Editor visuale schema ER (Flask, API, test).
-│   └── graph-api/                  ← Client CLI Microsoft Graph API (Device Code Flow, MSAL).
+│   ├── graph-api/                  ← Client CLI Microsoft Graph API (Device Code Flow, MSAL).
+│   └── analisi-marginalita/        ← Dashboard web analisi marginalità (HTML/JS, 9 tab, extract.py).
 │
 ├── LAIF-repo-analysis/             ← Censimento completo 40 repo LAIF in produzione.
 │   ├── INDEX.md                    ← Indice generale analisi.
@@ -149,13 +147,11 @@ SimoneAI/
 │   ├── cross-analysis/             ← Analisi trasversali: feature matrix, template drift, ecc.
 │   └── laif-template-baseline.md   ← Documento baseline template v5.7.0.
 │
-├── core/                           ← Repository core LAIF clonate come riferimento.
-│   │                                 NON modificare direttamente.
-│   │                                 I riassunti sono in knowledge/azienda/.
-│   ├── README.md                   ← Indice repo con link GitHub e descrizioni.
-│   ├── laif-template/              ← Base per tutti i progetti (fork).
-│   ├── ds/                         ← Design System condiviso (@laif/ds).
-│   └── laif-cdk/                   ← Infrastruttura AWS via CDK.
+├── laif-kb/                        ← KB condivisa LAIF (convenzioni, processi, skill operative).
+│   ├── CLAUDE.md                   ← Istruzioni Claude Code per laif-kb.
+│   ├── convenzioni/                ← Regole git flow, naming DB, standard codice.
+│   ├── processi/                   ← Mappa ciclo di vita processi aziendali.
+│   └── skills/                     ← Skill autocontenute (analisi-repo, documenta-processo).
 │
 ├── .tags/                          ← Sistema di tag per navigazione cross-progetto.
 │   ├── index.md                    ← Indice dei tag usati nella KB.

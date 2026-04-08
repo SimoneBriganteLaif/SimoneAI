@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LAIF — Analisi Marginalità</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+<div id="loading-overlay">Caricamento dati...</div>
+<div id="fetch-warning">Per il corretto funzionamento, avvia con: <code>python3 -m http.server 8888</code></div>
+
+<header class="app-header">
+  <h1><span>LAIF</span> — Analisi Marginalità</h1>
+</header>
+
+<nav class="tab-nav">
+  <button class="tab-btn active" data-tab="tab-classifica">Classifica Progetti</button>
+  <button class="tab-btn" data-tab="tab-drilldown">Drill-down Progetto</button>
+  <button class="tab-btn" data-tab="tab-saturazione">Risorse</button>
+  <button class="tab-btn" data-tab="tab-stime">Accuratezza Stime</button>
+  <button class="tab-btn" data-tab="tab-concentrazione">Concentrazione Clienti</button>
+  <button class="tab-btn" data-tab="tab-trend">Trend Temporale</button>
+  <button class="tab-btn" data-tab="tab-timeline">Timeline Progetti</button>
+  <button class="tab-btn" data-tab="tab-impostazioni">Impostazioni</button>
+</nav>
+
+<!-- Tab 1: Classifica Progetti -->
+<div id="tab-classifica" class="tab-content active">
+  <div class="filters" id="classifica-filters"></div>
+  <div class="summary-bar" id="classifica-summary"></div>
+  <div class="card">
+    <div class="table-scroll">
+      <table id="classifica-table"><thead><tr></tr></thead><tbody></tbody></table>
+    </div>
+  </div>
+  <div class="card drill-panel" id="classifica-drill"></div>
+</div>
+
+<!-- Tab 2: Drill-down Progetto -->
+<div id="tab-drilldown" class="tab-content">
+  <div class="filters"></div>
+  <div id="drilldown-content"></div>
+</div>
+
+<!-- Tab 3: Risorse -->
+<div id="tab-saturazione" class="tab-content">
+  <div class="filters" id="risorse-filters"></div>
+  <div class="kpi-row" id="risorse-kpis"></div>
+  <h3 class="section-title">Utilizzo Risorse per Mese</h3>
+  <div class="heatmap-wrapper" id="risorse-heatmap"></div>
+  <div id="risorse-person-detail" style="display:none">
+    <h3 class="section-title" id="risorse-person-title">Timeline Persona</h3>
+    <div class="chart-container" style="max-height:280px"><canvas id="risorse-person-chart"></canvas></div>
+    <h3 class="section-title">Carico Progetti</h3>
+    <div id="risorse-person-gantt"></div>
+  </div>
+</div>
+
+<!-- Tab 4: Accuratezza Stime -->
+<div id="tab-stime" class="tab-content">
+  <div class="filters" id="stime-filters"></div>
+  <div class="kpi-row" id="stime-kpis"></div>
+  <div class="note-box">Il prezzo è negoziato: questa metrica misura la sostenibilità del pricing, non l'accuratezza della stima pura.</div>
+  <h3 class="section-title">Dettaglio Progetti</h3>
+  <div class="card"><div class="table-scroll"><table id="stime-table"><thead><tr></tr></thead><tbody></tbody></table></div></div>
+  <h3 class="section-title">Aggregato per Team Leader</h3>
+  <div class="card"><div class="table-scroll"><table id="stime-tl-table"><thead><tr></tr></thead><tbody></tbody></table></div></div>
+  <h3 class="section-title">Aggregato per Cliente</h3>
+  <div class="card"><div class="table-scroll"><table id="stime-client-table"><thead><tr></tr></thead><tbody></tbody></table></div></div>
+</div>
+
+
+<!-- Tab 6: Concentrazione Clienti -->
+<div id="tab-concentrazione" class="tab-content">
+  <div class="summary-bar" id="concentrazione-summary"></div>
+  <div class="card"><div class="table-scroll"><table id="concentrazione-table"><thead><tr></tr></thead><tbody></tbody></table></div></div>
+  <div class="chart-container wide"><canvas id="pareto-chart"></canvas></div>
+</div>
+
+<!-- Tab 7: Trend Temporale -->
+<div id="tab-trend" class="tab-content">
+  <div class="filters" id="trend-filters"></div>
+  <div class="grid-2">
+    <div class="chart-container"><canvas id="trend-margin-chart"></canvas></div>
+    <div class="chart-container"><canvas id="trend-overrun-chart"></canvas></div>
+  </div>
+  <h3 class="section-title" style="margin-top:16px">Qualità Deal & Accuratezza Stime</h3>
+  <div class="grid-2">
+    <div class="chart-container"><canvas id="trend-deal-chart"></canvas></div>
+    <div class="chart-container"><canvas id="trend-estimate-chart"></canvas></div>
+  </div>
+  <h3 class="section-title" style="margin-top:16px">Confronto Anno su Anno</h3>
+  <div class="chart-container" style="max-height:300px"><canvas id="trend-yoy-chart"></canvas></div>
+  <h3 class="section-title">Breakdown per Team Leader</h3>
+  <div class="chart-container" style="max-height:300px"><canvas id="trend-tl-chart"></canvas></div>
+  <div class="card mt-16"><div class="table-scroll"><table id="trend-table"><thead><tr></tr></thead><tbody></tbody></table></div></div>
+</div>
+
+<!-- Tab 8: Timeline Progetti -->
+<div id="tab-timeline" class="tab-content">
+  <div class="filters" id="timeline-filters"></div>
+  <div class="summary-bar" id="timeline-summary"></div>
+  <div id="timeline-gantt"></div>
+  <div id="timeline-tooltip" class="timeline-tooltip"></div>
+</div>
+
+<!-- Tab 9: Impostazioni -->
+<div id="tab-impostazioni" class="tab-content">
+  <div id="impostazioni-content"></div>
+</div>
+
+<!-- Tag Modal -->
+<div id="tag-modal-overlay" class="tag-modal-overlay" style="display:none">
+  <div class="tag-modal">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <h3 id="tag-modal-title" style="font-size:1rem;margin:0"></h3>
+      <button class="btn btn-sm" id="tag-modal-close">Chiudi</button>
+    </div>
+    <div class="tag-group-header">Negativi</div>
+    <div class="tag-picker" id="modal-tags-red"></div>
+    <div class="tag-group-header">Positivi</div>
+    <div class="tag-picker" id="modal-tags-green"></div>
+    <div class="tag-group-header">Tipologia</div>
+    <div class="tag-picker" id="modal-tags-neutral"></div>
+    <div class="notes-split">
+      <div><label>Note positive</label><textarea id="modal-positive-notes" placeholder="Cosa è andato bene..."></textarea></div>
+      <div><label>Note negative</label><textarea id="modal-negative-notes" placeholder="Cosa è andato male..."></textarea></div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:10px">
+      <button class="btn btn-sm" id="tag-modal-cancel">Annulla</button>
+      <button class="btn btn-primary btn-sm" id="tag-modal-save">Salva</button>
+    </div>
+  </div>
+</div>
+
+<!-- JS: ordine di caricamento importante (dipendenze) -->
+<script src="js/utils.js"></script>
+<script src="js/components/multi-select.js"></script>
+<script src="js/components/sortable-table.js"></script>
+<script src="js/components/tags.js"></script>
+<script src="js/tabs/drilldown.js"></script>
+<script src="js/tabs/classifica.js"></script>
+<script src="js/tabs/saturazione.js"></script>
+<script src="js/tabs/stime.js"></script>
+<script src="js/tabs/concentrazione.js"></script>
+<script src="js/tabs/trend.js"></script>
+<script src="js/tabs/timeline.js"></script>
+<script src="js/tabs/impostazioni.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

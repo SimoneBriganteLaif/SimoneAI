@@ -25,7 +25,7 @@ SYSTEM_FILES = {
 SYSTEM_PREFIXES = ("CHANGELOG", "_template")
 
 # Directory i cui file non richiedono tag
-SYSTEM_DIRS = ("docs/", ".tags/", "core/", ".claude/", "issues/", "CLI/", "LAIF-repo-analysis/", "tools/")
+SYSTEM_DIRS = ("docs/", ".tags/", "core/", ".claude/", "issues/", "CLI/", "LAIF-repo-analysis/", "tools/", "laif-kb/")
 
 # Pattern per i tag nel frontmatter YAML
 TAG_RE = re.compile(r'"(#[a-z]+:[a-zA-Z0-9_-]+)"')

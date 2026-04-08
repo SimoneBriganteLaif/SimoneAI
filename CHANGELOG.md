@@ -12,6 +12,48 @@ _Nessuna modifica pendente._
 
 ---
 
+## [v1.15] — 2026-04-08
+
+### Contenuti
+
+#### Added
+
+**LAIF-KB — Knowledge base condivisa**
+- `laif-kb/` — nuova KB condivisa LAIF (struttura per repo indipendente)
+- `laif-kb/CLAUDE.md` — istruzioni Claude Code per laif-kb
+- `laif-kb/README.md` — overview e navigazione
+- `laif-kb/convenzioni/git-flow.md` — convenzioni Git flow aziendali
+- `laif-kb/convenzioni/naming-db.md` — convenzioni naming database
+- `laif-kb/processi/README.md` — mappa ciclo di vita processi LAIF
+- `laif-kb/skills/analisi-repo/` — skill analisi complessità repository (9 check Python: API routes, datamodel, dependencies, frontend components/pages, git stats, background tasks, versioning + cross-analysis + export Excel/SQLite)
+- `laif-kb/skills/documenta-processo/` — skill documentazione processi guidata con template
+
+**Tool Analisi Marginalità**
+- `tools/analisi-marginalita/` — dashboard web standalone per analisi marginalità LAIF
+- `tools/analisi-marginalita/index.html` — entry point HTML
+- `tools/analisi-marginalita/css/` — stili base e componenti
+- `tools/analisi-marginalita/js/app.js` — orchestratore applicazione
+- `tools/analisi-marginalita/js/tabs/` — 9 tab analisi (classifica, trend, drilldown, saturazione, concentrazione, switching, stime, timeline, impostazioni)
+- `tools/analisi-marginalita/js/components/` — componenti riutilizzabili (multi-select, sortable-table, tags)
+- `tools/analisi-marginalita/js/utils.js` — utility condivise
+- `tools/analisi-marginalita/extract.py` — script Python estrazione dati da DB
+
+**Configurazione**
+- `.mcp.json` — configurazione MCP servers (inizializzata vuota)
+
+### Struttura
+
+#### Modified
+
+- `.gitignore` — aggiunte esclusioni: dati sensibili analisi-marginalita (`.env`, `data/`), output binari analisi-repo (`*.xlsx`, `*.db`, `*.json`)
+
+#### Removed
+
+- `.windsurf/workflows/review.md` — rimosso workflow Windsurf review (obsoleto)
+- `core/README.md` — rimosso (cartella core già gestita via gitignore per repo clonate)
+
+---
+
 ## [v1.14] — 2026-04-01
 
 ### Contenuti
