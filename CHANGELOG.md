@@ -270,9 +270,6 @@ _Nessuna modifica pendente._
 
 #### Added
 
-**Skill nativa playwright-cli**
-- `.claude/skills/playwright-cli/` — trigger layer nativo per automazione browser: testing, form filling, screenshot, data extraction
-
 **MCP server Wolico**
 - `mcp-servers/` — nuova cartella top-level per MCP server locali
 - `mcp-servers/wolico/` — MCP server FastAPI/Python per Wolico (server.py, api.py, helpers.py, tools/, Dockerfile, deploy/)

@@ -157,7 +157,6 @@ Windsurf ha già 8 skill operative in `~/.codeium/windsurf/skills/`:
 | `backend-api` | Modello → Schema → Service → Controller → Migrazione |
 | `backend-test` | Genera test pytest + comandi curl |
 | `frontend-page` | Pagina → Feature module → Navigation → i18n |
-| `frontend-test` | Test Playwright component + E2E |
 | `test` | Esecuzione test generica |
 | `update-docs` | Aggiorna changelog e documentazione progetto |
 
