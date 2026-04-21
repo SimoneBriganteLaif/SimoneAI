@@ -8,7 +8,31 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/).
 
 ## [Non rilasciato]
 
-_Nessuna modifica pendente._
+### Contenuti
+
+#### Added
+
+**Progetto Bonfiglioli Consulting — nuovo progetto presales**
+- `projects/bonfiglioli-consulting/` — nuovo progetto presales (Piattaforma Pianificazione Risorse)
+- `projects/bonfiglioli-consulting/README.md` — overview: 5 moduli (Progetti, Analytics, Capacity & What-If, Anagrafiche, Run Allocazione), integrazione read-only con DWH cliente via Tailscale VPN, budget 25k€ setup + 5k€/anno
+- `projects/bonfiglioli-consulting/meeting/2026-04-10-call-pre-kickoff.md` — note call pre-kickoff
+- File da template: `requisiti.md`, `architettura.md`, `decisioni.md`, `feature-log.md`, `stato-progetto.md`, `manutenzione.md`, `allegato-tecnico.md`, `mockup-brief.md`
+
+**Progetto Jubatus — infra AWS deployata**
+- `projects/jubatus/infra-setup-log.md` — log completo sessione setup infra 2026-04-10: rename `app_name` jubatus → support, fix CDK (secret ARN, region SSM, AWS_DEFAULT_REGION), distruzione + ricreazione stack, deploy backend steady state
+- `projects/jubatus/piani/migrazione-infra-webapp-vpc.md` — piano migrazione da VPC CDK-created a webapp_vpc condivisa (ALB porta 8088, RDS subnet private, cert SSL custom, deadline 2026-04-22)
+
+#### Modified
+
+- `projects/jubatus/decisioni.md` — aggiunta ADR-006 (rename `app_name` jubatus → support per non esporre il nome dell'azienda nelle risorse AWS visibili al cliente)
+- `projects/jubatus/stato-progetto.md` — sezione infra AWS aggiornata (stack `dev-support-stack` attivo, deploy completato), risolto blocco "values.yaml non aggiornato"
+
+### Struttura
+
+#### Modified
+
+- `skills/development/db-transfer/SKILL.md` — v1.1: documentata gestione cicli FK con disabilitazione temporanea constraint (`session_replication_role = replica`)
+- `skills/development/db-transfer/transfer_data.py` — gestione cicli FK: invece di errore, le tabelle cicliche vengono aggiunte in fondo con warning; aggiunto flag `disable_fk` per disabilitare constraint durante la copia (default attivo da CLI)
 
 ---
 

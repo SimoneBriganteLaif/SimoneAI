@@ -1,6 +1,6 @@
 ---
 progetto: "jubatus"
-ultimo-aggiornamento: "2026-03-09"
+ultimo-aggiornamento: "2026-04-10"
 tags:
   - "#progetto:jubatus"
   - "#fase:dev"
@@ -8,13 +8,26 @@ tags:
 
 # Stato Progetto — Jubatus
 
-> Punto di ingresso per riprendere lo sviluppo. Ultimo aggiornamento: 2026-03-09.
+> Punto di ingresso per riprendere lo sviluppo. Ultimo aggiornamento: 2026-04-10.
 
 ---
 
-## Stato complessivo: MVP in corso
+## Stato complessivo: MVP in corso — Infra attiva
 
 Il backend email e quasi completo (24 endpoint, sync engine, multi-provider). Il frontend ha un'interfaccia ticket ricca con 4 view modes, ma usa interamente dati mock. **Il gap principale e il collegamento frontend-backend e l'integrazione con MySQL RDS di Jubatus.**
+
+### Infrastruttura AWS (aggiornato 2026-04-10)
+
+**Stato**: Backend deployato e funzionante su AWS (`dev-support-be-service` steady state).
+
+- `app_name` rinominato da "jubatus" a "support" (ADR-006)
+- Stack `dev-support-stack` attivo in eu-central-1
+- ECS service con 1 task running, ALB + CloudFront configurati
+- DB PostgreSQL 17.6 (`dev-jubatus-db`) attivo
+- Certificato SSL `support-dev.mymemories.it` in attesa validazione DNS dal cliente
+- SSM Parameter Store in eu-central-1 (`/dev/support`)
+
+**Prossimi step infra**: validazione certificato (cliente), migrazione VPC + ALB all'infra del cliente, restrizione policy IAM. Dettagli in [infra-setup-log.md](infra-setup-log.md) e nella [pagina Notion di review](https://www.notion.so/laifgroup/Review-Infra-Jubatus-33c90ad6ee4880dabadfff781010c237).
 
 ---
 
@@ -52,8 +65,8 @@ RF-05 e RF-06 dipendono dall'accesso al database del cliente. Serve:
 - Configurazione security group per accesso dal nostro servizio
 - Modello read-only nel backend (nuovo modulo o estensione email)
 
-### 4. values.yaml non aggiornato
-Il file di configurazione ha ancora valori del template (`cod_application: "2024000"`, `repo_name: "laif-template"`). Va aggiornato prima di qualsiasi deploy su AWS Jubatus.
+### ~~4. values.yaml non aggiornato~~ ✅ Risolto (2026-04-10)
+`values.yaml` aggiornato con `app_name: support`, `cod_application: "2025093"`, `repo_name: jubatus`. Deploy su AWS completato.
 
 ---
 

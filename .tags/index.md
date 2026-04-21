@@ -23,6 +23,7 @@ Tutti i tag usati nella knowledge base. Aggiornato dalla skill `maintenance/audi
 | `#progetto:albini-castelli` | projects/albini-castelli/README.md, projects/albini-castelli/requisiti.md, projects/albini-castelli/architettura.md, projects/albini-castelli/decisioni.md, projects/albini-castelli/feature-log.md, projects/albini-castelli/stato-progetto.md, projects/albini-castelli/manutenzione.md, projects/albini-castelli/meeting/*.md |
 | `#progetto:sebi-group` | projects/sebi-group/README.md, projects/sebi-group/requisiti.md, projects/sebi-group/architettura.md, projects/sebi-group/decisioni.md, projects/sebi-group/feature-log.md, projects/sebi-group/stato-progetto.md, projects/sebi-group/meeting/*.md, projects/sebi-group/stima-modulare.md, projects/sebi-group/evolutive-backlog.md, projects/sebi-group/mockup-flows-spec.md |
 | `#progetto:laif-issue` | projects/laif-issue/README.md, projects/laif-issue/processo-issue.md, projects/laif-issue/flusso-riunione.md, projects/laif-issue/dashboard-spec.md, projects/laif-issue/stato-progetto.md, projects/laif-issue/decisioni.md |
+| `#progetto:bonfiglioli-consulting` | projects/bonfiglioli-consulting/README.md, projects/bonfiglioli-consulting/requisiti.md, projects/bonfiglioli-consulting/architettura.md, projects/bonfiglioli-consulting/decisioni.md, projects/bonfiglioli-consulting/feature-log.md, projects/bonfiglioli-consulting/stato-progetto.md, projects/bonfiglioli-consulting/manutenzione.md, projects/bonfiglioli-consulting/allegato-tecnico.md, projects/bonfiglioli-consulting/mockup-brief.md, projects/bonfiglioli-consulting/meeting/*.md |
 
 ---
 
@@ -40,6 +41,7 @@ Tutti i tag usati nella knowledge base. Aggiornato dalla skill `maintenance/audi
 | `#industria:entertainment` | projects/jubatus/, knowledge/industrie/entertainment.md |
 | `#industria:operations-interne` | projects/wolico/, projects/laif-issue/ |
 | `#industria:logistica` | projects/sebi-group/ |
+| `#industria:consulenza` | projects/bonfiglioli-consulting/ |
 | *(aggiungi nuove industrie qui)* | |
 
 ---

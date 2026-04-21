@@ -197,6 +197,48 @@ Aggiornamenti dal template via merge dal repository upstream.
 
 ---
 
+## ADR-006: Rename app_name da "jubatus" a "support"
+
+**Data**: 2026-04-10
+**Stato**: Accettata
+**Autore**: Simone Brigante
+
+### Contesto
+
+Il cliente non vuole che le risorse AWS del progetto si chiamino "jubatus" (il nome dell'azienda). Preferisce un nome funzionale che descriva l'applicazione.
+
+### Opzioni valutate
+
+**Opzione A: support-platform** (16 caratteri)
+- Pro: Descrittivo
+- Contro: Supera il limite di 15 caratteri imposto dal laif-cli
+
+**Opzione B: support** (7 caratteri)
+- Pro: Semplice, sotto il limite, descrittivo
+- Contro: Generico
+
+### Decisione
+
+`app_name: support`. Le risorse AWS si chiamano `dev-support-*` (es. `dev-support-be-cluster`, `dev-support-fe-build`). Le repo GitHub restano `jubatus` e `jubatus-infra`. Il `CUSTOMER_NAME` resta "jubatus" (usato solo per tag AWS e naming DB/secret).
+
+### Conseguenze
+
+**Positive**:
+- Il cliente non vede "jubatus" nei nomi delle risorse visibili
+- Nome funzionale chiaro
+
+**Negative / trade-off accettati**:
+- Disallineamento tra nome repo (`jubatus`) e nome risorse (`support`)
+- DB e secret contengono "jubatus" perché usano CUSTOMER_NAME (es. `dev-jubatus-db`)
+
+**Azioni eseguite**:
+- Distrutto e ricreato lo stack CloudFormation con i nuovi nomi
+- Aggiornati `values.yaml`, `dev.yaml`, `docker-compose.yaml`
+- Aggiornate GitHub env vars
+- Migrato SSM da eu-west-1 a eu-central-1 con nuovo path `/dev/support`
+
+---
+
 ## Indice decisioni
 
 | ID | Titolo | Data | Stato |
@@ -206,3 +248,4 @@ Aggiornamenti dal template via merge dal repository upstream.
 | ADR-003 | Multi-provider email (Gmail + Microsoft + SES) | 2026-03 | Accettata |
 | ADR-004 | Approccio iterativo con dati mock | 2026-02-13 | Accettata |
 | ADR-005 | Separazione codice template vs. app | 2026-01 | Accettata |
+| ADR-006 | Rename app_name da "jubatus" a "support" | 2026-04-10 | Accettata |

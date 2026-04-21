@@ -167,8 +167,10 @@ def topo_sort(graph: dict[str, set[str]], nodes: set[str]) -> list[str]:
                 queue.append(m)
 
     if len(order) != len(nodes):
-        cyclic = nodes - set(order)
-        raise RuntimeError(f"Ciclo rilevato tra: {', '.join(sorted(cyclic))}")
+        cyclic = sorted(nodes - set(order))
+        print(f"[yellow]⚠️  Ciclo FK rilevato tra {len(cyclic)} tabelle — verranno aggiunte in fondo.[/]")
+        print(f"[yellow]   I constraint FK verranno disabilitati durante la copia.[/]")
+        order.extend(cyclic)
     return order
 
 
@@ -247,8 +249,10 @@ def truncate_tables(db_url: str, tables: list[str], existing: set[str]) -> None:
 def copy_tables(
     src_url: str, dest_url: str, tables: list[str],
     existing: set[str], status: Status | None = None,
+    disable_fk: bool = False,
 ) -> list[str]:
     errors: list[str] = []
+    fk_prefix = b"SET session_replication_role = 'replica';\n" if disable_fk else b""
 
     for table in tables:
         # Count source entries
@@ -282,7 +286,7 @@ def copy_tables(
         )
 
         dump_out, dump_err = pg_dump.communicate()
-        psql_out, psql_err = psql_proc.communicate(dump_out)
+        psql_out, psql_err = psql_proc.communicate(fk_prefix + dump_out)
 
         if pg_dump.returncode != 0 or psql_proc.returncode != 0:
             msg = f'Errore su "{table}"'
@@ -406,8 +410,9 @@ def main(
 
     # Copy
     print("\n[bold]Copia tabelle...[/]")
+    print("[dim]FK constraint disabilitati durante la copia (session_replication_role = replica)[/]")
     with Status("...") as st:
-        errors = copy_tables(src_url, dest_url, resolved, existing, st)
+        errors = copy_tables(src_url, dest_url, resolved, existing, st, disable_fk=True)
 
     # Post-copy verification
     print_table_counts(dest_url, resolved, "Conteggio DESTINATION dopo copia:")

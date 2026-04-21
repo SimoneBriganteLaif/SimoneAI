@@ -5,14 +5,14 @@ descrizione: >
   interattiva e ordinamento automatico per foreign key. Supporta AWS Secrets Manager,
   URL diretti e file .env.
 fase: development
-versione: "1.0"
+versione: "1.1"
 stato: beta
 legge:
   - projects/[nome]/aws-config.yaml
   - .env files del progetto
 scrive:
   - (nessun file KB — opera direttamente sui database)
-aggiornato: "2026-03-15"
+aggiornato: "2026-04-21"
 ---
 
 # db-transfer — Trasferimento dati tra database PostgreSQL
@@ -29,8 +29,8 @@ preventiva degli schema e selezione interattiva delle tabelle.
 - Confronta gli schema dei due database e segnala discrepanze
 - Mostra le tabelle disponibili con row count e dimensione stimata
 - Permette di selezionare quali tabelle trasferire (con wildcard)
-- Ordina le tabelle per rispettare le foreign key
-- Esegue il trasferimento con `pg_dump | psql`
+- Ordina le tabelle per rispettare le foreign key (gestisce anche cicli FK)
+- Esegue il trasferimento con `pg_dump | psql`, disabilitando temporaneamente i FK constraint (`session_replication_role = replica`) per supportare cicli e ordinamenti non perfetti
 
 **Cosa NON fa:**
 - Migrazioni di schema (usa Alembic per quello)
