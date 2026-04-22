@@ -29,10 +29,19 @@ Formato basato su [Keep a Changelog](https://keepachangelog.com/it-IT/1.1.0/).
 
 ### Struttura
 
+#### Added
+
+**Skill `sistema-riunioni-notion` — pulizia tabella "Riunioni Private"**
+- `skills/maintenance/sistema-riunioni-notion/SKILL.md` (v0.1, beta) — nuova skill per sistemare la tabella Notion "Riunioni Private": icone coerenti al Tag, inferenza Tag/Progetto/Partecipanti da titolo+riassunto, riscrittura titoli placeholder "‣"
+- Include: mapping emoji stabile, mappa utenti Notion (snapshot 2026-04-22), mappa progetti con ID noti (Jubatus, Lamonea, Nivi, A&C, SEBI, Creama), regole di inferenza Tag con errori ricorrenti documentati
+- Regole non derogabili: Simone Brigante mai nei Partecipanti; mai sovrascrivere valori popolati; chiedere conferma su ambiguità con data+argomenti; gotcha documentati (disconnessione MCP, output 90k da slicing, semantic-search incompleto sulle pagine vecchie)
+
 #### Modified
 
 - `skills/development/db-transfer/SKILL.md` — v1.1: documentata gestione cicli FK con disabilitazione temporanea constraint (`session_replication_role = replica`)
 - `skills/development/db-transfer/transfer_data.py` — gestione cicli FK: invece di errore, le tabelle cicliche vengono aggiunte in fondo con warning; aggiunto flag `disable_fk` per disabilitare constraint durante la copia (default attivo da CLI)
+- `docs/skills.md` — registrata nuova skill maintenance `sistema-riunioni-notion`
+- `IDEAS.md` — IDEA-017: automatizzare `sistema-riunioni-notion` in dry-run periodico
 
 ---
 

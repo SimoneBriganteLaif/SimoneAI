@@ -103,7 +103,8 @@ SimoneAI/
 │   │       ├── aws-rds-diagnose/   ← Stato RDS, connessioni, log PostgreSQL.
 │   │       └── aws-s3-diagnose/    ← Inventario bucket, dimensioni, upload.
 │   ├── maintenance/                ← Manutenzione periodica.
-│   │   └── audit-periodico/        ← Audit mensile dell'intera KB.
+│   │   ├── audit-periodico/        ← Audit mensile dell'intera KB.
+│   │   └── sistema-riunioni-notion/ ← Pulizia tabella Notion "Riunioni Private".
 │   └── meta/                       ← Gestione del sistema stesso.
 │       ├── gestione-kb/            ← Changelog, idee, sync docs, review idee.
 │       ├── contesto-progetto/      ← Script match.py: trova contesto rilevante per progetto.

@@ -13,7 +13,7 @@
 - [Riepilogo](#riepilogo)
 - **Presales**: [init-project](#init-project) · [estrazione-requisiti](#estrazione-requisiti) · [genera-allegato-tecnico](#genera-allegato-tecnico) · [genera-mockup-brief](#genera-mockup-brief)
 - **Development**: [feature-workflow](#feature-workflow) · [feature-plan](#feature-plan) · [feature-develop](#feature-develop) · [feature-test](#feature-test) · [feature-review](#feature-review) · [windsurf-feedback](#windsurf-feedback) · [estrazione-decisioni](#estrazione-decisioni) · [estrazione-pattern](#estrazione-pattern) · [setup-progetto-dev](#setup-progetto-dev) · [brainstorming-post-sviluppo](#brainstorming-post-sviluppo) · [crea-task-notion](#crea-task-notion) · [db-transfer](#db-transfer) · [gestione-issue](#gestione-issue) · [AWS Diagnostics](#aws-diagnostics-pacchetto)
-- **Maintenance**: [audit-periodico](#audit-periodico)
+- **Maintenance**: [audit-periodico](#audit-periodico) · [sistema-riunioni-notion](#sistema-riunioni-notion)
 - **Meta**: [gestione-kb](#gestione-kb) · [verifica-pre-commit](#verifica-pre-commit)
 - [Confronto skill manutenzione](#differenze-tra-skill-di-manutenzione)
 - [Formato SKILL.md](#formato-standard-skillmd)
@@ -141,6 +141,7 @@ La promozione va registrata nel changelog e il campo `stato` aggiornato nel fron
 | `db-transfer` | Development | beta | si | Trasferimento dati tra DB PostgreSQL con verifica schema | aws-config.yaml, .env | nessuno (opera sui DB) |
 | `gestione-issue` | Development | beta | si | Gestione interattiva issue via Notion MCP (triage, riunione, release, health check) | projects/laif-issue/, Notion DB | Notion DB (dopo conferma) |
 | `audit-periodico` | Maintenance | beta | si | Audit mensile intera KB | Tutta la KB | Report + aggiornamenti distribuiti |
+| `sistema-riunioni-notion` | Maintenance | beta | si | Pulizia tabella Notion "Riunioni Private" (icone, Tag, Progetto, Partecipanti, titoli) | Notion DB Riunioni Private, DB Progetti, utenti workspace | Notion DB Riunioni Private (dopo conferma) |
 | `gestione-kb` | Meta | beta | si | Gestione meta-file del sistema | Meta-file, struttura cartelle | changelog, IDEAS.md, docs/ |
 | `verifica-pre-commit` | Meta | stable | — | Verifica ibrida coerenza KB pre-commit (script Python + check semantici) | Tutti i meta-file + struttura reale | nessuno (solo report) |
 
@@ -673,6 +674,39 @@ flowchart TD
     CONFIRM -->|No| ADJUST[Rivedi azioni]
     ADJUST --> CONFIRM
     EXEC --> DONE([Output report finale])
+```
+
+---
+
+### sistema-riunioni-notion
+
+**Path**: `skills/maintenance/sistema-riunioni-notion/SKILL.md`
+**Trigger**: "sistema le call", "fixa la tabella delle riunioni", o passata mensile di manutenzione
+**Stato**: beta
+
+Pulizia della tabella Notion "Riunioni Private": applica icone coerenti al Tag, inferisce Tag/Progetto/Partecipanti dal titolo e dal riassunto, riscrive titoli placeholder ("‣", vuoti, "@date..."). Contiene mapping emoji stabile, mappa utenti Notion, mappa progetti con ID noti e regole di inferenza con errori ricorrenti documentati.
+
+Regole non derogabili:
+- **Simone Brigante** non va mai nei Partecipanti Interni (è dato per scontato).
+- Mai sovrascrivere valori già popolati.
+- Su ogni ambiguità: `AskUserQuestion` con data della riunione + argomenti principali.
+- Nessun cambio massivo (>10 pagine) senza approvazione del mapping.
+
+```mermaid
+flowchart TD
+    START([Richiesta utente]) --> SCOPE[Scope: ultime N settimane / tutto]
+    SCOPE --> FETCH[Query DB + fetch utenti]
+    FETCH --> DIAG[Diagnostico via subagent]
+    DIAG --> INFER[Piano update JSON]
+    INFER --> ASK{Ambiguità?}
+    ASK -->|Sì| AUQ[AskUserQuestion data+argomenti]
+    AUQ --> BATCH
+    ASK -->|No| BATCH[Batch update parallelo]
+    BATCH --> TITLES{Riscrivo titoli placeholder?}
+    TITLES -->|Sì| GENTITLES[Subagent genera titoli da Riassunto]
+    GENTITLES --> APPLYTITLES[Applica Name update]
+    TITLES -->|No| DONE
+    APPLYTITLES --> DONE([Report finale])
 ```
 
 ---
